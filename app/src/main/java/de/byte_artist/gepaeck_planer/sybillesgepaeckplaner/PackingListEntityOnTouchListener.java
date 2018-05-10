@@ -3,11 +3,11 @@ package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class RowOnTouchListener implements View.OnTouchListener {
+public class PackingListEntityOnTouchListener implements View.OnTouchListener {
 
-    private LuggageListEntryEntity luggageEntity = null;
+    private PackingListEntity luggageEntity = null;
 
-    RowOnTouchListener(LuggageListEntryEntity luggageEntity) {
+    PackingListEntityOnTouchListener(PackingListEntity luggageEntity) {
         this.luggageEntity = luggageEntity;
     }
     @Override

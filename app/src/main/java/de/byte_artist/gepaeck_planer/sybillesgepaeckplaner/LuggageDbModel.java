@@ -14,8 +14,13 @@ import java.util.ArrayList;
  */
 public class LuggageDbModel extends DbModel {
 
+    private Context context = null;
+    private SQLiteDatabase.CursorFactory cursorFactory = null;
+
     LuggageDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        this.context = context;
+        this.cursorFactory = factory;
     }
 
     public ArrayList<LuggageEntity> load() {
@@ -27,11 +32,16 @@ public class LuggageDbModel extends DbModel {
         
         while (cursor.moveToNext()) {
             LuggageEntity luggageEntity = new LuggageEntity();
-
+            long luggageCategoryId = cursor.getInt(2);
             luggageEntity.setId(cursor.getLong(0));
             luggageEntity.setName(cursor.getString(1));
-            luggageEntity.setCategoryId(cursor.getInt(2));
-            luggageEntity.setWeight(cursor.getDouble(3));
+            luggageEntity.setCategoryId(luggageCategoryId);
+            luggageEntity.setWeight(cursor.getInt(3));
+
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(luggageCategoryId);
+
+            luggageEntity.setCategory(luggageCategoryEntity);
 
             collection.add(luggageEntity);
         }
@@ -54,6 +64,20 @@ public class LuggageDbModel extends DbModel {
         db.close();
     }
 
+    public void update(LuggageEntity luggageEntity) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_LUGGAGE_NAME, luggageEntity.getName());
+        values.put(COLUMN_LUGGAGE_CATEGORY_FK, luggageEntity.getCategoryId());
+        values.put(COLUMN_LUGGAGE_WEIGHT, luggageEntity.getWeight());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        final String[] whereArgs = {Long.toString(luggageEntity.getId())};
+        db.update(TABLE_LUGGAGE, values, COLUMN_LUGGAGE_ID + " = ?", whereArgs);
+        db.close();
+    }
+
     public LuggageEntity findLuggage(String luggageName) {
         String query = "SELECT * FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_NAME+" = '"+luggageName+"'";
 
@@ -68,7 +92,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setId(cursor.getLong(0));
             luggageEntity.setName(cursor.getString(1));
             luggageEntity.setCategoryId(cursor.getInt(2));
-            luggageEntity.setWeight(cursor.getDouble(3));
+            luggageEntity.setWeight(cursor.getInt(3));
         } else {
             luggageEntity = null;
         }
@@ -89,11 +113,16 @@ public class LuggageDbModel extends DbModel {
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-
+            long categoryId = cursor.getLong(2);
             luggageEntity.setId(cursor.getLong(0));
             luggageEntity.setName(cursor.getString(1));
-            luggageEntity.setCategoryId(cursor.getInt(2));
-            luggageEntity.setWeight(cursor.getDouble(3));
+            luggageEntity.setWeight(cursor.getInt(3));
+            luggageEntity.setCategoryId(categoryId);
+
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(categoryId);
+
+            luggageEntity.setCategory(luggageCategoryEntity);
         } else {
             luggageEntity = null;
         }

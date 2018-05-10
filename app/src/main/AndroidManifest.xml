@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".LuggageActivity" />
+        <activity android:name=".PackingListActivity" />
+        <activity android:name=".CategoryEditDialog" />
+        <activity android:name=".LuggageEditDialog" />
+        <activity android:name=".PackingListEditDialog"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,23 @@
 <resources>
-    <string name="app_name">SybillesGepäckPlaner</string>
-    <string name="button_add">Add</string>
+    <string name="app_name" translatable="false">Sybilles Gepäck-Planer</string>
+    <string name="button_add">Hinzufügen</string>
+
+    <string name="label_category">Kategorie</string>
+    <string name="label_categories">Kategorien</string>
+    <string name="label_luggage_list">Gepäckstücke</string>
+    <string name="label_packing_list">Packlisten</string>
+
+    <string name="label_weight">Gewicht</string>
+    <string name="label_luggage_name">Gepäckstück Name</string>
+
+    <string name="title_category_edit">Kategory bearbeiten</string>
+    <string name="title_category_new">Kategory anlegen</string>
+    <string name="title_luggage_edit">Gepäckstück bearbeiten</string>
+    <string name="title_luggage_new">Gepäckstück anlegen</string>
+    <string name="title_error">Fehler!</string>
+
+    <string name="text_ok">Ja</string>
+    <string name="text_save">Speichern</string>
+    <string name="text_update">Aktualisieren</string>
+    <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
 </resources>

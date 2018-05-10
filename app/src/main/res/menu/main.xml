@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/mainMenuLuggage"
+            android:title="Gepäckstücke" />
+        <item
+            android:id="@+id/mainMenuPackingLists"
+            android:title="Packlisten" />
+        <item
+            android:id="@+id/mainMenuCategories"
+            android:title="Kategorien" />
+    </group>
+    <group >
+        <item
+            android:id="@+id/mainMenuExit"
+            android:checkable="false"
+            android:enabled="true"
+            android:title="Quit"
+            android:visible="true" />
+    </group>
+</menu>

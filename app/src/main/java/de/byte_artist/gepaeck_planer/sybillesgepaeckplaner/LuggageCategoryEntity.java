@@ -27,4 +27,11 @@ class LuggageCategoryEntity {
     public long getId() {
         return this.id;
     }
+
+    public String toString() {
+        if (0 < this.id) {
+            return this.id + " " + this.name;
+        }
+        return this.name;
+    }
 }

@@ -2,48 +2,49 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LayoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible"
-    tools:context=".MainActivity">
-
+    tools:context=".PackingListActivity">
 
     <ScrollView
-        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingEnd="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingStart="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddPackingList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnAddEntryToCurrentPackingList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
-            android:id="@+id/PackagesTable"
+            android:id="@+id/packingListsTable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
         </TableLayout>
     </ScrollView>
 
     <ImageButton
-        android:id="@+id/btnAddEntryToCurrentPackingList"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
+        android:id="@+id/btnAddPackingList"
+        android:layout_width="48dip"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:background="@android:drawable/screen_background_light_transparent"
+        android:baselineAlignBottom="true"
         android:elevation="0dp"
         android:src="@drawable/add_button"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

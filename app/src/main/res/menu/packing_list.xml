@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mainMenuMain"
+        android:title="Hauptseite" />
+    <item
+        android:id="@+id/mainMenuCategories"
+        android:title="Kategorien" />
+    <item
+        android:id="@+id/mainMenuLuggage"
+        android:title="Gepäckstücke" />
+    <item
+        android:id="@+id/mainMenuExit"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="Quit"
+        android:visible="true" />
+</menu>

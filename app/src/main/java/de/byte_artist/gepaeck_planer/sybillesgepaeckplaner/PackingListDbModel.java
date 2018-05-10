@@ -12,43 +12,43 @@ import java.util.ArrayList;
 /**
  *
  */
-public class LuggageListEntryDbModel extends DbModel {
+public class PackingListDbModel extends DbModel {
 
     private Context context = null;
     private SQLiteDatabase.CursorFactory cursorFactory = null;
 
-    LuggageListEntryDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    PackingListDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         this.context = context;
         this.cursorFactory = factory;
     }
 
-    public ArrayList<LuggageListEntryEntity> load() {
+    public ArrayList<PackingListEntity> load() {
         String query = "SELECT * FROM "+TABLE_LUGGAGE_LIST_ENTRY;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<LuggageListEntryEntity> collection = new ArrayList<>();
+        ArrayList<PackingListEntity> collection = new ArrayList<>();
         
         while (cursor.moveToNext()) {
-            LuggageListEntryEntity luggageListEntryEntity = new LuggageListEntryEntity();
+            PackingListEntity packingListEntity = new PackingListEntity();
 
-            luggageListEntryEntity.setId(cursor.getLong(0));
-            luggageListEntryEntity.setCount(cursor.getDouble(3));
+            packingListEntity.setId(cursor.getLong(0));
+            packingListEntity.setCount(cursor.getDouble(3));
 
             long luggageListFk = cursor.getLong(1);
             long luggageFk = cursor.getLong(2);
 
-            luggageListEntryEntity.setLuggageListFk(luggageListFk);
-            luggageListEntryEntity.setLuggageFk(luggageFk);
+            packingListEntity.setLuggageListFk(luggageListFk);
+            packingListEntity.setLuggageFk(luggageFk);
 
             LuggageListDbModel luggageListDbModel = new LuggageListDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
-            luggageListEntryEntity.setLuggageListEntity(luggageListDbModel.findLuggageById(luggageListFk));
+            packingListEntity.setLuggageListEntity(luggageListDbModel.findLuggageById(luggageListFk));
 
             LuggageDbModel luggageDbModel = new LuggageDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
-            luggageListEntryEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
+            packingListEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
 
-            collection.add(luggageListEntryEntity);
+            collection.add(packingListEntity);
         }
         cursor.close();
         db.close();
@@ -56,72 +56,72 @@ public class LuggageListEntryDbModel extends DbModel {
         return collection;
     }
 
-    public void insert(LuggageListEntryEntity luggageListEntryEntity) {
+    public void insert(PackingListEntity packingListEntity) {
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_LUGGAGE_LIST_ENTRY_COUNT, luggageListEntryEntity.getCount());
-        values.put(COLUMN_LUGGAGE_FK, luggageListEntryEntity.getLuggageFk());
-        values.put(COLUMN_LUGGAGE_LIST_FK, luggageListEntryEntity.getLuggageListFk());
+        values.put(COLUMN_LUGGAGE_LIST_ENTRY_COUNT, packingListEntity.getCount());
+        values.put(COLUMN_LUGGAGE_FK, packingListEntity.getLuggageFk());
+        values.put(COLUMN_LUGGAGE_LIST_FK, packingListEntity.getLuggageListFk());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        luggageListEntryEntity.setId(db.insertOrThrow(TABLE_LUGGAGE_LIST_ENTRY, null, values));
+        packingListEntity.setId(db.insertOrThrow(TABLE_LUGGAGE_LIST_ENTRY, null, values));
         db.close();
     }
 
-    public LuggageListEntryEntity findLuggageListEntryById(int luggageListEntryId) {
+    public PackingListEntity findLuggageListEntryById(int luggageListEntryId) {
         String query = "SELECT * FROM "+TABLE_LUGGAGE_LIST+" WHERE "+COLUMN_LUGGAGE_LIST_ENTRY_ID+" = '"+luggageListEntryId+"'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        LuggageListEntryEntity luggageListEntryEntity = new LuggageListEntryEntity();
+        PackingListEntity packingListEntity = new PackingListEntity();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
 
-            luggageListEntryEntity.setId(cursor.getLong(0));
-            luggageListEntryEntity.setCount(cursor.getDouble(3));
+            packingListEntity.setId(cursor.getLong(0));
+            packingListEntity.setCount(cursor.getDouble(3));
             long luggageListFk = cursor.getLong(1);
             long luggageFk = cursor.getLong(2);
-            luggageListEntryEntity.setLuggageListFk(luggageListFk);
-            luggageListEntryEntity.setLuggageFk(luggageFk);
+            packingListEntity.setLuggageListFk(luggageListFk);
+            packingListEntity.setLuggageFk(luggageFk);
 
             LuggageListDbModel luggageListDbModel = new LuggageListDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
-            luggageListEntryEntity.setLuggageListEntity(luggageListDbModel.findLuggageById(luggageListFk));
+            packingListEntity.setLuggageListEntity(luggageListDbModel.findLuggageById(luggageListFk));
 
             LuggageDbModel luggageDbModel = new LuggageDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
-            luggageListEntryEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
+            packingListEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
         } else {
-            luggageListEntryEntity = null;
+            packingListEntity = null;
         }
         cursor.close();
         db.close();
 
-        return luggageListEntryEntity;
+        return packingListEntity;
     }
 
-    public LuggageListEntryEntity findLuggageListByDate(String luggageListDate) {
+    public PackingListEntity findLuggageListByDate(String luggageListDate) {
         String query = "SELECT * FROM "+TABLE_LUGGAGE_LIST+" WHERE "+COLUMN_LUGGAGE_LIST_DATE+" = '"+luggageListDate+"'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        LuggageListEntryEntity luggageListEntryEntity = new LuggageListEntryEntity();
+        PackingListEntity packingListEntity = new PackingListEntity();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
 
-            luggageListEntryEntity.setId(cursor.getLong(0));
-            luggageListEntryEntity.setLuggageListFk(cursor.getLong(1));
-            luggageListEntryEntity.setLuggageFk(cursor.getLong(2));
-            luggageListEntryEntity.setCount(cursor.getDouble(3));
+            packingListEntity.setId(cursor.getLong(0));
+            packingListEntity.setLuggageListFk(cursor.getLong(1));
+            packingListEntity.setLuggageFk(cursor.getLong(2));
+            packingListEntity.setCount(cursor.getDouble(3));
         } else {
-            luggageListEntryEntity = null;
+            packingListEntity = null;
         }
         cursor.close();
         db.close();
 
-        return luggageListEntryEntity;
+        return packingListEntity;
     }
 }

@@ -5,19 +5,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
-class RowOnLongClickListener implements View.OnLongClickListener {
+class PackingListEntityOnLongClickListener implements View.OnLongClickListener {
 
-    private LuggageListEntryEntity luggageListEntryEntity = null;
+    private PackingListEntity packingListEntity = null;
 
-    RowOnLongClickListener(LuggageListEntryEntity luggageListEntryEntity) {
-        this.luggageListEntryEntity = luggageListEntryEntity;
+    PackingListEntityOnLongClickListener(PackingListEntity packingListEntity) {
+        this.packingListEntity = packingListEntity;
     }
 
     @Override
     public boolean onLongClick(View view) {
         AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create(); //Read Update
-        alertDialog.setTitle("LONG CLICK ! : "+this.luggageListEntryEntity.getId());
-        alertDialog.setMessage(this.luggageListEntryEntity.getLuggageEntity().getName());
+        alertDialog.setTitle("LONG CLICK ! : "+this.packingListEntity.getId());
+        alertDialog.setMessage(this.packingListEntity.getLuggageEntity().getName());
 
         alertDialog.setButton("Continue..", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
