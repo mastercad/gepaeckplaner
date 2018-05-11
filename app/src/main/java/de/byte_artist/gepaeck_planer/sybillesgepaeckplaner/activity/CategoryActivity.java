@@ -1,32 +1,31 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.graphics.drawable.ScaleDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryDeleteOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.CategoryEditDialog;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryEntityOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryEntityOnLongClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -90,7 +89,7 @@ public class CategoryActivity extends AppCompatActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText("Kategorien");
+        title.setText(R.string.label_categories);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -104,12 +103,27 @@ public class CategoryActivity extends AppCompatActivity {
 
         for (LuggageCategoryEntity luggageCategoryEntity : luggageCategoryEntities) {
             TableRow row = new TableRow(this);
-            TextView nameLabel = new TextView(this);
+            row.setWeightSum(1);
 
+            TableRow.LayoutParams lp;
+//            lp.weight = 1;
+
+            TextView idLabel = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+            idLabel.setText(Long.toString(luggageCategoryEntity.getId()));
+            idLabel.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
+            idLabel.setLayoutParams(lp);
+            row.addView(idLabel);
+
+            TextView nameLabel = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.7f);
             nameLabel.setText(luggageCategoryEntity.getName());
             nameLabel.setGravity(Gravity.CENTER_VERTICAL);
+            nameLabel.setLayoutParams(lp);
+            row.addView(nameLabel);
 
             TextView deleteBtn = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
             deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
@@ -119,10 +133,9 @@ public class CategoryActivity extends AppCompatActivity {
             deleteBtn.setScaleX((float)0.8);
             deleteBtn.setScaleY((float)0.8);
             deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+            deleteBtn.setLayoutParams(lp);
 
             deleteBtn.setOnClickListener(new CategoryDeleteOnClickListener(CategoryActivity.this, luggageCategoryEntity));
-
-            row.addView(nameLabel);
             row.addView(deleteBtn);
 
             table.addView(row);

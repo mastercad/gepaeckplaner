@@ -1,4 +1,4 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,6 +17,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.PackingListEditDialog;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
+
 public class PackingListActivity extends AppCompatActivity {
 
     @Override
@@ -24,11 +31,12 @@ public class PackingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_packing_list);
 
-        ImageButton addPackingListEntry = findViewById(R.id.btnAddPackingList);
+        ImageButton addPackingListEntry = findViewById(R.id.btnAddPackingList2);
         addPackingListEntry.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View view) {
+                PackingListEditDialog editDialog = new PackingListEditDialog(PackingListActivity.this);
+                editDialog.showNewDialog(view);
             }
         });
 
@@ -77,7 +85,7 @@ public class PackingListActivity extends AppCompatActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText("Packlisten");
+        title.setText(R.string.label_packing_list);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -91,18 +99,19 @@ public class PackingListActivity extends AppCompatActivity {
         for (PackingListEntity packingListEntity : packingListEntities) {
             TableRow row = new TableRow(this);
             TextView nameLabel = new TextView(this);
-            nameLabel.setText(packingListEntity.getLuggageListEntity().getName());
+            nameLabel.setText(packingListEntity.getName());
 
             TextView dateLabel = new TextView(this);
-            dateLabel.setText(packingListEntity.getLuggageListEntity().getDate());
+            dateLabel.setText(packingListEntity.getDate());
+            dateLabel.setGravity(Gravity.END);
 
             row.addView(nameLabel);
             row.addView(dateLabel);
 
             table.addView(row);
 
-            row.setOnClickListener(new PackingListEntityOnClickListener(packingListEntity));
-            row.setOnLongClickListener(new PackingListEntityOnLongClickListener(packingListEntity));
+            row.setOnClickListener(new PackingListOnClickListener(PackingListActivity.this, packingListEntity));
+            row.setOnLongClickListener(new PackingListOnLongClickListener(PackingListActivity.this, packingListEntity));
         }
 
         return this;

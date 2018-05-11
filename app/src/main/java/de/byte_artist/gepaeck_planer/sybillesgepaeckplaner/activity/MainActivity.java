@@ -1,4 +1,4 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,13 +14,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
+
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListEntryDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntryEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,21 +43,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        btnAddPackingListEntry = findViewById(R.id.btnAddEntryToCurrentPackingList);
         /** @TODO delete entfernen vor release! **/
 /*
         String filePathName = getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
         File file = new File(filePathName);
         boolean result = file.delete();
 
-        btnAddPackingListEntry = findViewById(R.id.btnAddEntryToCurrentPackingList);
-
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
         LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity("Badesachen");
 
         luggageCategoryDbModel.insert(luggageCategoryEntity);
 
-        LuggageListDbModel luggageListDbModel = new LuggageListDbModel(this, null, null, 1);
-        LuggageListEntity luggageListEntity = new LuggageListEntity("Urlaub Spreewald", "2018-08-04");
+        PackingListDbModel luggageListDbModel = new PackingListDbModel(this, null, null, 1);
+        PackingListEntity luggageListEntity = new PackingListEntity("Urlaub Spreewald", "2018-08-04");
 
         luggageListDbModel.insert(luggageListEntity);
 
@@ -53,13 +64,12 @@ public class MainActivity extends AppCompatActivity {
         LuggageEntity luggageEntity = new LuggageEntity("Badelatschen", luggageCategoryEntity.getId(), 120);
 
         luggageDbModel.insert(luggageEntity);
-        PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
-        PackingListEntity packingListEntity = new PackingListEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        PackingListEntryDbModel packingListDbModel = new PackingListEntryDbModel(this, null, null, 1);
+        PackingListEntryEntity packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
 
         packingListDbModel.insert(packingListEntity);
-
 */
-        this.prepareButtonActions();
+//        this.prepareButtonActions();
         this.fillTable();
     }
 
@@ -98,25 +108,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void prepareButtonActions() {
-        btnAddPackingListEntry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create(); //Read Update
-            alertDialog.setTitle("hi");
-            alertDialog.setMessage("this is my app");
-
-            alertDialog.setButton("Continue..", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // here you can add functions
-                }
-            });
-
-            alertDialog.show();  //<-- See This!
-            }
-        });
-    }
-
     private void fillTable() {
         TableLayout table = findViewById(R.id.PackagesTable);
 
@@ -126,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText("Packliste");
+        title.setText(R.string.label_packing_list);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -135,32 +126,38 @@ public class MainActivity extends AppCompatActivity {
 
         int weightSum = 0;
 
-        PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
-        ArrayList<PackingListEntity> luggageListEntryCollection = packingListDbModel.load();
+        PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this, null, null, 1);
+        ArrayList<PackingListEntryEntity> luggageListEntryCollection = packingListEntryDbModel.load();
 
         int rowCount = 1;
 
-        String tempCategory = null;
+        long tempCategory = -1;
 
-        for (PackingListEntity packingListEntity : luggageListEntryCollection) {
-            boolean categoryChanged = false;
+        for (PackingListEntryEntity packingListEntryEntity : luggageListEntryCollection) {
 
             if (1 == rowCount) {
-                title.setText(title.getText()+" für "+ packingListEntity.getLuggageListEntity().getName());
+                title.setText(title.getText()+" "+getResources().getText(R.string.text_for)+" "+ packingListEntryEntity.getPackingListEntity().getName());
             }
-            String currentCategory = packingListEntity.getLuggageEntity().getCategoryEntity().getName();
 
-            if (null == tempCategory
-                || !tempCategory.equals(currentCategory)
+            long currentCategory = packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId();
+
+            if (-1 == tempCategory
+                || tempCategory != currentCategory
             ) {
-                if (null != tempCategory) {
-                    categoryChanged = true;
+                if (-1 != tempCategory) {
+                    TableRow addLuggageRow = new TableRow(this);
+                    TextView emptyLabel = new TextView(this);
+
+                    emptyLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 20, 1f));
+
+                    addLuggageRow.addView(emptyLabel);
+                    table.addView(addLuggageRow);
                 }
                 tempCategory = currentCategory;
 
                 TableRow categoryRow = new TableRow(this);
                 TextView categoryHeadingLabel = new TextView(this);
-                categoryHeadingLabel.setText(currentCategory);
+                categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
                 categoryHeadingLabel.setTextSize(14);
                 categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -172,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,4f));
 
             TextView idLabel = new TextView(this);
-            idLabel.setText(""+ packingListEntity.getLuggageEntity().getCategoryId());
+            String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+            idLabel.setText(formattedEntryId);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
             idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
             idLabel.setGravity(Gravity.START);
@@ -180,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
             idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             TextView nameLabel = new TextView(this);
-            nameLabel.setText(packingListEntity.getLuggageEntity().getName());
+            nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
             nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             nameLabel.setGravity(Gravity.START);
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             TextView weightLabel = new TextView(this);
-            weightLabel.setText(""+ packingListEntity.getLuggageEntity().getWeight());
+            weightLabel.setText(Integer.toString(packingListEntryEntity.getLuggageEntity().getWeight()));
             weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -195,39 +193,33 @@ public class MainActivity extends AppCompatActivity {
             row.addView(nameLabel);
             row.addView(weightLabel);
 
-            row.setOnClickListener(new PackingListEntityOnClickListener(packingListEntity));
-            row.setOnLongClickListener(new PackingListEntityOnLongClickListener(packingListEntity));
+//            row.setOnClickListener(new PackingListOnClickListener(PackingListActivity, packingListEntryEntity.getPackingListEntity()));
+//            row.setOnLongClickListener(new PackingListOnLongClickListener(PackingListActivity.class, packingListEntryEntity.getPackingListEntity()));
 
             table.addView(row);
 
-            weightSum += (packingListEntity.getLuggageEntity().getWeight());
+            weightSum += (packingListEntryEntity.getLuggageEntity().getWeight());
 
-            if (categoryChanged) {
-                TableRow addLuggageRow = new TableRow(this);
-                TextView emptyLabel = new TextView(this);
-
-                emptyLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 20, 1f));
-
-                addLuggageRow.addView(emptyLabel);
-                table.addView(addLuggageRow);
-            }
             ++rowCount;
         }
+
+        TableRow addLuggageRow = new TableRow(this);
+        TextView emptyLabel = new TextView(this);
+
+        emptyLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 20, 1f));
+
+        addLuggageRow.addView(emptyLabel);
+        table.addView(addLuggageRow);
 
         TableRow rowSummary = new TableRow(this);
         rowSummary.setGravity(Gravity.END);
 
         TextView summary = new TextView(this);
-        summary.setText(""+weightSum);
+        summary.setText(Integer.toString(weightSum));
         summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         summary.setGravity(Gravity.END);
         summary.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
-//        TableRow.LayoutParams summaryParams = new TableRow.LayoutParams();
-//        summaryParams.span = 3;
-//        summaryParams.column = 3;
-
-//        rowSummary.addView(summary, summaryParams);
         rowSummary.addView(summary);
         table.addView(rowSummary);
     }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
 
     <ScrollView
@@ -19,7 +19,6 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnAddEntryToCurrentPackingList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,20 +29,5 @@
 
         </TableLayout>
     </ScrollView>
-
-    <ImageButton
-        android:id="@+id/btnAddEntryToCurrentPackingList"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:drawable/screen_background_light_transparent"
-        android:elevation="0dp"
-        android:src="@drawable/add_button"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
-        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

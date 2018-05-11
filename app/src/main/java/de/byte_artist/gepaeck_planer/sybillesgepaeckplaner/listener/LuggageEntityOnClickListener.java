@@ -1,14 +1,16 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
+
 public class LuggageEntityOnClickListener implements View.OnClickListener {
 
     private LuggageEntity luggageEntity = null;
 
-    LuggageEntityOnClickListener(LuggageEntity luggageEntity) {
+    public LuggageEntityOnClickListener(LuggageEntity luggageEntity) {
         this.luggageEntity = luggageEntity;
     }
 

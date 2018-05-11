@@ -1,12 +1,12 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity;
 
-class LuggageCategoryEntity {
+public class LuggageCategoryEntity {
     private long id = 0;
     private String name = null;
 
-    LuggageCategoryEntity() {}
+    public LuggageCategoryEntity() {}
 
-    LuggageCategoryEntity(String name) {
+    public LuggageCategoryEntity(String name) {
         this.setName(name);
     }
 

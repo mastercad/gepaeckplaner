@@ -1,18 +1,19 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
+
 // https://dzone.com/articles/create-a-database-android-application-in-android-s
 
-class LuggageCategoryDbModel extends DbModel {
+public class LuggageCategoryDbModel extends DbModel {
 
-    LuggageCategoryDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public LuggageCategoryDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 

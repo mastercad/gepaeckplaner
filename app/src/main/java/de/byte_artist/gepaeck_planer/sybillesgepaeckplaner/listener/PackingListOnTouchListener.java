@@ -1,13 +1,15 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener;
 
 import android.view.MotionEvent;
 import android.view.View;
 
-public class PackingListEntityOnTouchListener implements View.OnTouchListener {
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntryEntity;
 
-    private PackingListEntity luggageEntity = null;
+public class PackingListOnTouchListener implements View.OnTouchListener {
 
-    PackingListEntityOnTouchListener(PackingListEntity luggageEntity) {
+    private PackingListEntryEntity luggageEntity = null;
+
+    PackingListOnTouchListener(PackingListEntryEntity luggageEntity) {
         this.luggageEntity = luggageEntity;
     }
     @Override

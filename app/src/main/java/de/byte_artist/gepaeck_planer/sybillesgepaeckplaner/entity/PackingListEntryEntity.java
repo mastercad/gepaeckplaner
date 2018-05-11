@@ -1,22 +1,22 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity;
 
-class PackingListEntity {
+public class PackingListEntryEntity {
     private long id = 0;
     private long luggageListFk = 0;
-    private LuggageListEntity luggageListEntity = null;
+    private PackingListEntity packingListEntity = null;
     private long luggageFk = 0;
     private LuggageEntity luggageEntity = null;
-    private double count;
+    private int count;
 
-    PackingListEntity() {}
+    public PackingListEntryEntity() {}
 
-    PackingListEntity(long luggageListFk, long luggageFk, long count) {
+    public PackingListEntryEntity(long luggageListFk, long luggageFk, int count) {
         this.setLuggageFk(luggageFk)
             .setLuggageListFk(luggageListFk)
             .setCount(count);
     }
 
-    public PackingListEntity setId(long id) {
+    public PackingListEntryEntity setId(long id) {
         this.id = id;
         return this;
     }
@@ -25,7 +25,7 @@ class PackingListEntity {
         return this.id;
     }
 
-    public PackingListEntity setLuggageListFk(long luggageListFk) {
+    public PackingListEntryEntity setLuggageListFk(long luggageListFk) {
         this.luggageListFk = luggageListFk;
         return this;
     }
@@ -34,7 +34,7 @@ class PackingListEntity {
         return this.luggageListFk;
     }
 
-    public PackingListEntity setLuggageFk(long luggageFk) {
+    public PackingListEntryEntity setLuggageFk(long luggageFk) {
         this.luggageFk = luggageFk;
         return this;
     }
@@ -43,25 +43,25 @@ class PackingListEntity {
         return this.luggageFk;
     }
 
-    public PackingListEntity setCount(double count) {
+    public PackingListEntryEntity setCount(int count) {
         this.count = count;
         return this;
     }
 
-    public double getCount() {
+    public int getCount() {
         return this.count;
     }
 
-    public PackingListEntity setLuggageListEntity(LuggageListEntity luggageListEntity) {
-        this.luggageListEntity = luggageListEntity;
+    public PackingListEntryEntity setPackingListEntity(PackingListEntity packingListEntity) {
+        this.packingListEntity = packingListEntity;
         return this;
     }
 
-    public LuggageListEntity getLuggageListEntity() {
-        return this.luggageListEntity;
+    public PackingListEntity getPackingListEntity() {
+        return this.packingListEntity;
     }
 
-    public PackingListEntity setLuggageEntity(LuggageEntity luggageEntity) {
+    public PackingListEntryEntity setLuggageEntity(LuggageEntity luggageEntity) {
         this.luggageEntity = luggageEntity;
         return this;
     }

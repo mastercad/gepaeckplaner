@@ -1,15 +1,16 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity;
 
-class LuggageEntity {
+public class LuggageEntity {
     private long id = 0;
     private String name = null;
     private long categoryId = 0;
     private int weight = 0;
+    private int count = 0;
     private LuggageCategoryEntity categoryEntity = null;
 
-    LuggageEntity() {}
+    public LuggageEntity() {}
 
-    LuggageEntity(String name, long categoryId, int weight) {
+    public LuggageEntity(String name, long categoryId, int weight) {
         this.setName(name)
             .setCategoryId(categoryId)
             .setWeight(weight);
@@ -51,12 +52,28 @@ class LuggageEntity {
         return this.weight;
     }
 
-    public LuggageEntity setCategory(LuggageCategoryEntity luggageCategoryEntity) {
+    public LuggageEntity setCategoryEntity(LuggageCategoryEntity luggageCategoryEntity) {
         this.categoryEntity = luggageCategoryEntity;
         return this;
     }
 
     public LuggageCategoryEntity getCategoryEntity() {
         return this.categoryEntity;
+    }
+
+    public LuggageEntity setCount(int count) {
+        this.count = count;
+        return this;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public String toString() {
+        if (0 < this.id) {
+            return this.id + " " + this.name;
+        }
+        return this.name;
     }
 }

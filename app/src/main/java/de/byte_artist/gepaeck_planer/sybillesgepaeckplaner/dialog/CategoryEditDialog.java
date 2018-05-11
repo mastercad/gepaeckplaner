@@ -1,4 +1,4 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,11 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity.CategoryActivity;
+
 public class CategoryEditDialog extends AppCompatActivity {
 
     private CategoryActivity categoryActivity = null;
 
-    CategoryEditDialog(CategoryActivity categoryActivity) {
+    public CategoryEditDialog(CategoryActivity categoryActivity) {
         this.categoryActivity = categoryActivity;
     }
 

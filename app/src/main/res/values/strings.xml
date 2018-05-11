@@ -5,19 +5,30 @@
     <string name="label_category">Kategorie</string>
     <string name="label_categories">Kategorien</string>
     <string name="label_luggage_list">Gepäckstücke</string>
-    <string name="label_packing_list">Packlisten</string>
+    <string name="label_packing_list">Packliste</string>
+    <string name="label_packing_lists">Packlisten</string>
 
     <string name="label_weight">Gewicht</string>
+    <string name="label_date">Datum</string>
     <string name="label_luggage_name">Gepäckstück Name</string>
+    <string name="label_packing_list_name">Packliste Name</string>
 
     <string name="title_category_edit">Kategory bearbeiten</string>
     <string name="title_category_new">Kategory anlegen</string>
     <string name="title_luggage_edit">Gepäckstück bearbeiten</string>
     <string name="title_luggage_new">Gepäckstück anlegen</string>
+    <string name="title_packing_list_edit">Packliste bearbeiten</string>
+    <string name="title_packing_list_new">Packliste anlegen</string>
     <string name="title_error">Fehler!</string>
 
+    <string name="text_yes">Ja</string>
     <string name="text_ok">Ja</string>
+    <string name="text_understood">Verstanden</string>
+    <string name="text_no">Nein</string>
+    <string name="text_cancel">Abbrechen</string>
     <string name="text_save">Speichern</string>
+    <string name="text_for">für</string>
     <string name="text_update">Aktualisieren</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
+    <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
 </resources>

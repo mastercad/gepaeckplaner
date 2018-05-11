@@ -9,19 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".LuggageActivity" />
-        <activity android:name=".PackingListActivity" />
-        <activity android:name=".CategoryEditDialog" />
-        <activity android:name=".LuggageEditDialog" />
-        <activity android:name=".PackingListEditDialog"></activity>
+        <activity android:name=".activity.CategoryActivity" />
+        <activity android:name=".activity.LuggageActivity" />
+        <activity android:name=".activity.PackingListActivity" />
+        <activity android:name=".dialog.CategoryEditDialog" />
+        <activity android:name=".dialog.LuggageEditDialog" />
+        <activity android:name=".dialog.PackingListEditDialog" />
+        <activity android:name=".activity.PackingListDetailActivity" />
+        <activity android:name=".dialog.PackingListEntryEditDialog" />
     </application>
 
 </manifest>
