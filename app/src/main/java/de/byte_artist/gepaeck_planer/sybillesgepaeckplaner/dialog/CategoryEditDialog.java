@@ -12,14 +12,17 @@ import android.widget.EditText;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity.CategoryActivity;
 
 public class CategoryEditDialog extends AppCompatActivity {
 
-    private CategoryActivity categoryActivity = null;
+    private AppCompatActivity activity;
 
-    public CategoryEditDialog(CategoryActivity categoryActivity) {
-        this.categoryActivity = categoryActivity;
+    public CategoryEditDialog() {
+        this.activity = null;
+    }
+
+    public CategoryEditDialog(AppCompatActivity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class CategoryEditDialog extends AppCompatActivity {
             LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(currentView.getContext(), null, null, 1);
             luggageCategoryDbModel.update(luggageCategoryEntity);
 
-            categoryActivity.recreate();
+            activity.recreate();
             }
         });
 
@@ -77,7 +80,7 @@ public class CategoryEditDialog extends AppCompatActivity {
             LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(currentView.getContext(), null, null, 1);
             luggageCategoryDbModel.insert(luggageCategoryEntity);
 
-            categoryActivity.recreate();
+            activity.recreate();
             }
         });
 

@@ -130,6 +130,13 @@ public class LuggageDbModel extends DbModel {
         db.close();
     }
 
+    public void delete(LuggageEntity luggageEntity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        final String[] whereArgs = {Long.toString(luggageEntity.getId())};
+        db.delete(TABLE_LUGGAGE,COLUMN_LUGGAGE_ID + " = ?", whereArgs);
+    }
+
     public LuggageEntity findLuggageByName(String luggageName) {
         String query = "SELECT * FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_NAME+" = '"+luggageName+"'";
 

@@ -1,10 +1,12 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -19,16 +21,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListEntryDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.PackingListEntryEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntryEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryOnLongClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
 
-public class PackingListDetailActivity extends AppCompatActivity {
+public class PackingListDetailActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,7 @@ public class PackingListDetailActivity extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -86,7 +93,7 @@ public class PackingListDetailActivity extends AppCompatActivity {
         }
         return true;
     }
-
+*/
     private PackingListDetailActivity fillTable(long packingListId) {
         TableLayout table = findViewById(R.id.packingListDetailTable);
 
@@ -125,9 +132,11 @@ public class PackingListDetailActivity extends AppCompatActivity {
             int rowCount = 1;
 
             long tempCategory = -1;
+            Resources.Theme currentTheme = getTheme();
+
+            TableRow.LayoutParams lp;
 
             for (PackingListEntryEntity packingListEntryEntity : packingListEntryCollection) {
-
                 if (1 == rowCount) {
                     title.setText(title.getText() + " " + getResources().getText(R.string.text_for) + " " + packingListEntryEntity.getPackingListEntity().getName());
                 }
@@ -135,17 +144,15 @@ public class PackingListDetailActivity extends AppCompatActivity {
                 long currentCategory = packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId();
 
                 if (-1 == tempCategory
-                        || tempCategory != currentCategory
-                        ) {
+                    || tempCategory != currentCategory
+                ) {
                     if (-1 != tempCategory) {
                         TableRow addLuggageRow = new TableRow(this);
                         TextView emptyLabel = new TextView(this);
-
-                        emptyLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 20, 1f));
-
                         addLuggageRow.addView(emptyLabel);
                         table.addView(addLuggageRow);
                     }
+                    Log.i("PackingListDetail", "Change Category!");
                     tempCategory = currentCategory;
 
                     TableRow categoryRow = new TableRow(this);
@@ -159,35 +166,52 @@ public class PackingListDetailActivity extends AppCompatActivity {
                 }
 
                 TableRow row = new TableRow(this);
-                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 4f));
+                row.setWeightSum(1);
 
                 TextView idLabel = new TextView(this);
                 String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
                 idLabel.setText(formattedEntryId);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
-                idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
                 idLabel.setGravity(Gravity.START);
                 idLabel.setWidth(0);
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                idLabel.setLayoutParams(lp);
                 idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                row.addView(idLabel);
 
                 TextView nameLabel = new TextView(this);
                 nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
-                nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
                 nameLabel.setGravity(Gravity.START);
                 nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
+                nameLabel.setLayoutParams(lp);
+                row.addView(nameLabel);
 
                 TextView weightLabel = new TextView(this);
                 weightLabel.setText(Integer.toString(packingListEntryEntity.getLuggageEntity().getWeight()));
-                weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
                 weightLabel.setGravity(Gravity.END);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                row.addView(idLabel);
-                row.addView(nameLabel);
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                weightLabel.setLayoutParams(lp);
                 row.addView(weightLabel);
 
-                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity.getPackingListEntity()));
-                row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity.getPackingListEntity()));
+                TextView deleteBtn = new TextView(this);
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+                deleteBtn.setLayoutParams(lp);
+                deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    this.getResources().getDrawable(android.R.drawable.ic_menu_delete, currentTheme),
+                    null
+                );
+                deleteBtn.setScaleX((float)0.8);
+                deleteBtn.setScaleY((float)0.8);
+                deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+                deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
+                row.addView(deleteBtn);
+
+                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
+                row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity));
 
                 table.addView(row);
 

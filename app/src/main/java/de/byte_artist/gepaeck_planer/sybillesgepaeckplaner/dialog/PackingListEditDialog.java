@@ -10,17 +10,21 @@ import android.view.View;
 import android.widget.EditText;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity.PackingListActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
 
 public class PackingListEditDialog extends AppCompatActivity {
 
-    private AppCompatActivity activity = null;
+    private AppCompatActivity activity;
+
+    public PackingListEditDialog() {
+        this.activity = null;
+    }
 
     public PackingListEditDialog(AppCompatActivity activity) {
         this.activity = activity;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

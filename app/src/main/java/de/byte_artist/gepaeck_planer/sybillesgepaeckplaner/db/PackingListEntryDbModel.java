@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntryEntity;
 
@@ -76,6 +75,13 @@ public class PackingListEntryDbModel extends DbModel {
         db.close();
     }
 
+    public void delete(PackingListEntryEntity packingListEntryEntity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        final String[] whereArgs = {Long.toString(packingListEntryEntity.getId())};
+        db.delete(TABLE_PACKING_LIST_ENTRY,COLUMN_PACKING_LIST_ENTRY_ID + " = ?", whereArgs);
+    }
+
     public ArrayList<PackingListEntryEntity> findPackingListById(long packingListId) {
         String query = "SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+" WHERE "+COLUMN_PACKING_LIST_FK+" = '"+packingListId+"'";
 
@@ -130,5 +136,24 @@ public class PackingListEntryDbModel extends DbModel {
         db.close();
 
         return packingListEntryEntity;
+    }
+
+    public boolean checkLuggageUsed(LuggageEntity luggageEntity) {
+        String query = "SELECT COUNT("+COLUMN_PACKING_LIST_ENTRY_ID+") FROM "+TABLE_PACKING_LIST_ENTRY+" WHERE "+COLUMN_LUGGAGE_FK+" = '"+luggageEntity.getId()+"'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity();
+        int luggageCount = 0;
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            luggageCount = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+
+        return luggageCount > 0;
     }
 }

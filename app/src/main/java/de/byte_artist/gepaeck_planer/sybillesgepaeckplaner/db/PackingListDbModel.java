@@ -72,6 +72,13 @@ public class PackingListDbModel extends DbModel {
         db.close();
     }
 
+    public void delete(PackingListEntity packingListEntity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        final String[] whereArgs = {Long.toString(packingListEntity.getId())};
+        db.delete(TABLE_PACKING_LIST,COLUMN_PACKING_LIST_ID + " = ?", whereArgs);
+    }
+
     public PackingListEntity findPackingListById(long luggageListId) {
         String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_ID+" = '"+luggageListId+"'";
 

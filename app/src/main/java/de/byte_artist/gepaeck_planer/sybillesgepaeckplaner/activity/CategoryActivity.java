@@ -1,15 +1,10 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -19,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.CategoryEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryEntityOnClickListener;
@@ -27,7 +23,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbM
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends AbstractActivity {
 
     public Spinner spinner;
 
@@ -46,38 +42,6 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
         loadCategories();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.category, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mainMenuMain:
-                Intent mainIntent = new Intent(CategoryActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                break;
-            case R.id.mainMenuLuggage:
-                Intent luggageIntent = new Intent(CategoryActivity.this, LuggageActivity.class);
-                startActivity(luggageIntent);
-                break;
-            case R.id.mainMenuPackingLists:
-                Intent packingListIntent = new Intent(CategoryActivity.this, PackingListActivity.class);
-                startActivity(packingListIntent);
-                break;
-            case R.id.mainMenuExit:
-                finishAffinity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 
     private CategoryActivity loadCategories() {

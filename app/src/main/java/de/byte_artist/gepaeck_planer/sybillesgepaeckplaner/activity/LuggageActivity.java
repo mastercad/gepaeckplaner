@@ -1,6 +1,7 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +20,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.LuggageEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryDeleteOnClickListener;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageEntityOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageEntityOnLongClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
-public class LuggageActivity extends AppCompatActivity {
+public class LuggageActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class LuggageActivity extends AppCompatActivity {
 
         loadLuggage();
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -76,7 +80,7 @@ public class LuggageActivity extends AppCompatActivity {
         }
         return true;
     }
-
+*/
     private LuggageActivity loadLuggage() {
         TableLayout table = findViewById(R.id.luggageTable);
 
@@ -98,6 +102,7 @@ public class LuggageActivity extends AppCompatActivity {
         ArrayList<LuggageEntity> luggageEntities = luggageDbModel.load();
 
         long tempCategory = -1;
+        Resources.Theme currentTheme = getTheme();
 
         for (LuggageEntity luggageEntity : luggageEntities) {
             long currentCategory = luggageEntity.getCategoryEntity().getId();
@@ -127,32 +132,56 @@ public class LuggageActivity extends AppCompatActivity {
             }
 
             TableRow row = new TableRow(this);
+            row.setWeightSum(1);
             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,4f));
+
+            TableRow.LayoutParams lp;
 
             TextView idLabel = new TextView(this);
             String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(formattedEntryId);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
-            idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
+//            idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
             idLabel.setGravity(Gravity.START);
             idLabel.setWidth(0);
             idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            idLabel.setLayoutParams(lp);
+            row.addView(idLabel);
 
             TextView nameLabel = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
+            nameLabel.setLayoutParams(lp);
             nameLabel.setText(luggageEntity.getName());
-            nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+//            nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             nameLabel.setGravity(Gravity.START);
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            row.addView(nameLabel);
 
             TextView weightLabel = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+            weightLabel.setLayoutParams(lp);
             weightLabel.setText(Integer.toString(luggageEntity.getWeight()));
-            weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+//            weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-            row.addView(idLabel);
-            row.addView(nameLabel);
             row.addView(weightLabel);
+
+            TextView deleteBtn = new TextView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+            deleteBtn.setLayoutParams(lp);
+            deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                this.getResources().getDrawable(android.R.drawable.ic_menu_delete, currentTheme),
+                null
+            );
+            deleteBtn.setScaleX((float)0.8);
+            deleteBtn.setScaleY((float)0.8);
+            deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+            row.addView(deleteBtn);
+
+            deleteBtn.setOnClickListener(new LuggageDeleteOnClickListener(LuggageActivity.this, luggageEntity));
 
             table.addView(row);
 

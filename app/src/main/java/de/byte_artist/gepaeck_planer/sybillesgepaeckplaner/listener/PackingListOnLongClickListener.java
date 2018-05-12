@@ -1,24 +1,24 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity.PackingListActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.PackingListEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
 
 public class PackingListOnLongClickListener implements View.OnLongClickListener {
 
-    private PackingListActivity packingListActivity = null;
+    private AppCompatActivity activity = null;
     private PackingListEntity packingListEntity = null;
 
-    public PackingListOnLongClickListener(PackingListActivity packingListActivity, PackingListEntity packingListEntity) {
+    public PackingListOnLongClickListener(AppCompatActivity activity, PackingListEntity packingListEntity) {
         this.packingListEntity = packingListEntity;
-        this.packingListActivity = packingListActivity;
+        this.activity = activity;
     }
 
     @Override
     public boolean onLongClick(View view) {
-        PackingListEditDialog editDialog = new PackingListEditDialog(this.packingListActivity);
+        PackingListEditDialog editDialog = new PackingListEditDialog(this.activity);
         editDialog.showEditDialog(view, packingListEntity);
 
         return false;

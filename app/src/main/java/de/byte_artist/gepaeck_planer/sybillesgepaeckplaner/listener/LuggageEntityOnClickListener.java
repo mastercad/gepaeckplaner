@@ -16,16 +16,14 @@ public class LuggageEntityOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create(); //Read Update
-        alertDialog.setTitle(""+this.luggageEntity.getId());
-        alertDialog.setMessage(this.luggageEntity.getName());
-
-        alertDialog.setButton("Continue..", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setTitle(""+this.luggageEntity.getId())
+            .setMessage(this.luggageEntity.getName())
+            .setIcon(android.R.drawable.ic_dialog_info)
+            .setPositiveButton("Continue..", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             // here you can add functions
             }
-        });
-
-        alertDialog.show();
+        }).show();
     }
 }

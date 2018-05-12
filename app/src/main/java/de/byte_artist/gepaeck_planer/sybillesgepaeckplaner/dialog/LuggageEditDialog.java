@@ -1,12 +1,10 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity.LuggageActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
@@ -26,7 +23,11 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategor
 public class LuggageEditDialog extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private long selectedCategory = 0;
-    private AppCompatActivity activity = null;
+    private AppCompatActivity activity;
+
+    public LuggageEditDialog() {
+        this.activity = null;
+    }
 
     public LuggageEditDialog(AppCompatActivity activity) {
         this.activity = activity;
@@ -152,34 +153,30 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
 
     public void showAlertBoxNoCategorySelected(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle(R.string.title_error);
-        alertDialog.setMessage(R.string.text_choose_category);
+        alertDialog.setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle(R.string.title_error)
+            .setMessage(R.string.text_choose_category)
+            .setPositiveButton(view.getResources().getText(R.string.text_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-        alertDialog.setPositiveButton(view.getResources().getText(R.string.text_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        alertDialog.setNegativeButton(view.getResources().getText(R.string.text_cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // here you can add functions
-            }
-        });
-
-        alertDialog.show();
+                }
+            })
+            .setNegativeButton(view.getResources().getText(R.string.text_cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // here you can add functions
+                }
+            }).show();
     }
 
     public void showAlertNotAllNeededFieldFilled(final View view) {
-        AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create();
-        alertDialog.setTitle(R.string.title_error);
-
-        alertDialog.setButton(view.getResources().getText(R.string.text_ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // here you can add functions
-            }
-        });
-
-        alertDialog.show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setTitle(R.string.title_error)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton(view.getResources().getText(R.string.text_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // here you can add functions
+                }
+            }).show();
     }
 }

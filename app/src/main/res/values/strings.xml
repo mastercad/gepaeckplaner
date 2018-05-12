@@ -20,15 +20,20 @@
     <string name="title_packing_list_edit">Packliste bearbeiten</string>
     <string name="title_packing_list_new">Packliste anlegen</string>
     <string name="title_error">Fehler!</string>
+<!--    <string name="title_exit_application">Closing Activity</string> -->
+    <string name="title_exit_application">Anwendung schließen</string>
 
     <string name="text_yes">Ja</string>
     <string name="text_ok">Ja</string>
+    <string name="text_of">von</string>
     <string name="text_understood">Verstanden</string>
     <string name="text_no">Nein</string>
     <string name="text_cancel">Abbrechen</string>
     <string name="text_save">Speichern</string>
     <string name="text_for">für</string>
     <string name="text_update">Aktualisieren</string>
+<!--    <string name="text_warning_exit_app">Are you sure you want to exit?</string>-->
+    <string name="text_warning_exit_app">Sind sie sicher, dass sie das Programm verlassen möchten?</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
 </resources>

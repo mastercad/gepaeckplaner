@@ -1,111 +1,31 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageDbModel;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel;
+import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListEntryDbModel;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategoryEntity;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntryEntity;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
-public class MainActivity extends AppCompatActivity {
-
-    ImageButton btnAddPackingListEntry = null;
+public class MainActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        btnAddPackingListEntry = findViewById(R.id.btnAddEntryToCurrentPackingList);
-        /** @TODO delete entfernen vor release! **/
-/*
-        String filePathName = getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
-        File file = new File(filePathName);
-        boolean result = file.delete();
-
-        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
-        LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity("Badesachen");
-
-        luggageCategoryDbModel.insert(luggageCategoryEntity);
-
-        PackingListDbModel luggageListDbModel = new PackingListDbModel(this, null, null, 1);
-        PackingListEntity luggageListEntity = new PackingListEntity("Urlaub Spreewald", "2018-08-04");
-
-        luggageListDbModel.insert(luggageListEntity);
-
-        LuggageDbModel luggageDbModel = new LuggageDbModel(this, null, null, 1);
-        LuggageEntity luggageEntity = new LuggageEntity("Badelatschen", luggageCategoryEntity.getId(), 120);
-
-        luggageDbModel.insert(luggageEntity);
-        PackingListEntryDbModel packingListDbModel = new PackingListEntryDbModel(this, null, null, 1);
-        PackingListEntryEntity packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
-
-        packingListDbModel.insert(packingListEntity);
-*/
-//        this.prepareButtonActions();
+//        super.recreateDatabase();
         this.fillTable();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mainMenuCategories:
-                finish();
-                Intent categoryIntent = new Intent(MainActivity.this, CategoryActivity.class);
-                startActivity(categoryIntent);
-                break;
-            case R.id.mainMenuLuggage:
-                finish();
-                Intent luggageIntent = new Intent(MainActivity.this, LuggageActivity.class);
-                startActivity(luggageIntent);
-                break;
-            case R.id.mainMenuPackingLists:
-                finish();
-                Intent packingListIntent = new Intent(MainActivity.this, PackingListActivity.class);
-                startActivity(packingListIntent);
-                break;
-            case R.id.mainMenuExit:
-                finishAffinity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 
     private void fillTable() {
@@ -192,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
             row.addView(idLabel);
             row.addView(nameLabel);
             row.addView(weightLabel);
-
-//            row.setOnClickListener(new PackingListOnClickListener(PackingListActivity, packingListEntryEntity.getPackingListEntity()));
-//            row.setOnLongClickListener(new PackingListOnLongClickListener(PackingListActivity.class, packingListEntryEntity.getPackingListEntity()));
 
             table.addView(row);
 

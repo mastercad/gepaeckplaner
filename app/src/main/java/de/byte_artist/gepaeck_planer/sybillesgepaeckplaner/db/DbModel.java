@@ -37,6 +37,21 @@ public class DbModel extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db){
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         this.createLuggageCategoryTable(db)
             .createLuggageTable(db)
@@ -48,12 +63,13 @@ public class DbModel extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE "+TABLE_LUGGAGE+" ("+
             COLUMN_LUGGAGE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
             COLUMN_LUGGAGE_NAME+" TEXT NOT NULL, "+
-            COLUMN_LUGGAGE_CATEGORY_FK+" INTEGER NOT NULL, "+
+            COLUMN_LUGGAGE_CATEGORY_FK+" INTEGER NOT NULL REFERENCES "+TABLE_LUGGAGE_CATEGORY+" ("+COLUMN_LUGGAGE_CATEGORY_ID+"), "+
+//            COLUMN_LUGGAGE_CATEGORY_FK+" INTEGER NOT NULL, "+
             COLUMN_LUGGAGE_WEIGHT+" INTEGER NOT NULL, "+
-            COLUMN_LUGGAGE_COUNT+" INTEGER NOT NULL, "+
+            COLUMN_LUGGAGE_COUNT+" INTEGER NOT NULL "+
 //            "PRIMARY KEY ("+COLUMN_LUGGAGE_ID+", "+COLUMN_LUGGAGE_CATEGORY_FK+"),"+
-            "FOREIGN KEY ("+COLUMN_LUGGAGE_CATEGORY_FK+") REFERENCES "+TABLE_LUGGAGE_CATEGORY+"("+COLUMN_LUGGAGE_CATEGORY_ID+") "+
-        ")";
+//            "FOREIGN KEY ("+COLUMN_LUGGAGE_CATEGORY_FK+") REFERENCES "+TABLE_LUGGAGE_CATEGORY+"("+COLUMN_LUGGAGE_CATEGORY_ID+") ON DELETE CASCADE "+
+        ");";
 
         db.execSQL(createTable);
 
@@ -86,11 +102,14 @@ public class DbModel extends SQLiteOpenHelper {
     private DbModel createPackingListEntriesTable(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+TABLE_PACKING_LIST_ENTRY+" ("+
             COLUMN_PACKING_LIST_ENTRY_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
-            COLUMN_PACKING_LIST_FK+" INTEGER NOT NULL, "+
-            COLUMN_LUGGAGE_FK+" INTEGER NOT NULL, "+
-            COLUMN_PACKING_LIST_ENTRY_COUNT+" REAL NOT NULL, "+
-            "FOREIGN KEY ("+COLUMN_PACKING_LIST_FK+") REFERENCES "+TABLE_PACKING_LIST+"("+COLUMN_PACKING_LIST_ID+"), "+
-            "FOREIGN KEY ("+COLUMN_LUGGAGE_FK+") REFERENCES "+TABLE_LUGGAGE+"("+COLUMN_LUGGAGE_ID+") "+
+//            COLUMN_PACKING_LIST_FK+" INTEGER NOT NULL, "+
+//            COLUMN_LUGGAGE_FK+" INTEGER NOT NULL, "+
+            COLUMN_PACKING_LIST_FK+" INTEGER NOT NULL REFERENCES "+TABLE_PACKING_LIST+" ("+COLUMN_PACKING_LIST_ID+"), "+
+            COLUMN_LUGGAGE_FK+" INTEGER NOT NULL REFERENCES "+TABLE_LUGGAGE+" ("+COLUMN_LUGGAGE_ID+"), "+
+            COLUMN_PACKING_LIST_ENTRY_COUNT+" REAL NOT NULL "+
+//            "FOREIGN KEY ("+COLUMN_PACKING_LIST_FK+") REFERENCES "+TABLE_PACKING_LIST+"("+COLUMN_PACKING_LIST_ID+") ON DELETE CASCADE, "+
+//            "FOREIGN KEY ("+COLUMN_LUGGAGE_FK+") REFERENCES "+TABLE_LUGGAGE+"("+COLUMN_LUGGAGE_ID+") ON DELETE CASCADE "+
+
         ")";
 
         db.execSQL(createTable);

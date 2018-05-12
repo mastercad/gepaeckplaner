@@ -28,12 +28,16 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
 
     private long selectedLuggage = 0;
     private long selectedCategory = 0;
-    private Spinner categorySpinner = null;
     private Spinner luggageSpinner = null;
     private ArrayList<LuggageEntity> currentLuggageEntities = null;
 
-    private long luggageListFk = 0;
-    private AppCompatActivity activity = null;
+    private long luggageListFk;
+    private AppCompatActivity activity;
+
+    public PackingListEntryEditDialog() {
+        this.activity = null;
+        this.luggageListFk = 0;
+    }
 
     public PackingListEntryEditDialog(AppCompatActivity activity, long luggageListFk) {
         this.activity = activity;
@@ -104,7 +108,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View packingListEntryEditView = inflater.inflate(R.layout.activity_packing_list_entry_edit_dialog, null);
 
-        this.categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
+        Spinner categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
         this.luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
         luggageSpinner.setEnabled(false);
 
@@ -115,7 +119,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         categoryEntities.add(0, new LuggageCategoryEntity(view.getResources().getText(R.string.text_choose_category).toString()));
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, categoryEntities);
 
-        this.categorySpinner.setAdapter(spinnerArrayAdapter);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
 
         builder.setTitle(R.string.title_luggage_new);
         builder.setView(packingListEntryEditView);
@@ -207,15 +211,13 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
     }
 
     public void showAlertNotAllNeededFieldFilled(final View view) {
-        AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create();
-        alertDialog.setTitle(R.string.title_error);
-        alertDialog.setMessage(view.getResources().getText(R.string.text_not_all_fields_filled));
-        alertDialog.setButton(view.getResources().getText(R.string.text_understood), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // here you can add functions
-            }
-        });
-
-        alertDialog.show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setTitle(R.string.title_error)
+            .setMessage(view.getResources().getText(R.string.text_not_all_fields_filled))
+            .setPositiveButton(view.getResources().getText(R.string.text_understood), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // here you can add functions
+                }
+            }).show();
     }
 }
