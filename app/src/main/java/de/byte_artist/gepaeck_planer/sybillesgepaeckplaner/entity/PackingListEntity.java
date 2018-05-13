@@ -21,18 +21,16 @@ public class PackingListEntity {
         return this.name;
     }
 
-    public PackingListEntity setId(long id) {
+    public void setId(long id) {
         this.id = id;
-        return this;
     }
 
     public long getId() {
         return this.id;
     }
 
-    public PackingListEntity setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
-        return this;
     }
 
     public String getDate() {

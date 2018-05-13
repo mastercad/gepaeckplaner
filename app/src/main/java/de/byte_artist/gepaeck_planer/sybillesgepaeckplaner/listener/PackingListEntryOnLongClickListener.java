@@ -8,8 +8,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
 
 public class PackingListEntryOnLongClickListener implements View.OnLongClickListener {
 
-    private AppCompatActivity activity;
-    private PackingListEntryEntity packingListEntryEntity;
+    private final AppCompatActivity activity;
+    private final PackingListEntryEntity packingListEntryEntity;
 
     public PackingListEntryOnLongClickListener(AppCompatActivity activity, PackingListEntryEntity packingListEntryEntity) {
         this.packingListEntryEntity = packingListEntryEntity;

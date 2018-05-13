@@ -12,8 +12,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategor
 
 public class CategoryDeleteOnClickListener implements View.OnClickListener {
 
-    private LuggageCategoryEntity luggageCategoryEntity = null;
-    private AppCompatActivity activity = null;
+    private LuggageCategoryEntity luggageCategoryEntity;
+    private final AppCompatActivity activity;
 
     public CategoryDeleteOnClickListener(AppCompatActivity activity, LuggageCategoryEntity luggageCategoryEntity) {
         this.luggageCategoryEntity = luggageCategoryEntity;

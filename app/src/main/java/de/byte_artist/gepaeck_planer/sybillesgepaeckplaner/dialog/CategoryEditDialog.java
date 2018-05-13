@@ -15,7 +15,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
 public class CategoryEditDialog extends AppCompatActivity {
 
-    private AppCompatActivity activity;
+    private final AppCompatActivity activity;
 
     public CategoryEditDialog() {
         this.activity = null;
@@ -31,7 +31,7 @@ public class CategoryEditDialog extends AppCompatActivity {
         setContentView(R.layout.activity_category_edit_dialog);
     }
 
-    public CategoryEditDialog showEditDialog(View view, final LuggageCategoryEntity luggageCategoryEntity) {
+    public void showEditDialog(View view, final LuggageCategoryEntity luggageCategoryEntity) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View currentView = view;
 
@@ -57,10 +57,9 @@ public class CategoryEditDialog extends AppCompatActivity {
         });
 
         builder.create().show();
-        return this;
     }
 
-    public CategoryEditDialog showNewDialog(View view) {
+    public void showNewDialog(View view) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View currentView = view;
 
@@ -85,6 +84,5 @@ public class CategoryEditDialog extends AppCompatActivity {
         });
 
         builder.create().show();
-        return this;
     }
 }

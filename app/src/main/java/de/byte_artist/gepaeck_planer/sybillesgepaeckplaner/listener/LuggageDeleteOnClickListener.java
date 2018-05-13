@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
@@ -14,8 +13,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 
 public class LuggageDeleteOnClickListener implements View.OnClickListener {
 
-    private LuggageEntity luggageEntity = null;
-    private AppCompatActivity activity = null;
+    private LuggageEntity luggageEntity;
+    private final AppCompatActivity activity;
 
     public LuggageDeleteOnClickListener(AppCompatActivity activity, LuggageEntity luggageEntity) {
         this.luggageEntity = luggageEntity;

@@ -17,8 +17,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategor
  */
 public class LuggageDbModel extends DbModel {
 
-    private Context context = null;
-    private SQLiteDatabase.CursorFactory cursorFactory = null;
+    private final Context context;
+    private final SQLiteDatabase.CursorFactory cursorFactory;
 
     public LuggageDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -55,7 +55,7 @@ public class LuggageDbModel extends DbModel {
         return collection;
     }
 
-    public int findMaxLuggageCountByCategory(long luggageCategoryId) {
+    private int findMaxLuggageCountByCategory(long luggageCategoryId) {
         String query = "SELECT MAX("+COLUMN_LUGGAGE_COUNT+") FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_CATEGORY_FK+" = "+luggageCategoryId;
 
         SQLiteDatabase db = this.getWritableDatabase();

@@ -8,8 +8,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.CategoryEditDi
 
 public class CategoryEntityOnLongClickListener implements View.OnLongClickListener {
 
-    private LuggageCategoryEntity luggageCategoryEntity = null;
-    private AppCompatActivity activity = null;
+    private final LuggageCategoryEntity luggageCategoryEntity ;
+    private final AppCompatActivity activity;
 
     public CategoryEntityOnLongClickListener(AppCompatActivity activity, LuggageCategoryEntity luggageCategoryEntity) {
         this.luggageCategoryEntity = luggageCategoryEntity;

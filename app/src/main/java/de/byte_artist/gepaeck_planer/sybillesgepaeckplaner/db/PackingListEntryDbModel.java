@@ -17,8 +17,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
  */
 public class PackingListEntryDbModel extends DbModel {
 
-    private Context context = null;
-    private SQLiteDatabase.CursorFactory cursorFactory = null;
+    private final Context context;
+    private final SQLiteDatabase.CursorFactory cursorFactory;
 
     public PackingListEntryDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);

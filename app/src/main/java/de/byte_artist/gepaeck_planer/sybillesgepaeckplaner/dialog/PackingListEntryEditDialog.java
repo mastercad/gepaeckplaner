@@ -31,8 +31,8 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
     private Spinner luggageSpinner = null;
     private ArrayList<LuggageEntity> currentLuggageEntities = null;
 
-    private long luggageListFk;
-    private AppCompatActivity activity;
+    private final long luggageListFk;
+    private final AppCompatActivity activity;
 
     public PackingListEntryEditDialog() {
         this.activity = null;
@@ -50,7 +50,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         setContentView(R.layout.activity_luggage_edit_dialog);
     }
 
-    public PackingListEntryEditDialog showEditDialog(final View view, final PackingListEntryEntity packingListEntryEntity) {
+    public void showEditDialog(final View view, final PackingListEntryEntity packingListEntryEntity) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View packingListEntryEditView = inflater.inflate(R.layout.activity_packing_list_entry_edit_dialog, null);
@@ -99,10 +99,9 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         luggageSpinner.setOnItemSelectedListener(this);
 
         builder.create().show();
-        return this;
     }
 
-    public PackingListEntryEditDialog showNewDialog(final View view) {
+    public void showNewDialog(final View view) {
 
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -168,7 +167,6 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         });
 
         builder.create().show();
-        return this;
     }
 
     @Override
@@ -190,7 +188,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
 
     }
 
-    public void showAlertBoxNoCategorySelected(final View view) {
+    private void showAlertBoxNoCategorySelected(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setTitle(R.string.title_error);
         alertDialog.setMessage(R.string.text_choose_category);
@@ -210,7 +208,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         alertDialog.show();
     }
 
-    public void showAlertNotAllNeededFieldFilled(final View view) {
+    private void showAlertNotAllNeededFieldFilled(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setTitle(R.string.title_error)
             .setMessage(view.getResources().getText(R.string.text_not_all_fields_filled))

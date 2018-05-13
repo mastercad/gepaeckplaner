@@ -23,7 +23,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategor
 public class LuggageEditDialog extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private long selectedCategory = 0;
-    private AppCompatActivity activity;
+    private final AppCompatActivity activity;
 
     public LuggageEditDialog() {
         this.activity = null;
@@ -39,7 +39,7 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_luggage_edit_dialog);
     }
 
-    public LuggageEditDialog showEditDialog(final View view, final LuggageEntity luggageEntity) {
+    public void showEditDialog(final View view, final LuggageEntity luggageEntity) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View luggageEditView = inflater.inflate(R.layout.activity_luggage_edit_dialog, null);
@@ -91,10 +91,9 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         });
 
         builder.create().show();
-        return this;
     }
 
-    public LuggageEditDialog showNewDialog(final View view) {
+    public void showNewDialog(final View view) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View luggageEditView = inflater.inflate(R.layout.activity_luggage_edit_dialog, null);
@@ -138,7 +137,6 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         });
 
         builder.create().show();
-        return this;
     }
 
     @Override
@@ -151,7 +149,7 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
 
     }
 
-    public void showAlertBoxNoCategorySelected(final View view) {
+    private void showAlertBoxNoCategorySelected(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle(R.string.title_error)
@@ -169,7 +167,7 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
             }).show();
     }
 
-    public void showAlertNotAllNeededFieldFilled(final View view) {
+    private void showAlertNotAllNeededFieldFilled(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setTitle(R.string.title_error)
             .setIcon(android.R.drawable.ic_dialog_alert)

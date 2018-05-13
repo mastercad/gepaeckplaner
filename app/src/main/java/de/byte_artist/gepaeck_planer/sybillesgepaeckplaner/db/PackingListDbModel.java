@@ -16,13 +16,13 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
  */
 public class PackingListDbModel extends DbModel {
 
-    private Context context = null;
-    private SQLiteDatabase.CursorFactory cursorFactory = null;
+//    private Context context;
+//    private SQLiteDatabase.CursorFactory cursorFactory;
 
     public PackingListDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        this.context = context;
-        this.cursorFactory = factory;
+//        this.context = context;
+//        this.cursorFactory = factory;
     }
 
     public ArrayList<PackingListEntity> load() {

@@ -9,12 +9,12 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageCategor
 
 public class CategoryEntityOnClickListener implements View.OnClickListener {
 
-    private LuggageCategoryEntity luggageCategoryEntity = null;
-    private AppCompatActivity activity = null;
+    private final LuggageCategoryEntity luggageCategoryEntity;
+//    private AppCompatActivity activity;
 
     public CategoryEntityOnClickListener(AppCompatActivity activity, LuggageCategoryEntity luggageCategoryEntity) {
         this.luggageCategoryEntity = luggageCategoryEntity;
-        this.activity = activity;
+//        this.activity = activity;
     }
 
     @Override

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Sybilles Gepäck-Planer</string>
-    <string name="button_add">Hinzufügen</string>
 
     <string name="label_category">Kategorie</string>
     <string name="label_categories">Kategorien</string>
@@ -36,4 +35,7 @@
     <string name="text_warning_exit_app">Sind sie sicher, dass sie das Programm verlassen möchten?</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
+
+    <string name="description_click_to_add_luggage">Klicken, um ein neues Gepäckstück hinzuzufügen</string>
+    <string name="description_click_to_add_packing_list">Klicken, um eine neue Packliste hinzuzufügen</string>
 </resources>

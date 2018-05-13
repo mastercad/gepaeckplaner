@@ -9,8 +9,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
 
 public class PackingListOnClickListener implements View.OnClickListener {
 
-    private AppCompatActivity activity = null;
-    private PackingListEntity packingListEntity = null;
+    private final AppCompatActivity activity;
+    private final PackingListEntity packingListEntity;
 
     public PackingListOnClickListener(AppCompatActivity activity, PackingListEntity packingListEntryEntity) {
         this.packingListEntity = packingListEntryEntity;

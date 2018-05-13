@@ -15,7 +15,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
 
 public class PackingListEditDialog extends AppCompatActivity {
 
-    private AppCompatActivity activity;
+    private final AppCompatActivity activity;
 
     public PackingListEditDialog() {
         this.activity = null;
@@ -31,7 +31,7 @@ public class PackingListEditDialog extends AppCompatActivity {
         setContentView(R.layout.activity_packing_list_edit_dialog);
     }
 
-    public PackingListEditDialog showEditDialog(final View view, final PackingListEntity packingListEntity) {
+    public void showEditDialog(final View view, final PackingListEntity packingListEntity) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -60,10 +60,9 @@ public class PackingListEditDialog extends AppCompatActivity {
         });
 
         builder.create().show();
-        return this;
     }
 
-    public PackingListEditDialog showNewDialog(View view) {
+    public void showNewDialog(View view) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View currentView = view;
 
@@ -91,6 +90,5 @@ public class PackingListEditDialog extends AppCompatActivity {
         });
 
         builder.create().show();
-        return this;
     }
 }

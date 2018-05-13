@@ -3,9 +3,6 @@ package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -74,12 +71,12 @@ public class AbstractActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void recreateDatabase() {
-        /** @TODO delete entfernen vor release! **/
+    private void recreateDatabase() {
+        /* @TODO delete entfernen vor release! */
 
         String filePathName = getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
         File file = new File(filePathName);
-        boolean result = file.delete();
+        file.delete();
 
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
         LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity("Badesachen");

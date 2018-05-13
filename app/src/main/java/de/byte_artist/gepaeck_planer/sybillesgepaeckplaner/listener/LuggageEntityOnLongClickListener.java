@@ -8,8 +8,8 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 
 public class LuggageEntityOnLongClickListener implements View.OnLongClickListener {
 
-    private LuggageEntity luggageEntity = null;
-    private AppCompatActivity activity = null;
+    private final LuggageEntity luggageEntity;
+    private final AppCompatActivity activity;
 
     public LuggageEntityOnLongClickListener(AppCompatActivity activity, LuggageEntity luggageEntity) {
         this.activity = activity;

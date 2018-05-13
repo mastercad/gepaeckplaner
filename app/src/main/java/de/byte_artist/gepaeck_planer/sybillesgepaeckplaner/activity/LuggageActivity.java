@@ -1,16 +1,11 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -24,7 +19,6 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageDbModel;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.LuggageEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageEntityOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.LuggageEntityOnLongClickListener;
@@ -81,7 +75,7 @@ public class LuggageActivity extends AbstractActivity {
         return true;
     }
 */
-    private LuggageActivity loadLuggage() {
+    private void loadLuggage() {
         TableLayout table = findViewById(R.id.luggageTable);
 
         table.setStretchAllColumns(true);
@@ -123,7 +117,7 @@ public class LuggageActivity extends AbstractActivity {
 
                 TableRow categoryRow = new TableRow(this);
                 TextView categoryHeadingLabel = new TextView(this);
-                categoryHeadingLabel.setText(luggageEntity.getCategoryEntity().getName().toString());
+                categoryHeadingLabel.setText(luggageEntity.getCategoryEntity().getName());
                 categoryHeadingLabel.setTextSize(14);
                 categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -189,6 +183,5 @@ public class LuggageActivity extends AbstractActivity {
             row.setOnLongClickListener(new LuggageEntityOnLongClickListener(LuggageActivity.this, luggageEntity));
         }
 
-        return this;
     }
 }

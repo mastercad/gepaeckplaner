@@ -8,7 +8,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 
 public class LuggageEntityOnClickListener implements View.OnClickListener {
 
-    private LuggageEntity luggageEntity = null;
+    private final LuggageEntity luggageEntity;
 
     public LuggageEntityOnClickListener(LuggageEntity luggageEntity) {
         this.luggageEntity = luggageEntity;

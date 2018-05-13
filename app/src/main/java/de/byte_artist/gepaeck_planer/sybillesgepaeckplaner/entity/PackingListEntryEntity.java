@@ -16,9 +16,8 @@ public class PackingListEntryEntity {
             .setCount(count);
     }
 
-    public PackingListEntryEntity setId(long id) {
+    public void setId(long id) {
         this.id = id;
-        return this;
     }
 
     public long getId() {
@@ -43,27 +42,24 @@ public class PackingListEntryEntity {
         return this.luggageFk;
     }
 
-    public PackingListEntryEntity setCount(int count) {
+    public void setCount(int count) {
         this.count = count;
-        return this;
     }
 
     public int getCount() {
         return this.count;
     }
 
-    public PackingListEntryEntity setPackingListEntity(PackingListEntity packingListEntity) {
+    public void setPackingListEntity(PackingListEntity packingListEntity) {
         this.packingListEntity = packingListEntity;
-        return this;
     }
 
     public PackingListEntity getPackingListEntity() {
         return this.packingListEntity;
     }
 
-    public PackingListEntryEntity setLuggageEntity(LuggageEntity luggageEntity) {
+    public void setLuggageEntity(LuggageEntity luggageEntity) {
         this.luggageEntity = luggageEntity;
-        return this;
     }
 
     public LuggageEntity getLuggageEntity() {

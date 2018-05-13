@@ -1,17 +1,12 @@
 package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.activity;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -31,8 +26,6 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEnt
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryOnLongClickListener;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
 
 public class PackingListDetailActivity extends AbstractActivity {
 
@@ -94,7 +87,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         return true;
     }
 */
-    private PackingListDetailActivity fillTable(long packingListId) {
+    private void fillTable(long packingListId) {
         TableLayout table = findViewById(R.id.packingListDetailTable);
 
         table.setStretchAllColumns(true);
@@ -240,6 +233,5 @@ public class PackingListDetailActivity extends AbstractActivity {
             rowSummary.addView(summary);
             table.addView(rowSummary);
         }
-        return this;
     }
 }

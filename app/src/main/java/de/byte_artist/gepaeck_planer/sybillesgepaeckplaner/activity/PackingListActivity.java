@@ -18,7 +18,6 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.PackingListDbModel
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.dialog.PackingListEditDialog;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.PackingListEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListDeleteOnClickListener;
-import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.PackingListOnLongClickListener;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
@@ -42,7 +41,7 @@ public class PackingListActivity extends AbstractActivity {
         loadPackingLists();
     }
 
-    private PackingListActivity loadPackingLists() {
+    private void loadPackingLists() {
 
         TableLayout table = findViewById(R.id.packingListsTable);
 
@@ -105,6 +104,5 @@ public class PackingListActivity extends AbstractActivity {
             row.setOnLongClickListener(new PackingListOnLongClickListener(PackingListActivity.this, packingListEntity));
         }
 
-        return this;
     }
 }

@@ -7,7 +7,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 
 public class CategoryActivity extends AbstractActivity {
 
-    public Spinner spinner;
+    // --Commented out by Inspection (13.05.18 01:12):public Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class CategoryActivity extends AbstractActivity {
         loadCategories();
     }
 
-    private CategoryActivity loadCategories() {
+    private void loadCategories() {
         TableLayout table = findViewById(R.id.categoriesTable);
 
         table.setStretchAllColumns(true);
@@ -107,6 +106,5 @@ public class CategoryActivity extends AbstractActivity {
             row.setOnClickListener(new CategoryEntityOnClickListener(CategoryActivity.this, luggageCategoryEntity));
             row.setOnLongClickListener(new CategoryEntityOnLongClickListener(CategoryActivity.this, luggageCategoryEntity));
         }
-        return this;
     }
 }
