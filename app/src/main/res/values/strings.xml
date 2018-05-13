@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Sybilles Gepäck-Planer</string>
+    <string name="app_name">Gepäck-Planer</string>
 
     <string name="label_category">Kategorie</string>
     <string name="label_categories">Kategorien</string>
@@ -11,6 +11,7 @@
     <string name="label_date">Datum</string>
     <string name="label_luggage_name">Gepäckstück Name</string>
     <string name="label_packing_list_name">Packliste Name</string>
+    <string name="label_delete">Löschen</string>
 
     <string name="title_category_edit">Kategory bearbeiten</string>
     <string name="title_category_new">Kategory anlegen</string>
@@ -40,9 +41,12 @@
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
     <string name="text_exit">Verlassen</string>
     <string name="placeholder_concat_packing_list_name">%1$s für %2$s</string>
+    <string name="placeholder_delete_constraints_reason">Gepäckstück "%1$s" kann nicht gelöscht werden, da es noch verwendet wird!</string>
 
     <string name="description_click_to_add_luggage">Klicken, um ein neues Gepäckstück hinzuzufügen</string>
     <string name="description_click_to_add_packing_list">Klicken, um eine neue Packliste hinzuzufügen</string>
 
     <string name="warning_packing_list_empty">Diese Packliste enthält noch keine Einträge!</string>
+    <string name="warning_delete_failed">Löschen fehlgeschlagen!</string>
+    <string name="warning_luggage_still_in_use">Dieses Gepäckstück wird noch in Packlisten verwendet!</string>
 </resources>
