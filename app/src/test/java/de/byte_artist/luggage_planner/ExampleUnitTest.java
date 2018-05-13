@@ -1,4 +1,4 @@
-package de.byte_artist.gepaeck_planer.sybillesgepaeckplaner;
+package de.byte_artist.luggage_planner;
 
 import org.junit.Test;
 
