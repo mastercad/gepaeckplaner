@@ -19,6 +19,7 @@
     <string name="title_packing_list_edit">Packliste bearbeiten</string>
     <string name="title_packing_list_new">Packliste anlegen</string>
     <string name="title_error">Fehler!</string>
+    <string name="title_main_page">Hauptseite</string>
 <!--    <string name="title_exit_application">Closing Activity</string> -->
     <string name="title_exit_application">Anwendung schließen</string>
 
@@ -31,11 +32,17 @@
     <string name="text_save">Speichern</string>
     <string name="text_for">für</string>
     <string name="text_update">Aktualisieren</string>
+    <string name="text_count">Anzahl</string>
+    <string name="text_reset_database">Datenbank zurücksetzen</string>
 <!--    <string name="text_warning_exit_app">Are you sure you want to exit?</string>-->
     <string name="text_warning_exit_app">Sind sie sicher, dass sie das Programm verlassen möchten?</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
+    <string name="text_exit">Verlassen</string>
+    <string name="placeholder_concat_packing_list_name">%1$s für %2$s</string>
 
     <string name="description_click_to_add_luggage">Klicken, um ein neues Gepäckstück hinzuzufügen</string>
     <string name="description_click_to_add_packing_list">Klicken, um eine neue Packliste hinzuzufügen</string>
+
+    <string name="warning_packing_list_empty">Diese Packliste enthält noch keine Einträge!</string>
 </resources>

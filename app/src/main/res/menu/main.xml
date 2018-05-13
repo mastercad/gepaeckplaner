@@ -4,20 +4,20 @@
     <group>
         <item
             android:id="@+id/mainMenuLuggage"
-            android:title="Gepäckstücke" />
+            android:title="@string/label_luggage_list" />
         <item
             android:id="@+id/mainMenuPackingLists"
-            android:title="Packlisten" />
+            android:title="@string/label_packing_lists" />
         <item
             android:id="@+id/mainMenuCategories"
-            android:title="Kategorien" />
+            android:title="@string/label_categories" />
     </group>
     <group >
         <item
             android:id="@+id/mainMenuExit"
             android:checkable="false"
             android:enabled="true"
-            android:title="Quit"
+            android:title="@string/text_exit"
             android:visible="true" />
     </group>
 </menu>

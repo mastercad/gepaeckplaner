@@ -132,7 +132,7 @@ public class LuggageActivity extends AbstractActivity {
             TableRow.LayoutParams lp;
 
             TextView idLabel = new TextView(this);
-            String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
+            String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(formattedEntryId);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -155,7 +155,7 @@ public class LuggageActivity extends AbstractActivity {
             TextView weightLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             weightLabel.setLayoutParams(lp);
-            weightLabel.setText(Integer.toString(luggageEntity.getWeight()));
+            weightLabel.setText(String.format(Locale.getDefault(), "%d", luggageEntity.getWeight()));
 //            weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));

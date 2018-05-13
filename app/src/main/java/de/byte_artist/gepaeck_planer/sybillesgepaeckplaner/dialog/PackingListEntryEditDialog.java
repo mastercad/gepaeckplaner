@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.db.LuggageCategoryDbModel;
@@ -59,7 +60,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         final Spinner luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
 
         final EditText luggageCount = packingListEntryEditView.findViewById(R.id.inputPackingListEntryCount);
-        luggageCount.setText(Integer.toString(packingListEntryEntity.getCount()));
+        luggageCount.setText(String.format(Locale.getDefault(), "%d", packingListEntryEntity.getCount()));
 
         final PackingListDbModel packingListDbModel = new PackingListDbModel(view.getContext(), null, null, 1);
         ArrayList<PackingListEntity> packingListEntities = packingListDbModel.load();

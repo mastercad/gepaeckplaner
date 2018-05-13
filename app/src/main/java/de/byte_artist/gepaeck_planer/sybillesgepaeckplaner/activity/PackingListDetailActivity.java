@@ -96,7 +96,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText(R.string.label_packing_lists);
+        title.setText(R.string.label_packing_list);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -112,11 +112,15 @@ public class PackingListDetailActivity extends AbstractActivity {
             PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
             PackingListEntity packingListEntity = packingListDbModel.findPackingListById(packingListId);
 
-            title.setText(title.getText() + " " + getResources().getText(R.string.text_for) + " " + packingListEntity.getName());
+            title.setText(String.format(
+                getResources().getString(R.string.placeholder_concat_packing_list_name),
+                title.getText(),
+                packingListEntity.getName())
+            );
 
             TableRow row = new TableRow(this);
             TextView emptyContent = new TextView(this);
-            emptyContent.setText("Diese Packliste enthält noch keine Einträge!");
+            emptyContent.setText(R.string.warning_packing_list_empty);
 
             row.addView(emptyContent);
             table.addView(row);
@@ -131,7 +135,11 @@ public class PackingListDetailActivity extends AbstractActivity {
 
             for (PackingListEntryEntity packingListEntryEntity : packingListEntryCollection) {
                 if (1 == rowCount) {
-                    title.setText(title.getText() + " " + getResources().getText(R.string.text_for) + " " + packingListEntryEntity.getPackingListEntity().getName());
+                    title.setText(String.format(
+                        getResources().getString(R.string.placeholder_concat_packing_list_name),
+                        title.getText(),
+                        packingListEntryEntity.getPackingListEntity().getName())
+                    );
                 }
 
                 long currentCategory = packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId();
@@ -145,7 +153,6 @@ public class PackingListDetailActivity extends AbstractActivity {
                         addLuggageRow.addView(emptyLabel);
                         table.addView(addLuggageRow);
                     }
-                    Log.i("PackingListDetail", "Change Category!");
                     tempCategory = currentCategory;
 
                     TableRow categoryRow = new TableRow(this);
@@ -162,7 +169,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 row.setWeightSum(1);
 
                 TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+                String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
                 idLabel.setText(formattedEntryId);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
                 idLabel.setGravity(Gravity.START);
@@ -181,7 +188,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 row.addView(nameLabel);
 
                 TextView weightLabel = new TextView(this);
-                weightLabel.setText(Integer.toString(packingListEntryEntity.getLuggageEntity().getWeight()));
+                weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
                 weightLabel.setGravity(Gravity.END);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
@@ -225,7 +232,7 @@ public class PackingListDetailActivity extends AbstractActivity {
             rowSummary.setGravity(Gravity.END);
 
             TextView summary = new TextView(this);
-            summary.setText(Integer.toString(weightSum));
+            summary.setText(String.format(Locale.getDefault(), "%d g", weightSum));
             summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             summary.setGravity(Gravity.END);
             summary.setTypeface(Typeface.SERIF, Typeface.BOLD);

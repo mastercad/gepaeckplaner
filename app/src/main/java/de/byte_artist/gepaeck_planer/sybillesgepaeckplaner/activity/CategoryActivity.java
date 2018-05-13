@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.AbstractActivity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.listener.CategoryDeleteOnClickListener;
@@ -73,7 +74,7 @@ public class CategoryActivity extends AbstractActivity {
 
             TextView idLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-            idLabel.setText(Long.toString(luggageCategoryEntity.getId()));
+            idLabel.setText(String.format(Locale.getDefault(), "%d", luggageCategoryEntity.getId()));
             idLabel.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
             idLabel.setLayoutParams(lp);
             row.addView(idLabel);

@@ -3,24 +3,24 @@
 
     <item
         android:id="@+id/mainMenuMain"
-        android:title="Hauptseite" />
+        android:title="@string/title_main_page" />
     <item
         android:id="@+id/mainMenuCategories"
-        android:title="Kategorien" />
+        android:title="@string/label_categories" />
     <item
         android:id="@+id/mainMenuLuggage"
-        android:title="Gepäckstücke" />
+        android:title="@string/label_luggage_list" />
     <item
         android:id="@+id/mainMenuPackingLists"
-        android:title="Packlisten" />
+        android:title="@string/label_packing_lists" />
     <item
         android:id="@+id/mainMenuExit"
         android:checkable="false"
         android:enabled="true"
-        android:title="Quit"
+        android:title="@string/text_exit"
         android:visible="true" />
     <item
         android:id="@+id/mainMenuResetDb"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Reset Database" />
+        android:title="@string/text_reset_database" />
 </menu>

@@ -56,7 +56,11 @@ public class MainActivity extends AbstractActivity {
         for (PackingListEntryEntity packingListEntryEntity : luggageListEntryCollection) {
 
             if (1 == rowCount) {
-                title.setText(title.getText()+" "+getResources().getText(R.string.text_for)+" "+ packingListEntryEntity.getPackingListEntity().getName());
+                title.setText(String.format(
+                    getResources().getString(R.string.placeholder_concat_packing_list_name),
+                    title.getText().toString(),
+                    packingListEntryEntity.getPackingListEntity().getName())
+                );
             }
 
             long currentCategory = packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId();
@@ -89,7 +93,7 @@ public class MainActivity extends AbstractActivity {
             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,4f));
 
             TextView idLabel = new TextView(this);
-            String formattedEntryId = String.format(Locale.GERMANY, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+            String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
             idLabel.setText(formattedEntryId);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
             idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
@@ -104,7 +108,7 @@ public class MainActivity extends AbstractActivity {
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             TextView weightLabel = new TextView(this);
-            weightLabel.setText(Integer.toString(packingListEntryEntity.getLuggageEntity().getWeight()));
+            weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
             weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -132,7 +136,7 @@ public class MainActivity extends AbstractActivity {
         rowSummary.setGravity(Gravity.END);
 
         TextView summary = new TextView(this);
-        summary.setText(Integer.toString(weightSum));
+        summary.setText(String.format(Locale.getDefault(), "%d g", weightSum));
         summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         summary.setGravity(Gravity.END);
         summary.setTypeface(Typeface.SERIF, Typeface.BOLD);

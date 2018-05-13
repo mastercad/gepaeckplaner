@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.entity.LuggageEntity;
 import de.byte_artist.gepaeck_planer.sybillesgepaeckplaner.R;
@@ -68,7 +69,7 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         categorySpinner.setOnItemSelectedListener(this);
 
         final EditText luggageWeightEdit = luggageEditView.findViewById(R.id.luggageWeight);
-        luggageWeightEdit.setText(Integer.toString(luggageEntity.getWeight()));
+        luggageWeightEdit.setText(String.format(Locale.getDefault(), "%d", luggageEntity.getWeight()));
 
         builder.setTitle(R.string.title_luggage_edit);
         builder.setView(luggageEditView);

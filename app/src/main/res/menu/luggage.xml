@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/mainMenuMain"
-        android:title="Hauptseite" />
+        android:title="@string/title_main_page" />
     <item
         android:id="@+id/mainMenuCategories"
-        android:title="Kategorien" />
+        android:title="@string/label_categories" />
     <item
         android:id="@+id/mainMenuPackingLists"
-        android:title="Packlisten" />
+        android:title="@string/label_packing_lists" />
     <item
         android:id="@+id/mainMenuExit"
         android:checkable="false"
         android:enabled="true"
-        android:title="Quit"
+        android:title="@string/text_exit"
         android:visible="true" />
 </menu>

@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:adjustViewBounds="false"
         android:background="@android:drawable/screen_background_light_transparent"
-        android:contentDescription="Neue Kategory einfügen"
+        android:contentDescription="@string/title_category_new"
         android:elevation="0dp"
         android:saveEnabled="false"
         android:scrollbars="none"

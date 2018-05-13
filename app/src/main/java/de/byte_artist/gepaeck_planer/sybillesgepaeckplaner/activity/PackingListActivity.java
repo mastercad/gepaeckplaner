@@ -51,7 +51,7 @@ public class PackingListActivity extends AbstractActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText(R.string.label_packing_list);
+        title.setText(R.string.label_packing_lists);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
