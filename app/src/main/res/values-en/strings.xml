@@ -12,6 +12,7 @@
     <string name="label_luggage_name">Luggage Name</string>
     <string name="label_packing_list_name">Packing List Name</string>
     <string name="label_delete">Delete</string>
+    <string name="label_attention">Attention</string>
 
     <string name="title_category_edit">Edit Category</string>
     <string name="title_category_new">Add Category</string>
@@ -21,8 +22,8 @@
     <string name="title_packing_list_new">Add Packing list</string>
     <string name="title_error">Error!</string>
     <string name="title_main_page">Main Page</string>
-<!--    <string name="title_exit_application">Closing Activity</string> -->
     <string name="title_exit_application">Close Application</string>
+    <string name="text_please_select">Please select</string>
 
     <string name="text_yes">Yes</string>
     <string name="text_ok">OK</string>
@@ -34,14 +35,19 @@
     <string name="text_for">for</string>
     <string name="text_update">Update</string>
     <string name="text_count">Count</string>
-    <string name="text_reset_database">reset Database</string>
-<!--    <string name="text_warning_exit_app">Are you sure you want to exit?</string>-->
+    <string name="text_reset_database">clear Database</string>
+    <string name="text_create_database">create Demo Database</string>
     <string name="text_warning_exit_app">Are you sure you want to leave the program?</string>
     <string name="text_choose_category">Please choose a category!</string>
     <string name="text_not_all_fields_filled">Not all necessary fields are filled out!</string>
     <string name="text_exit">Exit</string>
+
     <string name="placeholder_concat_packing_list_name">%1$s for %2$s</string>
+    <string name="placeholder_luggage_of_packing_list">%1$s of %2$s</string>
     <string name="placeholder_delete_constraints_reason">Luggage "%1$s" could not be deleted because it is still in use!</string>
+    <string name="placeholder_entry_should_be_deleted">"%1$s" should be deleted!</string>
+    <string name="placeholder_delete_category_constraints_reason">Category "%1$s" could not be deleted because it\'s still in use!</string>
+    <string name="placeholder_delete_packing_list_constraints_reason">Packing List "%1$s" (%2$s) could not be deleted because it\'s still in use!</string>
 
     <string name="description_click_to_add_luggage">Click to add a new piece of luggage</string>
     <string name="description_click_to_add_packing_list">Click to add a new packing list</string>
@@ -49,4 +55,23 @@
     <string name="warning_packing_list_empty">This packing list contains no entries!</string>
     <string name="warning_delete_failed">Delete failed!</string>
     <string name="warning_luggage_still_in_use">For this piece of luggage are still entries in luggage lists available!</string>
+
+
+    <string name="category1">Swimwear</string>
+    <string name="luggage1_category1">Swimming Trunks</string>
+    <string name="luggage2_category1">Bathing Shoes</string>
+
+    <string name="category2">Outdoor</string>
+    <string name="luggage1_category2">Tent</string>
+    <string name="luggage2_category2">Grill</string>
+    <string name="luggage3_category2">Canoe</string>
+
+    <string name="category3">Hygiene</string>
+    <string name="luggage1_category3">Toothbrush</string>
+    <string name="luggage2_category3">Towel (large)</string>
+    <string name="luggage3_category3">Towel (small)</string>
+
+    <string name="packing_list1">Vacation Spreewald (2018&#8210;08&#8210;04)</string>
+    <string name="packing_list2">Vacation Ostsee(2018&#8210;06&#8210;01)</string>
+
 </resources>

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
+import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
 public class LuggageEntityOnClickListener implements View.OnClickListener {
@@ -17,10 +18,10 @@ public class LuggageEntityOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle(""+this.luggageEntity.getId())
+        alertDialog.setTitle(Long.toString(this.luggageEntity.getId()))
             .setMessage(this.luggageEntity.getName())
             .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton("Continue..", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             // here you can add functions
             }

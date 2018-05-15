@@ -3,8 +3,8 @@ package de.byte_artist.luggage_planner.listener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 import de.byte_artist.luggage_planner.dialog.CategoryEditDialog;
+import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 
 public class CategoryEntityOnLongClickListener implements View.OnLongClickListener {
 

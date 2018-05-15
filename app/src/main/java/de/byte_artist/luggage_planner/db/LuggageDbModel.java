@@ -1,14 +1,14 @@
 package de.byte_artist.luggage_planner.db;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-import de.byte_artist.luggage_planner.entity.LuggageEntity;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
+import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
 // https://dzone.com/articles/create-a-database-android-application-in-android-s
 

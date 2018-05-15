@@ -23,7 +23,6 @@ import de.byte_artist.luggage_planner.dialog.PackingListEntryEditDialog;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
-import de.byte_artist.luggage_planner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnLongClickListener;
 
 public class PackingListDetailActivity extends AbstractActivity {
@@ -39,7 +38,6 @@ public class PackingListDetailActivity extends AbstractActivity {
             fillTable(packingListId);
         }
 
-
         ImageButton addPackingListEntry = findViewById(R.id.btnAddPackingList);
         addPackingListEntry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,42 +48,6 @@ public class PackingListDetailActivity extends AbstractActivity {
         });
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mainMenuCategories:
-                finish();
-                Intent categoryIntent = new Intent(PackingListDetailActivity.this, CategoryActivity.class);
-                startActivity(categoryIntent);
-                break;
-            case R.id.mainMenuLuggage:
-                finish();
-                Intent luggageIntent = new Intent(PackingListDetailActivity.this, LuggageActivity.class);
-                startActivity(luggageIntent);
-                break;
-            case R.id.mainMenuPackingLists:
-                finish();
-                Intent packingListIntent = new Intent(PackingListDetailActivity.this, PackingListActivity.class);
-                startActivity(packingListIntent);
-                break;
-            case R.id.mainMenuExit:
-                finishAffinity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-*/
     private void fillTable(long packingListId) {
         TableLayout table = findViewById(R.id.packingListDetailTable);
 
@@ -96,6 +58,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
         TextView title = new TextView(this);
         title.setText(R.string.label_packing_list);
+        title.setMaxLines(1);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -156,6 +119,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                     TableRow categoryRow = new TableRow(this);
                     TextView categoryHeadingLabel = new TextView(this);
+                    categoryHeadingLabel.setMaxLines(1);
                     categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
                     categoryHeadingLabel.setTextSize(14);
                     categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -172,6 +136,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 idLabel.setText(formattedEntryId);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
                 idLabel.setGravity(Gravity.START);
+                idLabel.setMaxLines(1);
                 idLabel.setWidth(0);
                 lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                 idLabel.setLayoutParams(lp);
@@ -181,6 +146,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 TextView nameLabel = new TextView(this);
                 nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
                 nameLabel.setGravity(Gravity.START);
+                nameLabel.setMaxLines(1);
                 nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
                 nameLabel.setLayoutParams(lp);
@@ -189,6 +155,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 TextView weightLabel = new TextView(this);
                 weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
                 weightLabel.setGravity(Gravity.END);
+                weightLabel.setMaxLines(1);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                 weightLabel.setLayoutParams(lp);
@@ -196,20 +163,18 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 TextView deleteBtn = new TextView(this);
                 lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+                lp.setMargins(0, -8, 0, -8);
                 deleteBtn.setLayoutParams(lp);
-                deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    this.getResources().getDrawable(android.R.drawable.ic_menu_delete, currentTheme),
-                    null
-                );
-                deleteBtn.setScaleX((float)0.8);
-                deleteBtn.setScaleY((float)0.8);
-                deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+                deleteBtn.setMaxLines(1);
+                deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+                deleteBtn.setGravity(Gravity.END);
+                deleteBtn.setScaleX(0.8f);
+                deleteBtn.setScaleY(0.8f);
                 deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
+
                 row.addView(deleteBtn);
 
-                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
+//                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
                 row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity));
 
                 table.addView(row);

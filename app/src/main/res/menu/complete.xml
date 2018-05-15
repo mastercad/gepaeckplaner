@@ -23,4 +23,8 @@
         android:id="@+id/mainMenuResetDb"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/text_reset_database" />
+    <item
+        android:id="@+id/mainMenuCreateDb"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/text_create_database" />
 </menu>

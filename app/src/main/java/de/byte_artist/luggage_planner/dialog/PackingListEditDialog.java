@@ -3,8 +3,8 @@ package de.byte_artist.luggage_planner.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -43,7 +43,7 @@ public class PackingListEditDialog extends AppCompatActivity {
         final EditText inputPackingListDate = categoryEditView.findViewById(R.id.inputPackingListDate);
         inputPackingListDate.setText(packingListEntity.getDate());
 
-        builder.setTitle(R.string.title_luggage_edit);
+        builder.setTitle(R.string.title_packing_list_edit);
         builder.setView(categoryEditView);
 
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
@@ -72,7 +72,7 @@ public class PackingListEditDialog extends AppCompatActivity {
         final EditText inputPackingListName = categoryEditView.findViewById(R.id.inputPackingListName);
         final EditText inputPackingListDate = categoryEditView.findViewById(R.id.inputPackingListDate);
 
-        builder.setTitle(R.string.title_luggage_new);
+        builder.setTitle(R.string.title_packing_list_new);
         builder.setView(categoryEditView);
 
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {

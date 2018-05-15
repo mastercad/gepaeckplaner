@@ -23,10 +23,10 @@ public class PackingListDeleteOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle("Delete : "+this.packingListEntity.getId())
+        alertDialog.setTitle(R.string.label_delete)
             .setMessage(this.packingListEntity.getName()+" "+this.packingListEntity.getDate())
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     try {
                         PackingListDbModel packingListDbModel = new PackingListDbModel(view.getContext(), null, null, 1);
@@ -36,11 +36,14 @@ public class PackingListDeleteOnClickListener implements View.OnClickListener {
                         activity.recreate();
                     } catch (SQLiteConstraintException exception) {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-                        alertDialog.setTitle("Löschen fehlgeschlagen")
+                        alertDialog.setTitle(R.string.warning_delete_failed)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setMessage("Packliste \""+packingListEntity.getName()+" "+packingListEntity.getDate()+
-                                    "\" konnte nicht gelöscht werden, da sie noch verwendet wird!")
-                            .setPositiveButton(R.string.text_understood, new DialogInterface.OnClickListener() {
+                            .setMessage(
+                                String.format(view.getResources().getString(R.string.placeholder_delete_packing_list_constraints_reason),
+                                    packingListEntity.getName(),
+                                    packingListEntity.getDate()
+                                )
+                            ).setPositiveButton(R.string.text_understood, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }

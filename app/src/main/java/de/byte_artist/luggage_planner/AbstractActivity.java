@@ -62,6 +62,10 @@ public class AbstractActivity extends AppCompatActivity {
                 finishAffinity();
                 break;
             case R.id.mainMenuResetDb:
+                resetDatabase();
+                recreate();
+                break;
+            case R.id.mainMenuCreateDb:
                 recreateDatabase();
                 recreate();
                 break;
@@ -72,30 +76,81 @@ public class AbstractActivity extends AppCompatActivity {
     }
 
     private void recreateDatabase() {
-        /* @TODO delete entfernen vor release! */
-
-        String filePathName = getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
-        File file = new File(filePathName);
-        file.delete();
+        this.resetDatabase();
 
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
-        LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity("Badesachen");
+        LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity(getResources().getString(R.string.category1));
 
         luggageCategoryDbModel.insert(luggageCategoryEntity);
 
         PackingListDbModel luggageListDbModel = new PackingListDbModel(this, null, null, 1);
-        PackingListEntity luggageListEntity = new PackingListEntity("Urlaub Spreewald", "2018-08-04");
-
+        PackingListEntity luggageListEntity = new PackingListEntity(getResources().getString(R.string.packing_list1), "2018-08-04");
         luggageListDbModel.insert(luggageListEntity);
 
         LuggageDbModel luggageDbModel = new LuggageDbModel(this, null, null, 1);
-        LuggageEntity luggageEntity = new LuggageEntity("Badelatschen", luggageCategoryEntity.getId(), 120);
-
+        LuggageEntity luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage1_category1), luggageCategoryEntity.getId(), 65);
         luggageDbModel.insert(luggageEntity);
+
         PackingListEntryDbModel packingListDbModel = new PackingListEntryDbModel(this, null, null, 1);
         PackingListEntryEntity packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
-
         packingListDbModel.insert(packingListEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage2_category1), luggageCategoryEntity.getId(), 120);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageCategoryEntity = new LuggageCategoryEntity(getResources().getString(R.string.category2));
+        luggageCategoryDbModel.insert(luggageCategoryEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage1_category2), luggageCategoryEntity.getId(), 65);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage2_category2), luggageCategoryEntity.getId(), 120);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage3_category2), luggageCategoryEntity.getId(), 120);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageCategoryEntity = new LuggageCategoryEntity(getResources().getString(R.string.category3));
+        luggageCategoryDbModel.insert(luggageCategoryEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage1_category3), luggageCategoryEntity.getId(), 65);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage2_category3), luggageCategoryEntity.getId(), 120);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+
+        luggageEntity = new LuggageEntity(getResources().getString(R.string.luggage3_category3), luggageCategoryEntity.getId(), 120);
+        luggageDbModel.insert(luggageEntity);
+
+        packingListEntity = new PackingListEntryEntity(luggageListEntity.getId(), luggageEntity.getId(), 2);
+        packingListDbModel.insert(packingListEntity);
+    }
+
+    public void resetDatabase() {
+        String filePathName = getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
+        File file = new File(filePathName);
+
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     @Override

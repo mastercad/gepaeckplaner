@@ -18,11 +18,9 @@ import java.util.Locale;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
-import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
-import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 
 public class PackingListEntryEditDialog extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -56,27 +54,62 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View packingListEntryEditView = inflater.inflate(R.layout.activity_packing_list_entry_edit_dialog, null);
 
-        final Spinner packingListSpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
+        final Spinner categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
         final Spinner luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
 
         final EditText luggageCount = packingListEntryEditView.findViewById(R.id.inputPackingListEntryCount);
         luggageCount.setText(String.format(Locale.getDefault(), "%d", packingListEntryEntity.getCount()));
 
-        final PackingListDbModel packingListDbModel = new PackingListDbModel(view.getContext(), null, null, 1);
-        ArrayList<PackingListEntity> packingListEntities = packingListDbModel.load();
-        packingListEntities.add(0, new PackingListEntity("Bitte wählen!", ""));
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, packingListEntities);
-        packingListSpinner.setAdapter(spinnerArrayAdapter);
+        final LuggageCategoryDbModel categoryDbModel = new LuggageCategoryDbModel(view.getContext(), null, null, 1);
+        ArrayList<LuggageCategoryEntity> categoryEntities = categoryDbModel.load();
+        categoryEntities.add(0, new LuggageCategoryEntity(view.getResources().getString(R.string.text_please_select)));
+        ArrayAdapter categorySpinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, categoryEntities);
+        categorySpinner.setAdapter(categorySpinnerArrayAdapter);
 
         int count = 0;
-        for (PackingListEntity packingListEntity : packingListEntities) {
-            if (packingListEntryEntity.getPackingListEntity().getId() == packingListEntity.getId()) {
-                packingListSpinner.setSelection(count);
+        for (LuggageCategoryEntity categoryEntity : categoryEntities) {
+            if (packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId() == categoryEntity.getId()) {
+                categorySpinner.setSelection(count);
                 selectedCategory = count;
                 break;
             }
             ++count;
         }
+
+        final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
+        ArrayList<LuggageEntity> luggageEntities = luggageDbModel.load();
+        luggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
+        ArrayAdapter luggageSpinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, categoryEntities);
+        luggageSpinner.setAdapter(luggageSpinnerArrayAdapter);
+
+        count = 0;
+        for (LuggageEntity luggageEntity : luggageEntities) {
+            if (packingListEntryEntity.getLuggageEntity().getId() == luggageEntity.getId()) {
+                luggageSpinner.setSelection(count);
+                selectedLuggage = count;
+                break;
+            }
+            ++count;
+        }
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
+                currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id);
+                currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
+                ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, currentLuggageEntities);
+                luggageSpinner.setAdapter(spinnerArrayAdapter);
+                luggageSpinner.setEnabled(true);
+                luggageSpinner.setOnItemSelectedListener(PackingListEntryEditDialog.this);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ArrayAdapter voidAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, new ArrayList());
+                luggageSpinner.setAdapter(voidAdapter);
+                luggageSpinner.setEnabled(false);
+            }
+        });
 
         builder.setTitle(R.string.title_luggage_edit);
         builder.setView(packingListEntryEditView);
@@ -129,7 +162,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
                 currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id);
-                currentLuggageEntities.add(0, new LuggageEntity("Bitte wählen!", 0, 0));
+                currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
                 ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, currentLuggageEntities);
                 luggageSpinner.setAdapter(spinnerArrayAdapter);
                 luggageSpinner.setEnabled(true);

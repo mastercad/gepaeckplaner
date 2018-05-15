@@ -100,6 +100,7 @@ public class PackingListEntryDbModel extends DbModel {
             packingListEntryEntity.setLuggageListFk(packingListFk);
             packingListEntryEntity.setLuggageFk(luggageFk);
 
+            /* @TODO hier muss eine andere funktion her, weil hier immer wieder eine komplett gefüllte packliste geladen wird! */
             PackingListDbModel packingListDbModel = new PackingListDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
             packingListEntryEntity.setPackingListEntity(packingListDbModel.findPackingListById(packingListFk));
 

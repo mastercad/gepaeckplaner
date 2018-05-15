@@ -23,10 +23,10 @@ public class CategoryDeleteOnClickListener implements View.OnClickListener {
     @Override
     public void onClick(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle("Achtung!")
+        alertDialog.setTitle(R.string.label_attention)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(this.luggageCategoryEntity.getName()+" soll gelöscht werden!")
-            .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
+            .setMessage(String.format(view.getResources().getString(R.string.placeholder_entry_should_be_deleted), this.luggageCategoryEntity.getName()))
+            .setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(view.getContext(), null, null, 1);
@@ -37,9 +37,9 @@ public class CategoryDeleteOnClickListener implements View.OnClickListener {
                 } catch (SQLiteConstraintException exception) {
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-                    alertDialog.setTitle("Löschen fehlgeschlagen")
+                    alertDialog.setTitle(R.string.warning_delete_failed)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setMessage("Kategorie "+luggageCategoryEntity.getName()+" konnte nicht gelöscht werden, da es noch verwendet wird!")
+                        .setMessage(String.format(view.getResources().getString(R.string.placeholder_delete_category_constraints_reason), luggageCategoryEntity.getName()))
                         .setPositiveButton(R.string.text_understood, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 

@@ -23,13 +23,14 @@ public class PackingListEntryDeleteOnClickListener implements View.OnClickListen
     public void onClick(View view) {
         final View currentView = view;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle("Delete : "+this.packingListEntryEntity.getId())
-            .setMessage(
-                    this.packingListEntryEntity.getLuggageEntity().getName()+" "+
-                    view.getResources().getText(R.string.text_of)+" "+
-                    this.packingListEntryEntity.getPackingListEntity().getName())
+        alertDialog.setTitle(R.string.label_delete)
+            .setMessage(String.format(view.getResources().getString(R.string.placeholder_luggage_of_packing_list),
+                    this.packingListEntryEntity.getLuggageEntity().getName(),
+                    this.packingListEntryEntity.getPackingListEntity().getName()
+                )
+            )
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(currentView.getContext(), null, null, 1);
                 packingListEntryDbModel.delete(packingListEntryEntity);

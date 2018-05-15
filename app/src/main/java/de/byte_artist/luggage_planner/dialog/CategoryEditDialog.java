@@ -3,15 +3,15 @@ package de.byte_artist.luggage_planner.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
-import de.byte_artist.luggage_planner.R;
 
 public class CategoryEditDialog extends AppCompatActivity {
 

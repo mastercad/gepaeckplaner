@@ -67,9 +67,9 @@ public class LuggageEntity {
     }
 
     public String toString() {
-        if (0 < this.id) {
-            return this.id + " " + this.name;
-        }
+//        if (0 < this.id) {
+//            return this.id + " " + this.name;
+//        }
         return this.name;
     }
 }

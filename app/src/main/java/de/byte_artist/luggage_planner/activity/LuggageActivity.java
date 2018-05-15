@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
+import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
 import de.byte_artist.luggage_planner.dialog.LuggageEditDialog;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 import de.byte_artist.luggage_planner.listener.LuggageDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageEntityOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageEntityOnLongClickListener;
-import de.byte_artist.luggage_planner.R;
 
 public class LuggageActivity extends AbstractActivity {
 
@@ -42,39 +42,7 @@ public class LuggageActivity extends AbstractActivity {
 
         loadLuggage();
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.luggage, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.mainMenuMain:
-                Intent mainIntent = new Intent(LuggageActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                break;
-            case R.id.mainMenuCategories:
-                Intent categoryIntent = new Intent(LuggageActivity.this, CategoryActivity.class);
-                startActivity(categoryIntent);
-                break;
-            case R.id.mainMenuPackingLists:
-                Intent packingListIntent = new Intent(LuggageActivity.this, PackingListActivity.class);
-                startActivity(packingListIntent);
-                break;
-            case R.id.mainMenuExit:
-                finishAffinity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-*/
     private void loadLuggage() {
         TableLayout table = findViewById(R.id.luggageTable);
 
@@ -85,6 +53,7 @@ public class LuggageActivity extends AbstractActivity {
 
         TextView title = new TextView(this);
         title.setText(R.string.label_luggage_list);
+        title.setMaxLines(1);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -119,6 +88,7 @@ public class LuggageActivity extends AbstractActivity {
                 TextView categoryHeadingLabel = new TextView(this);
                 categoryHeadingLabel.setText(luggageEntity.getCategoryEntity().getName());
                 categoryHeadingLabel.setTextSize(14);
+                categoryHeadingLabel.setMaxLines(1);
                 categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
                 categoryRow.addView(categoryHeadingLabel);
@@ -130,13 +100,16 @@ public class LuggageActivity extends AbstractActivity {
             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,4f));
 
             TableRow.LayoutParams lp;
+            lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f);
+            lp.setMargins(0, 0, 0, 0);
+            row.setLayoutParams(lp);
 
             TextView idLabel = new TextView(this);
             String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(formattedEntryId);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
-//            idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
+            idLabel.setMaxLines(1);
             idLabel.setGravity(Gravity.START);
             idLabel.setWidth(0);
             idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -146,8 +119,8 @@ public class LuggageActivity extends AbstractActivity {
             TextView nameLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
             nameLabel.setLayoutParams(lp);
+            nameLabel.setMaxLines(1);
             nameLabel.setText(luggageEntity.getName());
-//            nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             nameLabel.setGravity(Gravity.START);
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             row.addView(nameLabel);
@@ -155,27 +128,23 @@ public class LuggageActivity extends AbstractActivity {
             TextView weightLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             weightLabel.setLayoutParams(lp);
-            weightLabel.setText(String.format(Locale.getDefault(), "%d", luggageEntity.getWeight()));
-//            weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+            weightLabel.setMaxLines(1);
+            weightLabel.setText(String.format(Locale.getDefault(), "%d g", luggageEntity.getWeight()));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             row.addView(weightLabel);
 
             TextView deleteBtn = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+            lp.setMargins(0, -8, 0, -8);
             deleteBtn.setLayoutParams(lp);
-            deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                this.getResources().getDrawable(android.R.drawable.ic_menu_delete, currentTheme),
-                null
-            );
-            deleteBtn.setScaleX((float)0.8);
-            deleteBtn.setScaleY((float)0.8);
-            deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
-            row.addView(deleteBtn);
-
+            deleteBtn.setMaxLines(1);
+            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+            deleteBtn.setGravity(Gravity.END);
+            deleteBtn.setScaleX(0.8f);
+            deleteBtn.setScaleY(0.8f);
             deleteBtn.setOnClickListener(new LuggageDeleteOnClickListener(LuggageActivity.this, luggageEntity));
+            row.addView(deleteBtn);
 
             table.addView(row);
 

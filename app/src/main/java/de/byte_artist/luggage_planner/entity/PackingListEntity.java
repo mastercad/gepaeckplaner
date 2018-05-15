@@ -39,7 +39,8 @@ public class PackingListEntity {
 
     public String toString() {
         if (0 < this.id) {
-            return this.id + " " + this.name + " ("+this.date+")";
+//            return this.id + " " + this.name + " ("+this.date+")";
+            return this.name + " ("+this.date+")";
         }
         return this.name;
     }

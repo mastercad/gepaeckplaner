@@ -25,10 +25,10 @@ public class LuggageDeleteOnClickListener implements View.OnClickListener {
     public void onClick(final View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle("Delete : "+this.luggageEntity.getId())
+            .setTitle(R.string.label_delete)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage(this.luggageEntity.getName())
-            .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(view.getContext(), null, null, 1);
 
@@ -37,7 +37,7 @@ public class LuggageDeleteOnClickListener implements View.OnClickListener {
                         alertDialog.setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle(R.string.title_error)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setMessage("Für dieses Gepäckstück sind noch Einträge in Gepäcklisten vorhanden!")
+                            .setMessage(R.string.warning_luggage_still_in_use)
                             .setPositiveButton(R.string.text_understood, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     deleteLuggage(luggageEntity, view);
@@ -63,9 +63,9 @@ public class LuggageDeleteOnClickListener implements View.OnClickListener {
             activity.recreate();
         } catch (SQLiteConstraintException exception) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-            alertDialog.setTitle("Löschen fehlgeschlagen")
+            alertDialog.setTitle(view.getResources().getString(R.string.warning_delete_failed))
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage("Gepäckstück \""+luggageEntity.getName()+"\" konnte nicht gelöscht werden, da es noch verwendet wird!")
+                .setMessage(String.format(view.getResources().getString(R.string.placeholder_delete_constraints_reason), luggageEntity.getName()))
                 .setPositiveButton(R.string.text_understood, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 

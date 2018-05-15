@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
+import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
-import de.byte_artist.luggage_planner.R;
 
 public class MainActivity extends AbstractActivity {
 
@@ -24,7 +24,6 @@ public class MainActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        super.recreateDatabase();
         this.fillTable();
     }
 
@@ -38,6 +37,7 @@ public class MainActivity extends AbstractActivity {
 
         TextView title = new TextView(this);
         title.setText(R.string.label_packing_list);
+        title.setMaxLines(1);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -83,6 +83,7 @@ public class MainActivity extends AbstractActivity {
                 TextView categoryHeadingLabel = new TextView(this);
                 categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
                 categoryHeadingLabel.setTextSize(14);
+                categoryHeadingLabel.setMaxLines(1);
                 categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
                 categoryRow.addView(categoryHeadingLabel);
@@ -95,6 +96,7 @@ public class MainActivity extends AbstractActivity {
             TextView idLabel = new TextView(this);
             String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
             idLabel.setText(formattedEntryId);
+            idLabel.setMaxLines(1);
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
             idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
             idLabel.setGravity(Gravity.START);
@@ -105,12 +107,14 @@ public class MainActivity extends AbstractActivity {
             nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
             nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             nameLabel.setGravity(Gravity.START);
+            nameLabel.setMaxLines(1);
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             TextView weightLabel = new TextView(this);
             weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
             weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
             weightLabel.setGravity(Gravity.END);
+            weightLabel.setMaxLines(1);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             row.addView(idLabel);

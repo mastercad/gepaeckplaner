@@ -1,6 +1,5 @@
 package de.byte_artist.luggage_planner.activity;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -15,17 +14,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
-import de.byte_artist.luggage_planner.listener.CategoryDeleteOnClickListener;
+import de.byte_artist.luggage_planner.R;
+import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.dialog.CategoryEditDialog;
+import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
+import de.byte_artist.luggage_planner.listener.CategoryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.CategoryEntityOnClickListener;
 import de.byte_artist.luggage_planner.listener.CategoryEntityOnLongClickListener;
-import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
-import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
-import de.byte_artist.luggage_planner.R;
 
 public class CategoryActivity extends AbstractActivity {
-
-    // --Commented out by Inspection (13.05.18 01:12):public Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +51,7 @@ public class CategoryActivity extends AbstractActivity {
 
         TextView title = new TextView(this);
         title.setText(R.string.label_categories);
+        title.setMaxLines(1);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -63,18 +61,17 @@ public class CategoryActivity extends AbstractActivity {
 
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
-        Resources.Theme currentTheme = getTheme();
 
         for (LuggageCategoryEntity luggageCategoryEntity : luggageCategoryEntities) {
             TableRow row = new TableRow(this);
             row.setWeightSum(1);
 
             TableRow.LayoutParams lp;
-//            lp.weight = 1;
 
             TextView idLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(String.format(Locale.getDefault(), "%d", luggageCategoryEntity.getId()));
+            idLabel.setMaxLines(1);
             idLabel.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
             idLabel.setLayoutParams(lp);
             row.addView(idLabel);
@@ -82,23 +79,20 @@ public class CategoryActivity extends AbstractActivity {
             TextView nameLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.7f);
             nameLabel.setText(luggageCategoryEntity.getName());
+            nameLabel.setMaxLines(1);
             nameLabel.setGravity(Gravity.CENTER_VERTICAL);
             nameLabel.setLayoutParams(lp);
             row.addView(nameLabel);
 
             TextView deleteBtn = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
-            deleteBtn.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                this.getResources().getDrawable(android.R.drawable.ic_menu_delete, currentTheme),
-                null
-            );
-            deleteBtn.setScaleX((float)0.8);
-            deleteBtn.setScaleY((float)0.8);
-            deleteBtn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+            lp.setMargins(0, -8, 0, -8);
             deleteBtn.setLayoutParams(lp);
-
+            deleteBtn.setMaxLines(1);
+            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+            deleteBtn.setGravity(Gravity.END);
+            deleteBtn.setScaleX(0.8f);
+            deleteBtn.setScaleY(0.8f);
             deleteBtn.setOnClickListener(new CategoryDeleteOnClickListener(CategoryActivity.this, luggageCategoryEntity));
             row.addView(deleteBtn);
 

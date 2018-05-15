@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "454537506327",
+    "firebase_url": "https://luggageplanner.firebaseio.com",
+    "project_id": "luggageplanner",
+    "storage_bucket": "luggageplanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454537506327:android:272193e71c0ec497",
+        "android_client_info": {
+          "package_name": "de.byte_artist.luggage_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454537506327-73a8uu1k72vlofbu3bmfafe528jol97f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw_rHmLd9rzngR1EhvV7kvZsWBxjE5exA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
