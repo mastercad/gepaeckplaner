@@ -88,7 +88,7 @@ public class PackingListActivity extends AbstractActivity {
             lp.setMargins(0, -8, 0, -8);
             deleteBtn.setLayoutParams(lp);
             deleteBtn.setMaxLines(1);
-            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
             deleteBtn.setGravity(Gravity.END);
             deleteBtn.setScaleX(0.8f);
             deleteBtn.setScaleY(0.8f);

@@ -1,5 +1,6 @@
 package de.byte_artist.luggage_planner.activity;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -89,7 +90,7 @@ public class CategoryActivity extends AbstractActivity {
             lp.setMargins(0, -8, 0, -8);
             deleteBtn.setLayoutParams(lp);
             deleteBtn.setMaxLines(1);
-            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
             deleteBtn.setGravity(Gravity.END);
             deleteBtn.setScaleX(0.8f);
             deleteBtn.setScaleY(0.8f);
