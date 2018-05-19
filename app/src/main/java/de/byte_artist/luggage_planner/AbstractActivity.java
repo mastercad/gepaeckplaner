@@ -1,13 +1,20 @@
 package de.byte_artist.luggage_planner;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.io.File;
 
@@ -28,33 +35,48 @@ import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 public class AbstractActivity extends AppCompatActivity {
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (MainActivity.class != this.getClass()) {
+            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.complete, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+
         switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                break;
             case R.id.mainMenuMain:
                 finish();
                 Intent mainIntent = new Intent(this, MainActivity.class);
                 startActivity(mainIntent);
                 break;
             case R.id.mainMenuCategories:
-                finish();
+//                finish();
                 Intent categoryIntent = new Intent(this, CategoryActivity.class);
                 startActivity(categoryIntent);
                 break;
             case R.id.mainMenuLuggage:
-                finish();
+//                finish();
                 Intent luggageIntent = new Intent(this, LuggageActivity.class);
                 startActivity(luggageIntent);
                 break;
             case R.id.mainMenuPackingLists:
-                finish();
+//                finish();
                 Intent packingListIntent = new Intent(this, PackingListActivity.class);
                 startActivity(packingListIntent);
                 break;
@@ -74,7 +96,32 @@ public class AbstractActivity extends AppCompatActivity {
         }
         return true;
     }
+/*
+    private void showStatusPopup(final Activity context, Point p) {
 
+        // Inflate the popup_layout.xml
+        ConstraintLayout viewGroup = context.findViewById(R.id.luggageActivity);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.status_popup_layout, null);
+
+        // Creating the PopupWindow
+        changeStatusPopUp = new PopupWindow(context);
+        changeStatusPopUp.setContentView(layout);
+        changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = -20;
+        int OFFSET_Y = 50;
+
+        //Clear the default translucent background
+        changeStatusPopUp.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+    }
+*/
     private void recreateDatabase() {
         this.resetDatabase();
 
@@ -155,18 +202,23 @@ public class AbstractActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setCancelable(false)
-            .setTitle(R.string.title_exit_application)
-            .setMessage(R.string.text_warning_exit_app)
-            .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            })
-            .setNegativeButton(R.string.text_no, null)
-            .show();
+
+        if (MainActivity.class == getClass()) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(false)
+                    .setTitle(R.string.title_exit_application)
+                    .setMessage(R.string.text_warning_exit_app)
+                    .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.text_cancel, null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
