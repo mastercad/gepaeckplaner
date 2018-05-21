@@ -14,17 +14,12 @@
         android:id="@+id/mainMenuPackingLists"
         android:title="@string/label_packing_lists" />
     <item
+        android:id="@+id/mainMenuOptions"
+        android:title="@string/label_options" />
+    <item
         android:id="@+id/mainMenuExit"
         android:checkable="false"
         android:enabled="true"
         android:title="@string/text_exit"
         android:visible="true" />
-    <item
-        android:id="@+id/mainMenuResetDb"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/text_reset_database" />
-    <item
-        android:id="@+id/mainMenuCreateDb"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/text_create_database" />
 </menu>

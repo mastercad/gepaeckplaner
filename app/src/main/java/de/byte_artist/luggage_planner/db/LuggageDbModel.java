@@ -41,6 +41,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setCategoryId(luggageCategoryId);
             luggageEntity.setWeight(cursor.getInt(3));
             luggageEntity.setCount(cursor.getInt(4));
+            luggageEntity.setActive(cursor.getString(5).equals("1"));
 
             LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
             LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(luggageCategoryId);
@@ -72,9 +73,13 @@ public class LuggageDbModel extends DbModel {
         return id;
     }
 
-    public ArrayList<LuggageEntity> findLuggageByCategoryId(long luggageCategoryId) {
-        String query = "SELECT * FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_CATEGORY_FK+" = "+
-                luggageCategoryId+" ORDER BY "+COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_ID;
+    public ArrayList<LuggageEntity> findLuggageByCategoryId(long luggageCategoryId, boolean inclInactive) {
+        String query = "SELECT * FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_CATEGORY_FK+" = "+luggageCategoryId;
+
+        if (!inclInactive) {
+            query += " AND "+COLUMN_LUGGAGE_ACTIVE+" = 1";
+        }
+        query += " ORDER BY "+COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_ID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -89,6 +94,8 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setName(cursor.getString(1));
             luggageEntity.setCategoryId(luggageCategoryId);
             luggageEntity.setWeight(cursor.getInt(3));
+            luggageEntity.setCount(cursor.getInt(4));
+            luggageEntity.setActive(cursor.getString(5).equals("1"));
             luggageEntity.setCategoryEntity(luggageCategoryEntity);
 
             collection.add(luggageEntity);
@@ -109,6 +116,7 @@ public class LuggageDbModel extends DbModel {
         values.put(COLUMN_LUGGAGE_NAME, luggageEntity.getName());
         values.put(COLUMN_LUGGAGE_CATEGORY_FK, luggageEntity.getCategoryId());
         values.put(COLUMN_LUGGAGE_WEIGHT, luggageEntity.getWeight());
+        values.put(COLUMN_LUGGAGE_ACTIVE, luggageEntity.isActive() ? "1" : "0");
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -122,6 +130,7 @@ public class LuggageDbModel extends DbModel {
         values.put(COLUMN_LUGGAGE_NAME, luggageEntity.getName());
         values.put(COLUMN_LUGGAGE_CATEGORY_FK, luggageEntity.getCategoryId());
         values.put(COLUMN_LUGGAGE_WEIGHT, luggageEntity.getWeight());
+        values.put(COLUMN_LUGGAGE_ACTIVE, luggageEntity.isActive() ? "1" : "0");
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -153,6 +162,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setCategoryId(cursor.getInt(2));
             luggageEntity.setWeight(cursor.getInt(3));
             luggageEntity.setCount(cursor.getInt(4));
+            luggageEntity.setActive(cursor.getString(5).equals("1"));
         } else {
             luggageEntity = null;
         }
@@ -179,6 +189,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setWeight(cursor.getInt(3));
             luggageEntity.setCategoryId(categoryId);
             luggageEntity.setCount(cursor.getInt(4));
+            luggageEntity.setActive(cursor.getString(5).equals("1"));
 
             LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
             LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(categoryId);

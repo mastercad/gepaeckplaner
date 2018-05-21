@@ -26,7 +26,7 @@ public class PackingListDbModel extends DbModel {
     }
 
     public ArrayList<PackingListEntity> load() {
-        String query = "SELECT * FROM "+TABLE_PACKING_LIST;
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST+" ORDER BY "+COLUMN_PACKING_LIST_DATE;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -81,11 +81,11 @@ public class PackingListDbModel extends DbModel {
 
     public PackingListEntity findPackingListById(long luggageListId) {
         String query = "SELECT * FROM "+TABLE_PACKING_LIST+
-            " INNER JOIN "+TABLE_PACKING_LIST_ENTRY+" ON "+TABLE_PACKING_LIST_ENTRY+"."+COLUMN_PACKING_LIST_FK+" = "+TABLE_PACKING_LIST+"."+COLUMN_PACKING_LIST_ID+
-            " INNER JOIN "+TABLE_LUGGAGE+" ON "+TABLE_LUGGAGE+"."+COLUMN_LUGGAGE_ID+" = "+TABLE_PACKING_LIST_ENTRY+"."+COLUMN_LUGGAGE_FK+
-            " INNER JOIN "+TABLE_LUGGAGE_CATEGORY+" ON "+TABLE_LUGGAGE_CATEGORY+"."+COLUMN_LUGGAGE_CATEGORY_ID+" = "+TABLE_LUGGAGE+"."+COLUMN_LUGGAGE_CATEGORY_FK+
-            " WHERE "+COLUMN_PACKING_LIST_ID+" = '"+
-            luggageListId+"' ORDER BY "+COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_ID;
+            " LEFT JOIN "+TABLE_PACKING_LIST_ENTRY+" ON "+TABLE_PACKING_LIST_ENTRY+"."+COLUMN_PACKING_LIST_FK+" = "+TABLE_PACKING_LIST+"."+COLUMN_PACKING_LIST_ID+
+            " LEFT JOIN "+TABLE_LUGGAGE+" ON "+TABLE_LUGGAGE+"."+COLUMN_LUGGAGE_ID+" = "+TABLE_PACKING_LIST_ENTRY+"."+COLUMN_LUGGAGE_FK+
+            " LEFT JOIN "+TABLE_LUGGAGE_CATEGORY+" ON "+TABLE_LUGGAGE_CATEGORY+"."+COLUMN_LUGGAGE_CATEGORY_ID+" = "+TABLE_LUGGAGE+"."+COLUMN_LUGGAGE_CATEGORY_FK+
+            " WHERE "+COLUMN_PACKING_LIST_ID+" = '"+ luggageListId+ "' "+
+            " ORDER BY "+COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_ID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -109,6 +109,29 @@ public class PackingListDbModel extends DbModel {
 
     public PackingListEntity findPackingListByDate(String packingListDate) {
         String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_DATE+" = '"+packingListDate+"'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        PackingListEntity packingListEntity = new PackingListEntity();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            packingListEntity.setId(cursor.getLong(0));
+            packingListEntity.setName(cursor.getString(1));
+            packingListEntity.setDate(cursor.getString(2));
+        } else {
+            packingListEntity = null;
+        }
+        cursor.close();
+        db.close();
+
+        return packingListEntity;
+    }
+
+    public PackingListEntity findCurrentPackingList() {
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_DATE+" >= date('now') ORDER BY "+COLUMN_PACKING_LIST_DATE+" LIMIT 1";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);

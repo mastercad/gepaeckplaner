@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class DbModel extends SQLiteOpenHelper {
 
-    static final Integer DATABASE_VERSION = 1;
+    static final Integer DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "luggage.db";
 
     static final String TABLE_LUGGAGE = "luggage";
@@ -18,6 +18,7 @@ class DbModel extends SQLiteOpenHelper {
     static final String COLUMN_LUGGAGE_NAME = "luggage_name";
     static final String COLUMN_LUGGAGE_COUNT = "luggage_count";
     static final String COLUMN_LUGGAGE_WEIGHT = "luggage_weigh";
+    static final String COLUMN_LUGGAGE_ACTIVE = "luggage_active";
     static final String COLUMN_LUGGAGE_CATEGORY_FK = "luggage_category_fk";
 
     static final String COLUMN_LUGGAGE_CATEGORY_ID = "luggage_category_id";
@@ -65,7 +66,8 @@ class DbModel extends SQLiteOpenHelper {
             COLUMN_LUGGAGE_NAME+" TEXT NOT NULL, "+
             COLUMN_LUGGAGE_CATEGORY_FK+" INTEGER NOT NULL REFERENCES "+TABLE_LUGGAGE_CATEGORY+" ("+COLUMN_LUGGAGE_CATEGORY_ID+"), "+
             COLUMN_LUGGAGE_WEIGHT+" INTEGER NOT NULL, "+
-            COLUMN_LUGGAGE_COUNT+" INTEGER NOT NULL "+
+            COLUMN_LUGGAGE_COUNT+" INTEGER NOT NULL, "+
+            COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1 "+
         ");";
 
         db.execSQL(createTable);
@@ -110,6 +112,14 @@ class DbModel extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String createTable = "";
 
+        if (1 == oldVersion
+            && 2 == newVersion
+        ) {
+            createTable = "ALTER TABLE "+TABLE_LUGGAGE+" ADD "+COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1;";
+
+        }
+        db.execSQL(createTable);
     }
 }

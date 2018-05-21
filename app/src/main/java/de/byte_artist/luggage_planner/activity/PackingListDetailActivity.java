@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +22,8 @@ import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.dialog.PackingListEntryEditDialog;
+import de.byte_artist.luggage_planner.dialog.PackingListEntryNewDialogFragment;
+import de.byte_artist.luggage_planner.dialog.PackingListNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
@@ -27,30 +31,45 @@ import de.byte_artist.luggage_planner.listener.PackingListEntryOnLongClickListen
 
 public class PackingListDetailActivity extends AbstractActivity {
 
+    private static long packingListId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_packing_list_detail);
 
-        final long packingListId = getIntent().getLongExtra("packingListId", 0);
-
-        if (0 < packingListId) {
-            fillTable(packingListId);
-        }
+        packingListId = getIntent().getLongExtra("packingListId", 0);
 
         ImageButton addPackingListEntry = findViewById(R.id.btnAddPackingList);
         addPackingListEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PackingListEntryEditDialog editDialog = new PackingListEntryEditDialog(PackingListDetailActivity.this, packingListId);
-                editDialog.showNewDialog(view);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag("packing_list_entry_new_dialog");
+
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                PackingListEntryNewDialogFragment alertDialog = PackingListEntryNewDialogFragment.newInstance(packingListId);
+
+                alertDialog.show(ft, "packing_list_entry_new_dialog");
             }
         });
+
+        refresh();
+    }
+
+    public void refresh() {
+        if (0 < packingListId) {
+            fillTable(packingListId);
+        }
     }
 
     private void fillTable(long packingListId) {
         TableLayout table = findViewById(R.id.packingListDetailTable);
-
+        table.removeAllViews();
         table.setStretchAllColumns(true);
 
         TableRow rowTitle = new TableRow(this);
@@ -91,7 +110,6 @@ public class PackingListDetailActivity extends AbstractActivity {
             int rowCount = 1;
 
             long tempCategory = -1;
-            Resources.Theme currentTheme = getTheme();
 
             TableRow.LayoutParams lp;
 
@@ -132,7 +150,11 @@ public class PackingListDetailActivity extends AbstractActivity {
                 row.setWeightSum(1);
 
                 TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+                String formattedEntryId = String.format(
+                        Locale.getDefault(),
+                        "%d%02d",
+                        packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
+                );
                 idLabel.setText(formattedEntryId);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
                 idLabel.setGravity(Gravity.START);
@@ -148,9 +170,18 @@ public class PackingListDetailActivity extends AbstractActivity {
                 nameLabel.setGravity(Gravity.START);
                 nameLabel.setMaxLines(1);
                 nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.3f);
                 nameLabel.setLayoutParams(lp);
                 row.addView(nameLabel);
+
+                TextView countLabel = new TextView(this);
+                countLabel.setText(String.format(Locale.getDefault(), "%dx", packingListEntryEntity.getCount()));
+                countLabel.setGravity(Gravity.END);
+                countLabel.setMaxLines(1);
+                countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                countLabel.setLayoutParams(lp);
+                row.addView(countLabel);
 
                 TextView weightLabel = new TextView(this);
                 weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
@@ -179,7 +210,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 table.addView(row);
 
-                weightSum += (packingListEntryEntity.getLuggageEntity().getWeight());
+                weightSum += (packingListEntryEntity.getLuggageEntity().getWeight() * packingListEntryEntity.getCount());
 
                 ++rowCount;
             }

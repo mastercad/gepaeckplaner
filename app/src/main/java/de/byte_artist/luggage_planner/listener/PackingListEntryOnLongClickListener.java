@@ -1,9 +1,11 @@
 package de.byte_artist.luggage_planner.listener;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import de.byte_artist.luggage_planner.dialog.PackingListEntryEditDialog;
+import de.byte_artist.luggage_planner.dialog.PackingListEntryEditDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 
 public class PackingListEntryOnLongClickListener implements View.OnLongClickListener {
@@ -18,8 +20,23 @@ public class PackingListEntryOnLongClickListener implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View view) {
+        /*
         PackingListEntryEditDialog editDialog = new PackingListEntryEditDialog(this.activity, packingListEntryEntity.getLuggageListFk());
         editDialog.showEditDialog(view, packingListEntryEntity);
+
+        return false;
+        */
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        Fragment prev = activity.getSupportFragmentManager().findFragmentByTag("packing_list_entry_edit_dialog");
+
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        PackingListEntryEditDialogFragment alertDialog = PackingListEntryEditDialogFragment.newInstance(packingListEntryEntity);
+
+        alertDialog.show(ft, "packing_list_entry_edit_dialog");
 
         return false;
     }

@@ -1,8 +1,9 @@
 package de.byte_artist.luggage_planner.activity;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -17,7 +18,7 @@ import java.util.Locale;
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
-import de.byte_artist.luggage_planner.dialog.CategoryEditDialog;
+import de.byte_artist.luggage_planner.dialog.CategoryNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 import de.byte_artist.luggage_planner.listener.CategoryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.CategoryEntityOnClickListener;
@@ -34,17 +35,32 @@ public class CategoryActivity extends AbstractActivity {
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategoryEditDialog editDialog = new CategoryEditDialog(CategoryActivity.this);
-                editDialog.showNewDialog(view);
+//            CategoryEditDialog editDialog = new CategoryEditDialog(CategoryActivity.this);
+//            editDialog.showNewDialog(view);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag("category_new_dialog");
+
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                CategoryNewDialogFragment alertDialog = CategoryNewDialogFragment.newInstance();
+                alertDialog.show(ft, "category_new_dialog");
             }
         });
 
+        refresh();
+    }
+
+    public void refresh() {
         loadCategories();
     }
 
     private void loadCategories() {
         TableLayout table = findViewById(R.id.categoriesTable);
-
+        table.removeAllViews();
         table.setStretchAllColumns(true);
 
         TableRow rowTitle = new TableRow(this);

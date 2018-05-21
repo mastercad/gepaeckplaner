@@ -35,12 +35,12 @@ public class PackingListEntryDbModel extends DbModel {
 
         while (cursor.moveToNext()) {
             PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity();
-
-            packingListEntryEntity.setId(cursor.getLong(0));
-            packingListEntryEntity.setCount(cursor.getInt(3));
-
+            int packingListEntryCount = cursor.getInt(3);
             long packingListFk = cursor.getLong(1);
             long luggageFk = cursor.getLong(2);
+
+            packingListEntryEntity.setId(cursor.getLong(0));
+            packingListEntryEntity.setCount(packingListEntryCount);
 
             packingListEntryEntity.setLuggageListFk(packingListFk);
             packingListEntryEntity.setLuggageFk(luggageFk);
@@ -60,6 +60,17 @@ public class PackingListEntryDbModel extends DbModel {
     }
 
     public void update(PackingListEntryEntity packingListEntryEntity) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_LUGGAGE_FK, packingListEntryEntity.getLuggageFk());
+        values.put(COLUMN_PACKING_LIST_FK, packingListEntryEntity.getLuggageListFk());
+        values.put(COLUMN_PACKING_LIST_ENTRY_COUNT, packingListEntryEntity.getCount());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        final String[] whereArgs = {Long.toString(packingListEntryEntity.getId())};
+        db.update(TABLE_PACKING_LIST_ENTRY, values, COLUMN_PACKING_LIST_ENTRY_ID + " = ?", whereArgs);
+        db.close();
     }
 
     public void insert(PackingListEntryEntity packingListEntryEntity) {
@@ -83,7 +94,11 @@ public class PackingListEntryDbModel extends DbModel {
     }
 
     public ArrayList<PackingListEntryEntity> findPackingListById(long packingListId) {
-        String query = "SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+" WHERE "+COLUMN_PACKING_LIST_FK+" = '"+packingListId+"'";
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+
+            " INNER JOIN "+TABLE_LUGGAGE+" "+
+            " ON "+COLUMN_LUGGAGE_ID+" = "+COLUMN_LUGGAGE_FK+
+            " WHERE "+COLUMN_PACKING_LIST_FK+" = '"+packingListId+"' "+
+            " ORDER BY "+COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_FK;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -116,7 +131,7 @@ public class PackingListEntryDbModel extends DbModel {
     }
 
     public PackingListEntryEntity findPackingListByDate(String packingListDate) {
-        String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_DATE+" = '"+packingListDate+"'";
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_DATE+" = '"+packingListDate+"' ORDER BY "+COLUMN_PACKING_LIST_FK+", "+COLUMN_LUGGAGE_FK;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -133,6 +148,32 @@ public class PackingListEntryDbModel extends DbModel {
         } else {
             packingListEntryEntity = null;
         }
+        cursor.close();
+        db.close();
+
+        return packingListEntryEntity;
+    }
+
+    public PackingListEntryEntity findLuggageInPackingList(long luggageId, long packingListId) {
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+" WHERE "+COLUMN_LUGGAGE_FK+" = '"+luggageId+"' AND "+COLUMN_PACKING_LIST_FK+" = '"+packingListId+"'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+
+        PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            packingListEntryEntity.setId(cursor.getLong(0));
+            packingListEntryEntity.setLuggageListFk(cursor.getLong(1));
+            packingListEntryEntity.setLuggageFk(cursor.getLong(2));
+            packingListEntryEntity.setCount(cursor.getInt(3));
+        } else {
+            packingListEntryEntity = null;
+        }
+
         cursor.close();
         db.close();
 

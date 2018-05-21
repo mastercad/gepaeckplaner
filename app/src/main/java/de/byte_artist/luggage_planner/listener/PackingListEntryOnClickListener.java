@@ -7,7 +7,7 @@ import android.view.View;
 import de.byte_artist.luggage_planner.activity.PackingListDetailActivity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 
-public class PackingListEntryOnClickListener implements View.OnClickListener {
+class PackingListEntryOnClickListener implements View.OnClickListener {
 
     private final AppCompatActivity activity;
     private final PackingListEntryEntity packingListEntryEntity;

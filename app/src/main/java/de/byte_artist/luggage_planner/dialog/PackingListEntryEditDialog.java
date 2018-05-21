@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +55,8 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View packingListEntryEditView = inflater.inflate(R.layout.activity_packing_list_entry_edit_dialog, null);
 
+        final PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(view.getContext(), null, null, 1);
+
         final Spinner categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
         final Spinner luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
 
@@ -77,9 +80,12 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         }
 
         final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
-        ArrayList<LuggageEntity> luggageEntities = luggageDbModel.load();
+        ArrayList<LuggageEntity> luggageEntities = luggageDbModel.findLuggageByCategoryId(
+            packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId(),
+            false
+        );
         luggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
-        ArrayAdapter luggageSpinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, categoryEntities);
+        ArrayAdapter luggageSpinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, luggageEntities);
         luggageSpinner.setAdapter(luggageSpinnerArrayAdapter);
 
         count = 0;
@@ -96,7 +102,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
-                currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id);
+                currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id, false);
                 currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
                 ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, currentLuggageEntities);
                 luggageSpinner.setAdapter(spinnerArrayAdapter);
@@ -117,14 +123,22 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 if (1 <= selectedCategory) {
-                    packingListEntryEntity.setLuggageFk(selectedLuggage);
-                    packingListEntryEntity.setLuggageListFk(packingListEntryEntity.getLuggageListFk());
-                    packingListEntryEntity.setCount(Integer.parseInt(luggageCount.getText().toString()));
+                    PackingListEntryEntity packingListEntryEntityFromDb = packingListEntryDbModel.findLuggageInPackingList(
+                        selectedLuggage,
+                        luggageListFk
+                    );
 
-                    PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(view.getContext(), null, null, 1);
-                    packingListEntryDbModel.update(packingListEntryEntity);
+                    if (packingListEntryEntityFromDb.getId() == packingListEntryEntity.getId()) {
+                        packingListEntryEntity.setLuggageFk(selectedLuggage);
+                        packingListEntryEntity.setLuggageListFk(packingListEntryEntity.getLuggageListFk());
+                        packingListEntryEntity.setCount(Integer.parseInt(luggageCount.getText().toString()));
 
-                    activity.recreate();
+                        packingListEntryDbModel.update(packingListEntryEntity);
+
+                        activity.recreate();
+                    } else {
+                        showAlertLuggageAlreadyExistsInThisPackingList(view);
+                    }
                 } else {
                     showAlertBoxNoCategorySelected(view);
                 }
@@ -136,10 +150,10 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
     }
 
     public void showNewDialog(final View view) {
-
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         final View packingListEntryEditView = inflater.inflate(R.layout.activity_packing_list_entry_edit_dialog, null);
+        final PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(view.getContext(), null, null, 1);
 
         Spinner categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
         this.luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
@@ -161,7 +175,7 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
-                currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id);
+                currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id, false);
                 currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
                 ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, currentLuggageEntities);
                 luggageSpinner.setAdapter(spinnerArrayAdapter);
@@ -187,10 +201,21 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
                         if (0 >= count) {
                             showAlertNotAllNeededFieldFilled(view);
                         } else {
-                            PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity(luggageListFk, selectedLuggage, count);
-                            PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(view.getContext(), null, null, 1);
-                            packingListEntryDbModel.insert(packingListEntryEntity);
+                            PackingListEntryEntity packingListEntryEntityFromDb = packingListEntryDbModel.findLuggageInPackingList(
+                                selectedLuggage,
+                                luggageListFk
+                            );
 
+                            if (null == packingListEntryEntityFromDb
+                                || packingListEntryEntityFromDb.getLuggageFk() != selectedLuggage
+                            ) {
+                                PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity(luggageListFk, selectedLuggage, count);
+                                packingListEntryDbModel.insert(packingListEntryEntity);
+
+                                activity.recreate();
+                            } else {
+                                showAlertLuggageAlreadyExistsInThisPackingList(view);
+                            }
                             activity.recreate();
                         }
                     }
@@ -246,6 +271,17 @@ public class PackingListEntryEditDialog extends AppCompatActivity implements Ada
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setTitle(R.string.title_error)
             .setMessage(view.getResources().getText(R.string.text_not_all_fields_filled))
+            .setPositiveButton(view.getResources().getText(R.string.text_understood), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // here you can add functions
+                }
+            }).show();
+    }
+
+    private void showAlertLuggageAlreadyExistsInThisPackingList(final View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setTitle(R.string.title_error)
+            .setMessage(view.getResources().getText(R.string.text_luggage_already_exists_in_packing_list))
             .setPositiveButton(view.getResources().getText(R.string.text_understood), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // here you can add functions

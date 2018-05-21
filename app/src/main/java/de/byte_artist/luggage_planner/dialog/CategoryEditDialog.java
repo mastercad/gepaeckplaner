@@ -9,19 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 
 public class CategoryEditDialog extends AppCompatActivity {
 
-    private final AppCompatActivity activity;
+    private final AbstractActivity activity;
 
     public CategoryEditDialog() {
         this.activity = null;
     }
 
-    public CategoryEditDialog(AppCompatActivity activity) {
+    public CategoryEditDialog(AbstractActivity activity) {
         this.activity = activity;
     }
 
@@ -52,7 +53,7 @@ public class CategoryEditDialog extends AppCompatActivity {
             LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(currentView.getContext(), null, null, 1);
             luggageCategoryDbModel.update(luggageCategoryEntity);
 
-            activity.recreate();
+            activity.refresh();
             }
         });
 

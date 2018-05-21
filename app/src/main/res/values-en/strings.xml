@@ -6,6 +6,7 @@
     <string name="label_luggage_list">Luggage</string>
     <string name="label_packing_list">Packing List</string>
     <string name="label_packing_lists">Packing Lists</string>
+    <string name="label_options">Options</string>
 
     <string name="label_weight">Weight</string>
     <string name="label_date">Date</string>
@@ -18,9 +19,11 @@
     <string name="title_category_new">Add Category</string>
     <string name="title_luggage_edit">Edit Luggage</string>
     <string name="title_luggage_new">Add Luggage</string>
+    <string name="title_options">Options</string>
     <string name="title_packing_list_edit">Edit Packing list</string>
     <string name="title_packing_list_new">Add Packing list</string>
     <string name="title_error">Error!</string>
+    <string name="title_warning">Warning!</string>
     <string name="title_main_page">Main Page</string>
     <string name="title_exit_application">Close Application</string>
     <string name="text_please_select">Please select</string>
@@ -28,6 +31,7 @@
     <string name="text_yes">Yes</string>
     <string name="text_ok">OK</string>
     <string name="text_of">of</string>
+    <string name="text_close">Close</string>
     <string name="text_understood">Understood</string>
     <string name="text_no">No</string>
     <string name="text_cancel">Cancel</string>
@@ -41,6 +45,8 @@
     <string name="text_choose_category">Please choose a category!</string>
     <string name="text_not_all_fields_filled">Not all necessary fields are filled out!</string>
     <string name="text_exit">Exit</string>
+    <string name="text_luggage_already_exists_in_packing_list">Luggage already exists in die Packing List! Please edit count of this Luggage, if you need more of them in your list!</string>
+    <string name="text_warning_reset_database">If you perform this action, all data in the database will be deleted!</string>
 
     <string name="placeholder_concat_packing_list_name">%1$s for %2$s</string>
     <string name="placeholder_luggage_of_packing_list">%1$s of %2$s</string>
@@ -55,7 +61,7 @@
     <string name="warning_packing_list_empty">This packing list contains no entries!</string>
     <string name="warning_delete_failed">Delete failed!</string>
     <string name="warning_luggage_still_in_use">For this piece of luggage are still entries in luggage lists available!</string>
-
+    <string name="warning_no_packing_list_found">No Packing List found! Please create first.</string>
 
     <string name="category1">Swimwear</string>
     <string name="luggage1_category1">Swimming Trunks</string>

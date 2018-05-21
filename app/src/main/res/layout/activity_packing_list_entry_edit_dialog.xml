@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:labelFor="@+id/inputPackingListEntryCount"
-        android:gravity="fill_horizontal|start"
+        android:gravity="fill_horizontal|start|end"
         android:text="@string/label_luggage_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

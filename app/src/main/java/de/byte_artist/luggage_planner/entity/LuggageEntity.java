@@ -6,6 +6,8 @@ public class LuggageEntity {
     private long categoryId = 0;
     private int weight = 0;
     private int count = 0;
+    private boolean active = true;
+
     private LuggageCategoryEntity categoryEntity = null;
 
     public LuggageEntity() {}
@@ -25,8 +27,9 @@ public class LuggageEntity {
         return this.name;
     }
 
-    public void setId(long id) {
+    public LuggageEntity setId(long id) {
         this.id = id;
+        return this;
     }
 
     public long getId() {
@@ -42,28 +45,40 @@ public class LuggageEntity {
         return this.categoryId;
     }
 
-    public void setWeight(int weight) {
+    public LuggageEntity setWeight(int weight) {
         this.weight = weight;
+        return this;
     }
 
     public int getWeight() {
         return this.weight;
     }
 
-    public void setCategoryEntity(LuggageCategoryEntity luggageCategoryEntity) {
+    public LuggageEntity setCategoryEntity(LuggageCategoryEntity luggageCategoryEntity) {
         this.categoryEntity = luggageCategoryEntity;
+        return this;
     }
 
     public LuggageCategoryEntity getCategoryEntity() {
         return this.categoryEntity;
     }
 
-    public void setCount(int count) {
+    public LuggageEntity setCount(int count) {
         this.count = count;
+        return this;
     }
 
     public int getCount() {
         return this.count;
+    }
+
+    public LuggageEntity setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public boolean isActive() {
+        return this.active;
     }
 
     public String toString() {

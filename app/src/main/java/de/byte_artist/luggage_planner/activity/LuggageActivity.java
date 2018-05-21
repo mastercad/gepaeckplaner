@@ -1,9 +1,13 @@
 package de.byte_artist.luggage_planner.activity;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,11 +22,10 @@ import java.util.Locale;
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
-import de.byte_artist.luggage_planner.dialog.LuggageEditDialog;
+import de.byte_artist.luggage_planner.dialog.LuggageNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 import de.byte_artist.luggage_planner.listener.LuggageDeleteOnClickListener;
-import de.byte_artist.luggage_planner.listener.LuggageEntityOnClickListener;
-import de.byte_artist.luggage_planner.listener.LuggageEntityOnLongClickListener;
+import de.byte_artist.luggage_planner.listener.LuggageEntityOnTouchListener;
 
 public class LuggageActivity extends AbstractActivity {
 
@@ -35,17 +38,31 @@ public class LuggageActivity extends AbstractActivity {
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LuggageEditDialog editDialog = new LuggageEditDialog(LuggageActivity.this);
-                editDialog.showNewDialog(view);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag("luggage_new_dialog");
+
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                LuggageNewDialogFragment alertDialog = LuggageNewDialogFragment.newInstance();
+
+                alertDialog.show(ft, "luggage_new_dialog");
             }
         });
 
+        refresh();
+    }
+
+    public void refresh() {
         loadLuggage();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void loadLuggage() {
         TableLayout table = findViewById(R.id.luggageTable);
-
+        table.removeAllViews();
         table.setStretchAllColumns(true);
 
         TableRow rowTitle = new TableRow(this);
@@ -108,6 +125,9 @@ public class LuggageActivity extends AbstractActivity {
             String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(formattedEntryId);
+            if (!luggageEntity.isActive()) {
+                idLabel.setPaintFlags(idLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
             idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
             idLabel.setMaxLines(1);
             idLabel.setGravity(Gravity.START);
@@ -118,15 +138,21 @@ public class LuggageActivity extends AbstractActivity {
 
             TextView nameLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
+            if (!luggageEntity.isActive()) {
+                nameLabel.setPaintFlags(nameLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
             nameLabel.setLayoutParams(lp);
             nameLabel.setMaxLines(1);
-            nameLabel.setText(luggageEntity.getName());
             nameLabel.setGravity(Gravity.START);
+            nameLabel.setText(luggageEntity.getName());
             nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             row.addView(nameLabel);
 
             TextView weightLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+            if (!luggageEntity.isActive()) {
+                weightLabel.setPaintFlags(weightLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
             weightLabel.setLayoutParams(lp);
             weightLabel.setMaxLines(1);
             weightLabel.setText(String.format(Locale.getDefault(), "%d g", luggageEntity.getWeight()));
@@ -148,9 +174,9 @@ public class LuggageActivity extends AbstractActivity {
 
             table.addView(row);
 
-            row.setOnClickListener(new LuggageEntityOnClickListener(luggageEntity));
-            row.setOnLongClickListener(new LuggageEntityOnLongClickListener(LuggageActivity.this, luggageEntity));
+//            row.setOnClickListener(new LuggageEntityOnClickListener(luggageEntity));
+//            row.setOnLongClickListener(new LuggageEntityOnLongClickListener(LuggageActivity.this, luggageEntity));
+            row.setOnTouchListener(new LuggageEntityOnTouchListener(LuggageActivity.this, luggageEntity));
         }
-
     }
 }

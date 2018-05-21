@@ -2,6 +2,8 @@ package de.byte_artist.luggage_planner.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -15,7 +17,9 @@ import java.util.ArrayList;
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
+import de.byte_artist.luggage_planner.dialog.LuggageNewDialogFragment;
 import de.byte_artist.luggage_planner.dialog.PackingListEditDialog;
+import de.byte_artist.luggage_planner.dialog.PackingListNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.listener.PackingListDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnClickListener;
@@ -32,17 +36,30 @@ public class PackingListActivity extends AbstractActivity {
         addPackingListEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PackingListEditDialog editDialog = new PackingListEditDialog(PackingListActivity.this);
-                editDialog.showNewDialog(view);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag("packing_list_new_dialog");
+
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                PackingListNewDialogFragment alertDialog = PackingListNewDialogFragment.newInstance();
+
+                alertDialog.show(ft, "packing_list_new_dialog");
             }
         });
 
+        refresh();
+    }
+
+    public void refresh() {
         loadPackingLists();
     }
 
     private void loadPackingLists() {
-
         TableLayout table = findViewById(R.id.packingListsTable);
+        table.removeAllViews();
         table.setShrinkAllColumns(true);
         table.setStretchAllColumns(true);
 

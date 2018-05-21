@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,8 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setFinishOnTouchOutside(false);
         setContentView(R.layout.activity_luggage_edit_dialog);
     }
 
@@ -53,7 +56,11 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         final LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(view.getContext(), null, null, 1);
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
         luggageCategoryEntities.add(0, new LuggageCategoryEntity(view.getResources().getString(R.string.text_please_select)));
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, luggageCategoryEntities);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(
+            view.getContext(),
+            android.R.layout.simple_spinner_item,
+            luggageCategoryEntities
+        );
 
         categorySpinner.setAdapter(spinnerArrayAdapter);
 
@@ -73,6 +80,7 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
 
         builder.setTitle(R.string.title_luggage_edit);
         builder.setView(luggageEditView);
+//        builder.setCancelable(false);
 
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -90,6 +98,13 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
                 }
             }
         });
+        /*
+        builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        */
 
         builder.create().show();
     }
@@ -106,13 +121,18 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(view.getContext(), null, null, 1);
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
         luggageCategoryEntities.add(0, new LuggageCategoryEntity(view.getResources().getText(R.string.text_choose_category).toString()));
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, luggageCategoryEntities);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(
+            view.getContext(),
+            android.R.layout.simple_spinner_item,
+            luggageCategoryEntities
+        );
 
         categorySpinner.setAdapter(spinnerArrayAdapter);
         categorySpinner.setOnItemSelectedListener(this);
 
         builder.setTitle(R.string.title_luggage_new);
         builder.setView(luggageEditView);
+//        builder.setCancelable(false);
 
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -136,7 +156,13 @@ public class LuggageEditDialog extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-
+        /*
+        builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        */
         builder.create().show();
     }
 

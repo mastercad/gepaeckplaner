@@ -6,6 +6,7 @@
     <string name="label_luggage_list">Gepäckstücke</string>
     <string name="label_packing_list">Packliste</string>
     <string name="label_packing_lists">Packlisten</string>
+    <string name="label_options">Einstellungen</string>
 
     <string name="label_weight">Gewicht</string>
     <string name="label_date">Datum</string>
@@ -20,13 +21,16 @@
     <string name="title_luggage_new">Gepäckstück anlegen</string>
     <string name="title_packing_list_edit">Packliste bearbeiten</string>
     <string name="title_packing_list_new">Packliste anlegen</string>
+    <string name="title_options">Einstellungen</string>
     <string name="title_error">Fehler!</string>
+    <string name="title_warning">Achtung!</string>
     <string name="title_main_page">Hauptseite</string>
     <string name="title_exit_application">Anwendung schließen</string>
 
     <string name="text_yes">Ja</string>
     <string name="text_ok">Ja</string>
     <string name="text_of">von</string>
+    <string name="text_close">Schließen</string>
     <string name="text_understood">Verstanden</string>
     <string name="text_no">Nein</string>
     <string name="text_cancel">Abbrechen</string>
@@ -41,6 +45,8 @@
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
     <string name="text_exit">Verlassen</string>
+    <string name="text_luggage_already_exists_in_packing_list">Dieses Gepäckstück existiert bereits in ihrer Packliste! Bitte bearbeiten sie die Anzahl dieses Eintrages, wenn sie mehr dieser Gepäckstücke planen!</string>
+    <string name="text_warning_reset_database">Wenn Sie diese Aktion auführen, werden sämtliche Daten in der Datenbank gelöscht!</string>
 
     <string name="placeholder_concat_packing_list_name">%1$s für %2$s</string>
     <string name="placeholder_luggage_of_packing_list">%1$s von %2$s</string>
@@ -55,7 +61,7 @@
     <string name="warning_packing_list_empty">Diese Packliste enthält noch keine Einträge!</string>
     <string name="warning_delete_failed">Löschen fehlgeschlagen!</string>
     <string name="warning_luggage_still_in_use">Dieses Gepäckstück wird noch in Packlisten verwendet!</string>
-
+    <string name="warning_no_packing_list_found">Es wurde keine Packliste Gefunden! Bitte legen sie eine an.</string>
 
     <string name="category1">Badesachen</string>
     <string name="luggage1_category1">Badehose</string>
@@ -68,7 +74,7 @@
 
     <string name="category3">Hygiene</string>
     <string name="luggage1_category3">Zahnbürste</string>
-    <string name="luggage2_category3">Handtucher (groß)</string>
+    <string name="luggage2_category3">Handtuch (groß)</string>
     <string name="luggage3_category3">Handtuch (klein)</string>
 
     <string name="packing_list1">Urlaub Spreewald (2018&#8210;08&#8210;04)</string>

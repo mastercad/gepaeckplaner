@@ -48,14 +48,14 @@ public class PackingListEditDialog extends AppCompatActivity {
 
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                String categoryName = inputPackingListName.getText().toString();
+            String categoryName = inputPackingListName.getText().toString();
 
-                packingListEntity.setName(categoryName);
+            packingListEntity.setName(categoryName);
 
-                PackingListDbModel packingListDbModel = new PackingListDbModel(view.getContext(), null, null, 1);
-                packingListDbModel.update(packingListEntity);
+            PackingListDbModel packingListDbModel = new PackingListDbModel(view.getContext(), null, null, 1);
+            packingListDbModel.update(packingListEntity);
 
-                activity.recreate();
+            activity.recreate();
             }
         });
 
