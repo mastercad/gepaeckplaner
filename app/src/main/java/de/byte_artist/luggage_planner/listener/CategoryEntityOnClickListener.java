@@ -22,10 +22,10 @@ public class CategoryEntityOnClickListener implements View.OnClickListener {
     public void onClick(View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
 
-        alertDialog.setTitle(Long.toString(this.luggageCategoryEntity.getId()))
-            .setMessage(this.luggageCategoryEntity.getName())
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(R.string.title_information)
+            .setMessage(String.format(view.getResources().getString(R.string.text_category_info), luggageCategoryEntity.getName()))
+            .setIcon(android.R.drawable.ic_menu_help)
+            .setPositiveButton(R.string.text_close, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // here you can add functions
                 }

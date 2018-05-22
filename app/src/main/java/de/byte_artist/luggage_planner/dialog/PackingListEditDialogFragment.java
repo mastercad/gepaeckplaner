@@ -1,5 +1,6 @@
 package de.byte_artist.luggage_planner.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -42,8 +43,10 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
     }
 
     private void setDate(final Calendar calendar) {
+        Locale currentLocale = getResources().getConfiguration().locale;
+
         String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, currentLocale);
 
         editText.setText(sdf.format(calendar.getTime()));
     }
@@ -63,6 +66,7 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
         final EditText inputPackingListName = packingListEntryEditView.findViewById(R.id.inputPackingListName);
         inputPackingListName.setText(packingListEntity.getName());
 
+        @SuppressLint("CutPasteId")
         final TextView inputPackingListDate = packingListEntryEditView.findViewById(R.id.inputPackingListDate);
         inputPackingListDate.setText(packingListEntity.getDate());
 

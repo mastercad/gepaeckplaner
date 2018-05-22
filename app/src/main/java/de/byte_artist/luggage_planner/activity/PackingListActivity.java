@@ -13,17 +13,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
-import de.byte_artist.luggage_planner.dialog.LuggageNewDialogFragment;
-import de.byte_artist.luggage_planner.dialog.PackingListEditDialog;
 import de.byte_artist.luggage_planner.dialog.PackingListNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.listener.PackingListDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnLongClickListener;
+import de.byte_artist.luggage_planner.service.Date;
 
 public class PackingListActivity extends AbstractActivity {
 
@@ -80,6 +80,9 @@ public class PackingListActivity extends AbstractActivity {
         ArrayList<PackingListEntity> packingListEntities = packingListDbModel.load();
 
         TableRow.LayoutParams lp;
+        Date dateService = new Date();
+
+        Locale currentLocale = getResources().getConfiguration().locale;
 
         for (PackingListEntity packingListEntity : packingListEntities) {
             TableRow row = new TableRow(this);
@@ -93,7 +96,12 @@ public class PackingListActivity extends AbstractActivity {
             row.addView(nameLabel);
 
             TextView dateLabel = new TextView(this);
-            dateLabel.setText(packingListEntity.getDate());
+            dateLabel.setText(dateService.localizeDate(
+                getApplicationContext(),
+                packingListEntity.getDate(),
+                "",
+                currentLocale
+            ));
             dateLabel.setGravity(Gravity.END);
             dateLabel.setMaxLines(1);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.4f);

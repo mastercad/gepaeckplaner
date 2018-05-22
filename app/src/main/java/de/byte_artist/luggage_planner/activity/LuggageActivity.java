@@ -84,6 +84,8 @@ public class LuggageActivity extends AbstractActivity {
         long tempCategory = -1;
         Resources.Theme currentTheme = getTheme();
 
+        Locale currentLocale = getResources().getConfiguration().locale;
+
         for (LuggageEntity luggageEntity : luggageEntities) {
             long currentCategory = luggageEntity.getCategoryEntity().getId();
 
@@ -122,7 +124,7 @@ public class LuggageActivity extends AbstractActivity {
             row.setLayoutParams(lp);
 
             TextView idLabel = new TextView(this);
-            String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
+            String formattedEntryId = String.format(currentLocale, "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
             idLabel.setText(formattedEntryId);
             if (!luggageEntity.isActive()) {
@@ -155,7 +157,7 @@ public class LuggageActivity extends AbstractActivity {
             }
             weightLabel.setLayoutParams(lp);
             weightLabel.setMaxLines(1);
-            weightLabel.setText(String.format(Locale.getDefault(), "%d g", luggageEntity.getWeight()));
+            weightLabel.setText(String.format(currentLocale, "%.0f g", luggageEntity.getWeight()));
             weightLabel.setGravity(Gravity.END);
             weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             row.addView(weightLabel);
@@ -174,8 +176,6 @@ public class LuggageActivity extends AbstractActivity {
 
             table.addView(row);
 
-//            row.setOnClickListener(new LuggageEntityOnClickListener(luggageEntity));
-//            row.setOnLongClickListener(new LuggageEntityOnLongClickListener(LuggageActivity.this, luggageEntity));
             row.setOnTouchListener(new LuggageEntityOnTouchListener(LuggageActivity.this, luggageEntity));
         }
     }

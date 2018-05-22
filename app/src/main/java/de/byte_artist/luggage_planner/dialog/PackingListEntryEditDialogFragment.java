@@ -64,6 +64,8 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Locale currentLocale = getResources().getConfiguration().locale;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         final View packingListEntryEditView = View.inflate(getContext(), R.layout.activity_packing_list_entry_edit_dialog, null);
 
@@ -73,7 +75,7 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
         luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
 
         final EditText luggageCount = packingListEntryEditView.findViewById(R.id.inputPackingListEntryCount);
-        luggageCount.setText(String.format(Locale.getDefault(), "%d", packingListEntryEntity.getCount()));
+        luggageCount.setText(String.format(currentLocale, "%d", packingListEntryEntity.getCount()));
 
         final LuggageCategoryDbModel categoryDbModel = new LuggageCategoryDbModel(getActivity(), null, null, 1);
         ArrayList<LuggageCategoryEntity> categoryEntities = categoryDbModel.load();
@@ -141,40 +143,39 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
          */
         builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if (0 < selectedCategory
-                    && 0 < packingListFk
+            if (0 < selectedCategory
+                && 0 < packingListFk
+            ) {
+                PackingListEntryEntity packingListEntryEntityFromDb = packingListEntryDbModel.findLuggageInPackingList(
+                    selectedLuggage,
+                    packingListFk
+                );
+
+                if (null == packingListEntryEntityFromDb
+                    || packingListEntryEntityFromDb.getId() == packingListEntryEntity.getId()
                 ) {
-                    PackingListEntryEntity packingListEntryEntityFromDb = packingListEntryDbModel.findLuggageInPackingList(
-                        selectedLuggage,
-                        packingListFk
-                    );
-
-                    if (null == packingListEntryEntityFromDb
-                        || packingListEntryEntityFromDb.getId() == packingListEntryEntity.getId()
-                    ) {
-                        int count = 0;
-                        if (luggageCount.getText().toString().isEmpty()) {
-                            showAlertNotAllNeededFieldsFilled();
-                        } else {
-                            count = Integer.parseInt(luggageCount.getText().toString());
-                            packingListEntryEntity.setLuggageFk(selectedLuggage);
-                            packingListEntryEntity.setLuggageListFk(packingListEntryEntity.getLuggageListFk());
-                            packingListEntryEntity.setCount(count);
-
-                            packingListEntryDbModel.update(packingListEntryEntity);
-
-                            getActivity().finish();
-                            getActivity().startActivity(getActivity().getIntent());
-                        }
+                    int count = 0;
+                    if (luggageCount.getText().toString().isEmpty()) {
+                        showAlertNotAllNeededFieldsFilled();
                     } else {
-                        showAlertLuggageAlreadyExistsInThisPackingList();
+                        count = Integer.parseInt(luggageCount.getText().toString());
+                        packingListEntryEntity.setLuggageFk(selectedLuggage);
+                        packingListEntryEntity.setLuggageListFk(packingListEntryEntity.getLuggageListFk());
+                        packingListEntryEntity.setCount(count);
+
+                        packingListEntryDbModel.update(packingListEntryEntity);
+
+                        getActivity().finish();
+                        getActivity().startActivity(getActivity().getIntent());
                     }
                 } else {
-                    showAlertBoxNoCategorySelected();
+                    showAlertLuggageAlreadyExistsInThisPackingList();
                 }
+            } else {
+                showAlertBoxNoCategorySelected();
+            }
             }
         });
-//        luggageSpinner.setOnItemSelectedListener(this);
 
         final PackingListEntryEditDialogFragment self = this;
 

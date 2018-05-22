@@ -24,6 +24,7 @@
     <string name="title_packing_list_new">Add Packing list</string>
     <string name="title_error">Error!</string>
     <string name="title_warning">Warning!</string>
+    <string name="title_information">Information!</string>
     <string name="title_main_page">Main Page</string>
     <string name="title_exit_application">Close Application</string>
     <string name="text_please_select">Please select</string>
@@ -48,12 +49,16 @@
     <string name="text_luggage_already_exists_in_packing_list">Luggage already exists in die Packing List! Please edit count of this Luggage, if you need more of them in your list!</string>
     <string name="text_warning_reset_database">If you perform this action, all data in the database will be deleted!</string>
 
+    <string name="text_category_info">This is the category named \"%1$s\".</string>
+    <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
+    <string name="text_packing_list_entry_entity_information">The piece of luggage \"%1$s\" is %2$dx in the list \"%3$s\" and therefore has a total weight of %4$,.0f g.</string>
+
     <string name="placeholder_concat_packing_list_name">%1$s for %2$s</string>
     <string name="placeholder_luggage_of_packing_list">%1$s of %2$s</string>
-    <string name="placeholder_delete_constraints_reason">Luggage "%1$s" could not be deleted because it is still in use!</string>
-    <string name="placeholder_entry_should_be_deleted">"%1$s" should be deleted!</string>
-    <string name="placeholder_delete_category_constraints_reason">Category "%1$s" could not be deleted because it\'s still in use!</string>
-    <string name="placeholder_delete_packing_list_constraints_reason">Packing List "%1$s" (%2$s) could not be deleted because it\'s still in use!</string>
+    <string name="placeholder_delete_constraints_reason">Luggage \"%1$s\" could not be deleted because it is still in use!</string>
+    <string name="placeholder_entry_should_be_deleted">\"%1$s\" should be deleted!</string>
+    <string name="placeholder_delete_category_constraints_reason">Category \"%1$s\" could not be deleted because it\'s still in use!</string>
+    <string name="placeholder_delete_packing_list_constraints_reason">Packing List \"%1$s\" \(%2$s\) could not be deleted because it\'s still in use!</string>
 
     <string name="description_click_to_add_luggage">Click to add a new piece of luggage</string>
     <string name="description_click_to_add_packing_list">Click to add a new packing list</string>
@@ -77,7 +82,7 @@
     <string name="luggage2_category3">Towel (large)</string>
     <string name="luggage3_category3">Towel (small)</string>
 
-    <string name="packing_list1">Vacation Spreewald (2018&#8210;08&#8210;04)</string>
-    <string name="packing_list2">Vacation Ostsee(2018&#8210;06&#8210;01)</string>
+    <string name="packing_list1">Vacation Spreewald</string>
+    <string name="packing_list2">Vacation Ostsee</string>
 
 </resources>

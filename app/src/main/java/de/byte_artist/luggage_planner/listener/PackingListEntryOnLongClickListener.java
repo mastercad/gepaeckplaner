@@ -20,12 +20,6 @@ public class PackingListEntryOnLongClickListener implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View view) {
-        /*
-        PackingListEntryEditDialog editDialog = new PackingListEntryEditDialog(this.activity, packingListEntryEntity.getLuggageListFk());
-        editDialog.showEditDialog(view, packingListEntryEntity);
-
-        return false;
-        */
         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         Fragment prev = activity.getSupportFragmentManager().findFragmentByTag("packing_list_entry_edit_dialog");
 

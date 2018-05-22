@@ -35,9 +35,6 @@ public class CategoryActivity extends AbstractActivity {
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//            CategoryEditDialog editDialog = new CategoryEditDialog(CategoryActivity.this);
-//            editDialog.showNewDialog(view);
-
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 Fragment prev = getSupportFragmentManager().findFragmentByTag("category_new_dialog");
 
@@ -79,6 +76,8 @@ public class CategoryActivity extends AbstractActivity {
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this, null, null, 1);
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
 
+        Locale currentLocale = getResources().getConfiguration().locale;
+
         for (LuggageCategoryEntity luggageCategoryEntity : luggageCategoryEntities) {
             TableRow row = new TableRow(this);
             row.setWeightSum(1);
@@ -87,7 +86,7 @@ public class CategoryActivity extends AbstractActivity {
 
             TextView idLabel = new TextView(this);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-            idLabel.setText(String.format(Locale.getDefault(), "%d", luggageCategoryEntity.getId()));
+            idLabel.setText(String.format(currentLocale, "%d", luggageCategoryEntity.getId()));
             idLabel.setMaxLines(1);
             idLabel.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
             idLabel.setLayoutParams(lp);

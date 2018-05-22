@@ -66,7 +66,9 @@ public class MainActivity extends AbstractActivity {
             int rowCount = 1;
             long tempCategory = -1;
             TableRow.LayoutParams lp;
-            int weightSum = 0;
+            double weightSum = 0;
+
+            Locale currentLocale = getResources().getConfiguration().locale;
 
             for (PackingListEntryEntity packingListEntryEntity : luggageListEntryCollection) {
 
@@ -109,7 +111,7 @@ public class MainActivity extends AbstractActivity {
                 row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 4f));
 
                 TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(Locale.getDefault(), "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+                String formattedEntryId = String.format(currentLocale, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
                 idLabel.setText(formattedEntryId);
                 idLabel.setMaxLines(1);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -128,7 +130,7 @@ public class MainActivity extends AbstractActivity {
                 row.addView(nameLabel);
 
                 TextView countLabel = new TextView(this);
-                countLabel.setText(String.format(Locale.getDefault(), "%dx", packingListEntryEntity.getCount()));
+                countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
                 countLabel.setGravity(Gravity.END);
                 countLabel.setMaxLines(1);
                 countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -137,7 +139,7 @@ public class MainActivity extends AbstractActivity {
                 row.addView(countLabel);
 
                 TextView weightLabel = new TextView(this);
-                weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
+                weightLabel.setText(String.format(currentLocale, "%,.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
                 weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 0.1f));
                 weightLabel.setGravity(Gravity.END);
                 weightLabel.setMaxLines(1);
@@ -163,7 +165,7 @@ public class MainActivity extends AbstractActivity {
             rowSummary.setGravity(Gravity.END);
 
             TextView summary = new TextView(this);
-            summary.setText(String.format(Locale.getDefault(), "%d g", weightSum));
+            summary.setText(String.format(currentLocale, "%,.0f g", weightSum));
             summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             summary.setGravity(Gravity.END);
             summary.setTypeface(Typeface.SERIF, Typeface.BOLD);

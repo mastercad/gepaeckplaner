@@ -22,7 +22,7 @@ public class PackingListEntryDeleteOnClickListener implements View.OnClickListen
     @Override
     public void onClick(View view) {
         final View currentView = view;
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext(), R.style.AlertDialogTheme);
         alertDialog.setTitle(R.string.label_delete)
             .setMessage(String.format(view.getResources().getString(R.string.placeholder_luggage_of_packing_list),
                     this.packingListEntryEntity.getLuggageEntity().getName(),
@@ -37,6 +37,9 @@ public class PackingListEntryDeleteOnClickListener implements View.OnClickListen
                 packingListEntryEntity = null;
 
                 activity.recreate();
+            }
+        }).setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
             }
         }).show();
     }

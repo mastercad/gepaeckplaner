@@ -9,7 +9,6 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingStart="15dp"
-    tools:context=".dialog.PackingListEditDialog"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView

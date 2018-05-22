@@ -59,10 +59,10 @@ public class LuggageNewDialogFragment extends DialogFragment implements AdapterV
             public void onClick(DialogInterface dialog, int which) {
             if (1 <= selectedCategory) {
                 String luggageName = luggageNameEdit.getText().toString();
-                int luggageWeight = 0;
+                double luggageWeight = 0;
 
                 if (0 < luggageWeightEdit.getText().length()) {
-                    luggageWeight = Integer.valueOf(luggageWeightEdit.getText().toString());
+                    luggageWeight = Double.parseDouble(luggageWeightEdit.getText().toString());
                 }
 
                 if (luggageName.isEmpty()

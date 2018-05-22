@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class DbModel extends SQLiteOpenHelper {
 
-    static final Integer DATABASE_VERSION = 2;
+    static final Integer DATABASE_VERSION = 3;
     static final String DATABASE_NAME = "luggage.db";
 
     static final String TABLE_LUGGAGE = "luggage";
@@ -33,8 +33,13 @@ class DbModel extends SQLiteOpenHelper {
     static final String COLUMN_LUGGAGE_FK = "luggage_fk";
     static final String COLUMN_PACKING_LIST_ENTRY_COUNT = "packing_list_entry_count";
 
+    final Context context;
+    final SQLiteDatabase.CursorFactory factory;
+
     DbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        this.context = context;
+        this.factory = factory;
     }
 
     @Override
@@ -119,7 +124,48 @@ class DbModel extends SQLiteOpenHelper {
         ) {
             createTable = "ALTER TABLE "+TABLE_LUGGAGE+" ADD "+COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1;";
 
+            db.execSQL(createTable);
+        } else if (2 == oldVersion
+            && 3 == newVersion
+        ) {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
+
+            db.setForeignKeyConstraintsEnabled(false);
+
+            createTable = "CREATE TABLE luggage_temp AS SELECT * FROM "+TABLE_LUGGAGE+";";
+
+            db.execSQL(createTable);
+
+            createTable = "DROP TABLE "+TABLE_LUGGAGE;
+
+            db.execSQL(createTable);
+
+            createTable = "CREATE TABLE "+TABLE_LUGGAGE+" ("+
+                COLUMN_LUGGAGE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
+                COLUMN_LUGGAGE_NAME+" TEXT NOT NULL, "+
+                COLUMN_LUGGAGE_CATEGORY_FK+" INTEGER NOT NULL REFERENCES "+TABLE_LUGGAGE_CATEGORY+" ("+COLUMN_LUGGAGE_CATEGORY_ID+"), "+
+                COLUMN_LUGGAGE_WEIGHT+" REAL NOT NULL DEFAULT 0, "+
+                COLUMN_LUGGAGE_COUNT+" INTEGER NOT NULL, "+
+                COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1 "+
+            ");";
+
+            db.execSQL(createTable);
+
+            createTable = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
+
+            db.execSQL(createTable);
+
+            createTable = "DROP TABLE luggage_temp";
+
+            db.execSQL(createTable);
+
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
+
+            db.setForeignKeyConstraintsEnabled(true);
         }
-        db.execSQL(createTable);
     }
 }

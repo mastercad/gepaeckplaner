@@ -8,8 +8,7 @@
     android:paddingEnd="15dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:paddingStart="15dp"
-    tools:context=".dialog.CategoryEditDialog">
+    android:paddingStart="15dp">
 
     <TextView
         android:id="@+id/labelCategory"

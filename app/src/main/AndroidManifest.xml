@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +20,7 @@
         <activity android:name=".activity.CategoryActivity" />
         <activity android:name=".activity.LuggageActivity" />
         <activity android:name=".activity.PackingListActivity" />
-        <activity android:name=".dialog.CategoryEditDialog" />
-        <activity android:name=".dialog.LuggageEditDialog" />
-        <activity android:name=".dialog.PackingListEditDialog" />
         <activity android:name=".activity.PackingListDetailActivity" />
-        <activity android:name=".dialog.PackingListEntryEditDialog" />
     </application>
 
 </manifest>

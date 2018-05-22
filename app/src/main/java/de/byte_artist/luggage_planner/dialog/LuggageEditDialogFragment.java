@@ -42,10 +42,10 @@ public class LuggageEditDialogFragment extends DialogFragment implements Adapter
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        super.onCreateDialog(savedInstanceState);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         final View luggageEditView = View.inflate(getContext(), R.layout.activity_luggage_edit_dialog, null);
+
+        Locale currentLocale = getResources().getConfiguration().locale;
 
         final EditText luggageNameEdit = luggageEditView.findViewById(R.id.luggageNameEdit);
         luggageNameEdit.setText(luggageEntity.getName());
@@ -82,7 +82,7 @@ public class LuggageEditDialogFragment extends DialogFragment implements Adapter
         categorySpinner.setOnItemSelectedListener(this);
 
         final EditText luggageWeightEdit = luggageEditView.findViewById(R.id.luggageWeight);
-        luggageWeightEdit.setText(String.format(Locale.getDefault(), "%d", luggageEntity.getWeight()));
+        luggageWeightEdit.setText(String.format(currentLocale, "%.0f", luggageEntity.getWeight()));
 
         builder.setTitle(R.string.title_luggage_edit);
         builder.setView(luggageEditView);
@@ -91,14 +91,14 @@ public class LuggageEditDialogFragment extends DialogFragment implements Adapter
             public void onClick(DialogInterface dialog, int which) {
             if (1 <= selectedCategory) {
                 String luggageName = luggageNameEdit.getText().toString();
-                int luggageWeight = 0;
+                double luggageWeight = 0;
 
                 if (luggageName.isEmpty()
                     || 0 == luggageWeightEdit.length()
                 ) {
                     showAlertNotAllNeededFieldFilled();
                 } else {
-                    luggageWeight = Integer.valueOf(luggageWeightEdit.getText().toString());
+                    luggageWeight = Double.parseDouble(luggageWeightEdit.getText().toString());
                     luggageEntity.setName(luggageName);
                     luggageEntity.setWeight(luggageWeight);
                     luggageEntity.setCategoryId(selectedCategory);
@@ -106,8 +106,6 @@ public class LuggageEditDialogFragment extends DialogFragment implements Adapter
                     LuggageDbModel luggageDbModel = new LuggageDbModel(getActivity(), null, null, 1);
                     luggageDbModel.update(luggageEntity);
 
-//                      dismiss();
-//                    getActivity().recreate();
                     getActivity().finish();
                     getActivity().startActivity(getActivity().getIntent());
                 }
@@ -119,7 +117,6 @@ public class LuggageEditDialogFragment extends DialogFragment implements Adapter
 
         builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-//            dismiss();
             }
         });
 

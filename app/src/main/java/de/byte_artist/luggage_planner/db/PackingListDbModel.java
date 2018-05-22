@@ -16,13 +16,8 @@ import de.byte_artist.luggage_planner.entity.PackingListEntity;
  */
 public class PackingListDbModel extends DbModel {
 
-//    private Context context;
-//    private SQLiteDatabase.CursorFactory cursorFactory;
-
     public PackingListDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-//        this.context = context;
-//        this.cursorFactory = factory;
     }
 
     public ArrayList<PackingListEntity> load() {
@@ -75,8 +70,11 @@ public class PackingListDbModel extends DbModel {
     public void delete(PackingListEntity packingListEntity) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        final String[] whereArgs = {Long.toString(packingListEntity.getId())};
-        db.delete(TABLE_PACKING_LIST,COLUMN_PACKING_LIST_ID + " = ?", whereArgs);
+        final String[] whereArgsDeletePackingListEntry = {Long.toString(packingListEntity.getId())};
+        db.delete(TABLE_PACKING_LIST_ENTRY, COLUMN_PACKING_LIST_FK + " = ?", whereArgsDeletePackingListEntry);
+
+        final String[] whereArgsDeletePackingList = {Long.toString(packingListEntity.getId())};
+        db.delete(TABLE_PACKING_LIST,COLUMN_PACKING_LIST_ID + " = ?", whereArgsDeletePackingList);
     }
 
     public PackingListEntity findPackingListById(long luggageListId) {

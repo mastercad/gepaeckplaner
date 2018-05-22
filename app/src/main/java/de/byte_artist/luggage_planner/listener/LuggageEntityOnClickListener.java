@@ -21,7 +21,7 @@ public class LuggageEntityOnClickListener implements View.OnClickListener {
         alertDialog.setTitle(Long.toString(this.luggageEntity.getId()))
             .setMessage(this.luggageEntity.getName())
             .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.text_close, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             // here you can add functions
             }

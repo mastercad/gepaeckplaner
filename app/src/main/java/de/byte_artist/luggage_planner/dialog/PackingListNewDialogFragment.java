@@ -1,5 +1,6 @@
 package de.byte_artist.luggage_planner.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -31,8 +32,9 @@ public class PackingListNewDialogFragment extends DialogFragment implements Date
     }
 
     private void setDate(final Calendar calendar) {
+        Locale currentLocale = getResources().getConfiguration().locale;
         String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, currentLocale);
 
         editText.setText(sdf.format(calendar.getTime()));
     }
@@ -43,6 +45,7 @@ public class PackingListNewDialogFragment extends DialogFragment implements Date
         setDate(calender);
     }
 
+    @SuppressLint("CutPasteId")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class PackingListNewDialogFragment extends DialogFragment implements Date
         final View packingListEntryEditView = View.inflate(getContext(), R.layout.activity_packing_list_edit_dialog, null);
 
         final EditText inputPackingListName = packingListEntryEditView.findViewById(R.id.inputPackingListName);
-        final TextView inputPackingListDate = packingListEntryEditView.findViewById(R.id.inputPackingListDate);
+        @SuppressLint("CutPasteId") final TextView inputPackingListDate = packingListEntryEditView.findViewById(R.id.inputPackingListDate);
 
         builder.setTitle(R.string.title_packing_list_new);
         builder.setView(packingListEntryEditView);
@@ -89,8 +92,7 @@ public class PackingListNewDialogFragment extends DialogFragment implements Date
 
         builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                getFragmentManager().popBackStack();
-//                dismiss();
+            getFragmentManager().popBackStack();
             }
         });
 

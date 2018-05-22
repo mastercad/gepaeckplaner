@@ -21,12 +21,11 @@ import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
-import de.byte_artist.luggage_planner.dialog.PackingListEntryEditDialog;
 import de.byte_artist.luggage_planner.dialog.PackingListEntryNewDialogFragment;
-import de.byte_artist.luggage_planner.dialog.PackingListNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
+import de.byte_artist.luggage_planner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnLongClickListener;
 
 public class PackingListDetailActivity extends AbstractActivity {
@@ -76,7 +75,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
-        title.setText(R.string.label_packing_list);
+        title.setText(R.string.label_luggage_list);
         title.setMaxLines(1);
         title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -84,7 +83,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         rowTitle.addView(title);
         table.addView(rowTitle);
 
-        int weightSum = 0;
+        double weightSum = 0;
 
         PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this, null, null, 1);
         ArrayList<PackingListEntryEntity> packingListEntryCollection = packingListEntryDbModel.findPackingListById(packingListId);
@@ -112,6 +111,8 @@ public class PackingListDetailActivity extends AbstractActivity {
             long tempCategory = -1;
 
             TableRow.LayoutParams lp;
+
+            Locale currentLocale = getResources().getConfiguration().locale;
 
             for (PackingListEntryEntity packingListEntryEntity : packingListEntryCollection) {
                 if (1 == rowCount) {
@@ -151,7 +152,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 TextView idLabel = new TextView(this);
                 String formattedEntryId = String.format(
-                        Locale.getDefault(),
+                        currentLocale,
                         "%d%02d",
                         packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
                 );
@@ -175,7 +176,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 row.addView(nameLabel);
 
                 TextView countLabel = new TextView(this);
-                countLabel.setText(String.format(Locale.getDefault(), "%dx", packingListEntryEntity.getCount()));
+                countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
                 countLabel.setGravity(Gravity.END);
                 countLabel.setMaxLines(1);
                 countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -184,7 +185,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 row.addView(countLabel);
 
                 TextView weightLabel = new TextView(this);
-                weightLabel.setText(String.format(Locale.getDefault(), "%d g", packingListEntryEntity.getLuggageEntity().getWeight()));
+                weightLabel.setText(String.format(currentLocale, "%.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
                 weightLabel.setGravity(Gravity.END);
                 weightLabel.setMaxLines(1);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -205,7 +206,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 row.addView(deleteBtn);
 
-//                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
+                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
                 row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity));
 
                 table.addView(row);
@@ -227,7 +228,7 @@ public class PackingListDetailActivity extends AbstractActivity {
             rowSummary.setGravity(Gravity.END);
 
             TextView summary = new TextView(this);
-            summary.setText(String.format(Locale.getDefault(), "%d g", weightSum));
+            summary.setText(String.format(currentLocale, "%,.0f g", weightSum));
             summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             summary.setGravity(Gravity.END);
             summary.setTypeface(Typeface.SERIF, Typeface.BOLD);

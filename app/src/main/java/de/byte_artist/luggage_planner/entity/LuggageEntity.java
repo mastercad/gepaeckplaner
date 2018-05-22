@@ -4,7 +4,7 @@ public class LuggageEntity {
     private long id = 0;
     private String name = null;
     private long categoryId = 0;
-    private int weight = 0;
+    private double weight = 0;
     private int count = 0;
     private boolean active = true;
 
@@ -12,7 +12,7 @@ public class LuggageEntity {
 
     public LuggageEntity() {}
 
-    public LuggageEntity(String name, long categoryId, int weight) {
+    public LuggageEntity(String name, long categoryId, double weight) {
         this.setName(name)
             .setCategoryId(categoryId)
             .setWeight(weight);
@@ -45,12 +45,12 @@ public class LuggageEntity {
         return this.categoryId;
     }
 
-    public LuggageEntity setWeight(int weight) {
+    public LuggageEntity setWeight(double weight) {
         this.weight = weight;
         return this;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return this.weight;
     }
 

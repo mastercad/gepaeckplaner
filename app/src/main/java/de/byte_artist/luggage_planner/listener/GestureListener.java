@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -119,13 +118,12 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     }
 
     public boolean onClick() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(Long.toString(this.luggageEntity.getId()))
-            .setMessage(this.luggageEntity.getName())
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity, R.style.AlertDialogTheme);
+        alertDialog.setTitle(R.string.title_information)
+            .setMessage(String.format(activity.getResources().getString(R.string.text_luggage_information), luggageEntity.getName(), luggageEntity.getCategoryEntity().getName(), luggageEntity.getWeight()))
+            .setIcon(android.R.drawable.ic_menu_help)
+            .setPositiveButton(R.string.text_close, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    // here you can add functions
                 }
             }).show();
 

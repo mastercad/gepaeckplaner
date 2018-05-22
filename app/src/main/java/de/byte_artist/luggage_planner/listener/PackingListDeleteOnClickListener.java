@@ -22,7 +22,7 @@ public class PackingListDeleteOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(final View view) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext(), R.style.AlertDialogTheme);
         alertDialog.setTitle(R.string.label_delete)
             .setMessage(this.packingListEntity.getName()+" "+this.packingListEntity.getDate())
             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -49,6 +49,9 @@ public class PackingListDeleteOnClickListener implements View.OnClickListener {
                                 }
                             }).show();
                     }
+                }
+            }).setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
                 }
             }).show();
     }
