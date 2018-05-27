@@ -9,7 +9,7 @@ import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
 public class LuggageEntityOnTouchListener implements View.OnTouchListener {
 
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
 
     public LuggageEntityOnTouchListener(LuggageActivity activity, LuggageEntity luggageEntity) {
         gestureDetector = new GestureDetector(activity, new GestureListener(activity, luggageEntity));

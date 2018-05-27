@@ -6,8 +6,8 @@ android {
         applicationId "de.byte_artist.luggage_planner"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -43,3 +43,4 @@ dependencies {
     implementation 'com.android.support:mediarouter-v7:27.1.1'
 }
 //apply plugin: 'com.google.gms.google-services'
+

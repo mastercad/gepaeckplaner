@@ -3,19 +3,17 @@ package de.byte_artist.luggage_planner.dialog;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,7 +27,7 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
 
     private PackingListEntity packingListEntity;
 
-    TextView editText;
+    private TextView editText;
 
     public static PackingListEditDialogFragment newInstance(PackingListEntity packingListEntity) {
         PackingListEditDialogFragment fragment = new PackingListEditDialogFragment();
@@ -38,7 +36,7 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
         return fragment;
     }
 
-    public void setComplexVariable(PackingListEntity packingListEntity) {
+    private void setComplexVariable(PackingListEntity packingListEntity) {
         this.packingListEntity = packingListEntity;
     }
 
@@ -57,10 +55,11 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
         setDate(calender);
     }
 
+    @SuppressLint("CutPasteId")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        CustomDialog dialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
         final View packingListEntryEditView = View.inflate(getContext(), R.layout.activity_packing_list_edit_dialog, null);
 
         final EditText inputPackingListName = packingListEntryEditView.findViewById(R.id.inputPackingListName);
@@ -70,51 +69,51 @@ public class PackingListEditDialogFragment extends DialogFragment implements Dat
         final TextView inputPackingListDate = packingListEntryEditView.findViewById(R.id.inputPackingListDate);
         inputPackingListDate.setText(packingListEntity.getDate());
 
-        builder.setTitle(R.string.title_packing_list_new);
-        builder.setView(packingListEntryEditView);
+        dialog.setTitle(R.string.title_packing_list_new);
+        dialog.setView(packingListEntryEditView);
 
         editText = packingListEntryEditView.findViewById(R.id.inputPackingListDate);
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CalenderDialogFragment dialog = new CalenderDialogFragment();
-                dialog.setListeningActivity(PackingListEditDialogFragment.this);
-                dialog.show(getFragmentManager(), "date");
+            CalenderDialogFragment dialog = new CalenderDialogFragment();
+            dialog.setListeningActivity(PackingListEditDialogFragment.this);
+            dialog.show(getFragmentManager(), "date");
             }
         });
 
-        builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_save), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                String packingListName = inputPackingListName.getText().toString();
-                String packingListDate = inputPackingListDate.getText().toString();
+            String packingListName = inputPackingListName.getText().toString();
+            String packingListDate = inputPackingListDate.getText().toString();
 
-                if (0 == packingListName.length()
-                    || 0 == packingListDate.length()
-                ) {
-                    showAlertNotAllNeededFieldFilled();
-                } else {
-                    packingListEntity.setName(packingListName);
-                    packingListEntity.setDate(packingListDate);
+            if (0 == packingListName.length()
+                || 0 == packingListDate.length()
+            ) {
+                showAlertNotAllNeededFieldFilled();
+            } else {
+                packingListEntity.setName(packingListName);
+                packingListEntity.setDate(packingListDate);
 
-                    PackingListDbModel packingListDbModel = new PackingListDbModel(getActivity(), null, null, 1);
-                    packingListDbModel.update(packingListEntity);
+                PackingListDbModel packingListDbModel = new PackingListDbModel(getActivity());
+                packingListDbModel.update(packingListEntity);
 
-                    getActivity().finish();
-                    getActivity().startActivity(getActivity().getIntent());
-                }
+                getActivity().finish();
+                getActivity().startActivity(getActivity().getIntent());
+                Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
+            }
             }
         });
 
-        builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
 
-        setRetainInstance(true);
-        builder.setOnDismissListener(this);
-
-        return builder.create();
+        dialog.create();
+        return  dialog;
     }
 
     private void showAlertNotAllNeededFieldFilled() {

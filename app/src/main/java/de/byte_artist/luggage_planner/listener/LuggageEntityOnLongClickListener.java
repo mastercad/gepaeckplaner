@@ -8,7 +8,7 @@ import android.view.View;
 import de.byte_artist.luggage_planner.dialog.LuggageEditDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
-public class LuggageEntityOnLongClickListener implements View.OnLongClickListener {
+class LuggageEntityOnLongClickListener implements View.OnLongClickListener {
 
     private final LuggageEntity luggageEntity;
     private final AppCompatActivity activity;

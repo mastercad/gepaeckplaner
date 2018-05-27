@@ -17,13 +17,12 @@ import de.byte_artist.luggage_planner.entity.LuggageEntity;
  */
 public class LuggageDbModel extends DbModel {
 
-    private final Context context;
-    private final SQLiteDatabase.CursorFactory cursorFactory;
+    public LuggageDbModel(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
-    public LuggageDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public LuggageDbModel(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        this.context = context;
-        this.cursorFactory = factory;
     }
 
     public ArrayList<LuggageEntity> load() {
@@ -43,7 +42,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setCount(cursor.getInt(4));
             luggageEntity.setActive(cursor.getString(5).equals("1"));
 
-            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
             LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(luggageCategoryId);
 
             luggageEntity.setCategoryEntity(luggageCategoryEntity);
@@ -85,7 +84,7 @@ public class LuggageDbModel extends DbModel {
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<LuggageEntity> collection = new ArrayList<>();
 
-        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
         LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(luggageCategoryId);
 
         while (cursor.moveToNext()) {
@@ -191,7 +190,7 @@ public class LuggageDbModel extends DbModel {
             luggageEntity.setCount(cursor.getInt(4));
             luggageEntity.setActive(cursor.getString(5).equals("1"));
 
-            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
             LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(categoryId);
 
             luggageEntity.setCategoryEntity(luggageCategoryEntity);

@@ -16,7 +16,11 @@ import de.byte_artist.luggage_planner.entity.PackingListEntity;
  */
 public class PackingListDbModel extends DbModel {
 
-    public PackingListDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public PackingListDbModel(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public PackingListDbModel(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 

@@ -1,20 +1,18 @@
 package de.byte_artist.luggage_planner.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -53,11 +51,11 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
         return fragment;
     }
 
-    public void setComplexVariable(PackingListEntryEntity packingListEntryEntity) {
+    private void setComplexVariable(PackingListEntryEntity packingListEntryEntity) {
         this.packingListEntryEntity = packingListEntryEntity;
     }
 
-    public void setComplexVariable(long packingListFk) {
+    private void setComplexVariable(long packingListFk) {
         this.packingListFk = packingListFk;
     }
 
@@ -65,11 +63,10 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Locale currentLocale = getResources().getConfiguration().locale;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        CustomDialog dialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
         final View packingListEntryEditView = View.inflate(getContext(), R.layout.activity_packing_list_entry_edit_dialog, null);
 
-        final PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(getActivity(), null, null, 1);
+        final PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(getActivity());
 
         categorySpinner = packingListEntryEditView.findViewById(R.id.spinnerCategory);
         luggageSpinner = packingListEntryEditView.findViewById(R.id.spinnerLuggage);
@@ -77,10 +74,14 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
         final EditText luggageCount = packingListEntryEditView.findViewById(R.id.inputPackingListEntryCount);
         luggageCount.setText(String.format(currentLocale, "%d", packingListEntryEntity.getCount()));
 
-        final LuggageCategoryDbModel categoryDbModel = new LuggageCategoryDbModel(getActivity(), null, null, 1);
+        final LuggageCategoryDbModel categoryDbModel = new LuggageCategoryDbModel(getActivity());
         ArrayList<LuggageCategoryEntity> categoryEntities = categoryDbModel.load();
         categoryEntities.add(0, new LuggageCategoryEntity(getActivity().getResources().getString(R.string.text_please_select)));
-        ArrayAdapter categorySpinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, categoryEntities);
+        ArrayAdapter<LuggageCategoryEntity> categorySpinnerArrayAdapter = new ArrayAdapter<>(
+            getActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            categoryEntities
+        );
         categorySpinner.setAdapter(categorySpinnerArrayAdapter);
 
         int count = 0;
@@ -93,13 +94,17 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
             ++count;
         }
 
-        final LuggageDbModel luggageDbModel = new LuggageDbModel(getActivity(), null, null, 1);
+        final LuggageDbModel luggageDbModel = new LuggageDbModel(getActivity());
         currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(
             packingListEntryEntity.getLuggageEntity().getCategoryEntity().getId(),
             false
         );
         currentLuggageEntities.add(0, new LuggageEntity(getActivity().getResources().getString(R.string.text_please_select), 0, 0));
-        ArrayAdapter luggageSpinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, currentLuggageEntities);
+        ArrayAdapter<LuggageEntity> luggageSpinnerArrayAdapter = new ArrayAdapter<>(
+                getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,
+                currentLuggageEntities
+        );
         luggageSpinner.setAdapter(luggageSpinnerArrayAdapter);
 
         count = 0;
@@ -114,34 +119,42 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
 
         categorySpinner.post(new Runnable() {
             public void run() {
-                categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext(), null, null, 1);
-                        currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id, false);
-                        currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
-                        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, currentLuggageEntities);
-                        luggageSpinner.setAdapter(spinnerArrayAdapter);
-                        luggageSpinner.setEnabled(true);
-                        luggageSpinner.setOnItemSelectedListener(PackingListEntryEditDialogFragment.this);
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        ArrayAdapter voidAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, new ArrayList());
-                        luggageSpinner.setAdapter(voidAdapter);
-                        luggageSpinner.setEnabled(false);
-                    }
-                });
+            categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    final LuggageDbModel luggageDbModel = new LuggageDbModel(view.getContext());
+                    currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(id, false);
+                    currentLuggageEntities.add(0, new LuggageEntity(view.getResources().getString(R.string.text_please_select), 0, 0));
+                    ArrayAdapter<LuggageEntity> spinnerArrayAdapter = new ArrayAdapter<>(
+                        view.getContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        currentLuggageEntities
+                    );
+                    luggageSpinner.setAdapter(spinnerArrayAdapter);
+                    luggageSpinner.setEnabled(true);
+                    luggageSpinner.setOnItemSelectedListener(PackingListEntryEditDialogFragment.this);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    ArrayAdapter<?> voidAdapter = new ArrayAdapter<>(
+                        getActivity(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        new ArrayList<>()
+                    );
+                    luggageSpinner.setAdapter(voidAdapter);
+                    luggageSpinner.setEnabled(false);
+                }
+            });
             }
         });
 
-        builder.setTitle(R.string.title_luggage_edit);
-        builder.setView(packingListEntryEditView);
+        dialog.setTitle(R.string.title_luggage_edit);
+        dialog.setView(packingListEntryEditView);
 
         /*
          * save
          */
-        builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_save), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             if (0 < selectedCategory
                 && 0 < packingListFk
@@ -167,6 +180,7 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
 
                         getActivity().finish();
                         getActivity().startActivity(getActivity().getIntent());
+                        Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     showAlertLuggageAlreadyExistsInThisPackingList();
@@ -185,15 +199,14 @@ public class PackingListEntryEditDialogFragment extends DialogFragment implement
             }
         });
 
-        builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
 
-        setRetainInstance(true);
-        builder.setOnDismissListener(this);
-
-        return builder.create();
+        dialog.create();
+        return dialog;
     }
 
     @Override

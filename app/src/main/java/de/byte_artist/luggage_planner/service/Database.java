@@ -16,7 +16,7 @@ import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 
 public class Database {
 
-    Context context;
+    private final Context context;
 
     public Database(Context context) {
         this.context = context;
@@ -25,21 +25,21 @@ public class Database {
     public void recreateDatabase() {
         this.resetDatabase();
 
-        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context, null, null, 1);
+        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
         LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity(
             this.context.getResources().getString(R.string.category1)
         );
 
         luggageCategoryDbModel.insert(luggageCategoryEntity);
 
-        PackingListDbModel luggageListDbModel = new PackingListDbModel(this.context, null, null, 1);
+        PackingListDbModel luggageListDbModel = new PackingListDbModel(this.context);
         PackingListEntity luggageListEntity = new PackingListEntity(
             this.context.getResources().getString(R.string.packing_list1),
             "2018-08-04"
         );
         luggageListDbModel.insert(luggageListEntity);
 
-        LuggageDbModel luggageDbModel = new LuggageDbModel(this.context, null, null, 1);
+        LuggageDbModel luggageDbModel = new LuggageDbModel(this.context);
         LuggageEntity luggageEntity = new LuggageEntity(
             this.context.getResources().getString(R.string.luggage1_category1),
             luggageCategoryEntity.getId(),
@@ -47,7 +47,7 @@ public class Database {
         );
         luggageDbModel.insert(luggageEntity);
 
-        PackingListEntryDbModel packingListDbModel = new PackingListEntryDbModel(this.context, null, null, 1);
+        PackingListEntryDbModel packingListDbModel = new PackingListEntryDbModel(this.context);
         PackingListEntryEntity packingListEntity = new PackingListEntryEntity(
             luggageListEntity.getId(),
             luggageEntity.getId(),

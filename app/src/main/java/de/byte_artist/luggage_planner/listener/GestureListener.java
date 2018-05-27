@@ -3,17 +3,17 @@ package de.byte_artist.luggage_planner.listener;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.activity.LuggageActivity;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
+import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.dialog.LuggageEditDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
-public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
@@ -81,14 +81,13 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     /*
      * deactivate
      */
-    public boolean onSwipeRight() {
+    private boolean onSwipeRight() {
         if (luggageEntity.isActive()) {
-            LuggageDbModel luggageDbModel = new LuggageDbModel(this.activity, null, null, 1);
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.activity);
             luggageEntity.setActive(false);
             luggageDbModel.update(luggageEntity);
-//            activity.finish();
-//            activity.startActivity(activity.getIntent());
             activity.refresh();
+            return true;
         }
         return false;
     }
@@ -96,46 +95,40 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     /*
      * activate
      */
-    public boolean onSwipeLeft() {
+    private void onSwipeLeft() {
         if (!luggageEntity.isActive()) {
-            LuggageDbModel luggageDbModel = new LuggageDbModel(this.activity, null, null, 1);
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.activity);
             luggageEntity.setActive(true);
             luggageDbModel.update(luggageEntity);
-//            activity.finish();
-//            activity.startActivity(activity.getIntent());
             activity.refresh();
         }
-        return false;
     }
 
-    public boolean onSwipeUp() {
+    private void onSwipeUp() {
 
-        return false;
     }
 
-    public boolean onSwipeDown() {
-        return false;
+    private void onSwipeDown() {
     }
 
-    public boolean onClick() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity, R.style.AlertDialogTheme);
-        alertDialog.setTitle(R.string.title_information)
-            .setMessage(String.format(activity.getResources().getString(R.string.text_luggage_information), luggageEntity.getName(), luggageEntity.getCategoryEntity().getName(), luggageEntity.getWeight()))
-            .setIcon(android.R.drawable.ic_menu_help)
-            .setPositiveButton(R.string.text_close, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            }).show();
-
-        return false;
+    private void onClick() {
+        CustomDialog dialog = new CustomDialog(activity, R.style.AlertDialogTheme, CustomDialog.TYPE_INFO);
+        dialog.setTitle(R.string.title_information);
+        dialog.setMessage(String.format(activity.getResources().getString(R.string.text_luggage_information), luggageEntity.getName(), luggageEntity.getCategoryEntity().getName(), luggageEntity.getWeight()));
+        dialog.setButton(CustomDialog.BUTTON_POSITIVE, activity.getResources().getString(R.string.text_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.create();
+        dialog.show();
     }
 
-    public boolean onDoubleClick() {
+    private void onDoubleClick() {
 
-        return false;
     }
 
-    public boolean onLongClick() {
+    private void onLongClick() {
         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         Fragment prev = activity.getSupportFragmentManager().findFragmentByTag("luggage_edit_dialog");
 
@@ -148,6 +141,5 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         alertDialog.show(ft, "luggage_edit_dialog");
 
-        return false;
     }
 }

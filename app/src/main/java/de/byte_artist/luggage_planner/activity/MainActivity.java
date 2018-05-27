@@ -3,7 +3,6 @@ package de.byte_artist.luggage_planner.activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,6 +17,7 @@ import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
+import de.byte_artist.luggage_planner.service.TextSize;
 
 public class MainActivity extends AbstractActivity {
 
@@ -29,7 +29,7 @@ public class MainActivity extends AbstractActivity {
         refresh();
     }
 
-    public void refresh() {
+    protected void refresh() {
         fillTable();
     }
 
@@ -37,21 +37,20 @@ public class MainActivity extends AbstractActivity {
         TableLayout table = findViewById(R.id.PackagesTable);
         table.removeAllViews();
         table.setStretchAllColumns(true);
-
         TableRow rowTitle = new TableRow(this);
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         TextView title = new TextView(this);
         title.setText(R.string.label_packing_list);
+        TextSize.convert(this, title, TextSize.TEXT_TYPE_HEADER);
         title.setMaxLines(1);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
         rowTitle.addView(title);
         table.addView(rowTitle);
 
-        PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
-        PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this, null, null, 1);
+        PackingListDbModel packingListDbModel = new PackingListDbModel(this);
+        PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this);
 
         PackingListEntity currentPackingList = packingListDbModel.findCurrentPackingList();
 
@@ -74,9 +73,9 @@ public class MainActivity extends AbstractActivity {
 
                 if (1 == rowCount) {
                     title.setText(String.format(
-                            getResources().getString(R.string.placeholder_concat_packing_list_name),
-                            title.getText().toString(),
-                            packingListEntryEntity.getPackingListEntity().getName())
+                        getResources().getString(R.string.placeholder_concat_packing_list_name),
+                        title.getText().toString(),
+                        packingListEntryEntity.getPackingListEntity().getName())
                     );
                 }
 
@@ -99,7 +98,7 @@ public class MainActivity extends AbstractActivity {
                     TableRow categoryRow = new TableRow(this);
                     TextView categoryHeadingLabel = new TextView(this);
                     categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
-                    categoryHeadingLabel.setTextSize(14);
+                    TextSize.convert(this, categoryHeadingLabel, TextSize.TEXT_TYPE_NORMAL);
                     categoryHeadingLabel.setMaxLines(1);
                     categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
@@ -113,7 +112,9 @@ public class MainActivity extends AbstractActivity {
                 TextView idLabel = new TextView(this);
                 String formattedEntryId = String.format(currentLocale, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
                 idLabel.setText(formattedEntryId);
+                TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
                 idLabel.setMaxLines(1);
+                idLabel.setPadding(10, 0, 0, 0);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
                 idLabel.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.2f));
                 idLabel.setGravity(Gravity.START);
@@ -123,6 +124,7 @@ public class MainActivity extends AbstractActivity {
 
                 TextView nameLabel = new TextView(this);
                 nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
+                TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
                 nameLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 0.5f));
                 nameLabel.setGravity(Gravity.START);
                 nameLabel.setMaxLines(1);
@@ -131,6 +133,7 @@ public class MainActivity extends AbstractActivity {
 
                 TextView countLabel = new TextView(this);
                 countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
+                TextSize.convert(this, countLabel, TextSize.TEXT_TYPE_NORMAL);
                 countLabel.setGravity(Gravity.END);
                 countLabel.setMaxLines(1);
                 countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -140,8 +143,10 @@ public class MainActivity extends AbstractActivity {
 
                 TextView weightLabel = new TextView(this);
                 weightLabel.setText(String.format(currentLocale, "%,.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
+                TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
                 weightLabel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 0.1f));
                 weightLabel.setGravity(Gravity.END);
+                weightLabel.setPadding(0, 0, 10, 0);
                 weightLabel.setMaxLines(1);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 row.addView(weightLabel);
@@ -166,7 +171,7 @@ public class MainActivity extends AbstractActivity {
 
             TextView summary = new TextView(this);
             summary.setText(String.format(currentLocale, "%,.0f g", weightSum));
-            summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            TextSize.convert(this, summary, TextSize.TEXT_TYPE_NORMAL);
             summary.setGravity(Gravity.END);
             summary.setTypeface(Typeface.SERIF, Typeface.BOLD);
 

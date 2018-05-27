@@ -42,7 +42,7 @@
         android:layout_height="@android:dimen/app_icon_size"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:background="@android:drawable/screen_background_light_transparent"
         android:baselineAlignBottom="true"
         android:contentDescription="@string/description_click_to_add_packing_list"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pixel 2 API 22 5.0 1080x1920 xxhdpi 420 dpi (Android 5.1.1, API 22) -->
+<resources>
+    <dimen name="normal_text_size">4sp</dimen>
+    <dimen name="header_text_size">5sp</dimen>
+    <dimen name="footer_text_size">5sp</dimen>
+    <dimen name="title_text_size">5sp</dimen>
+    <dimen name="message_text_size">4sp</dimen>
+    <dimen name="button_text_size">4sp</dimen>
+</resources>

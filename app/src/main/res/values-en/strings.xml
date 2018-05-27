@@ -46,8 +46,12 @@
     <string name="text_choose_category">Please choose a category!</string>
     <string name="text_not_all_fields_filled">Not all necessary fields are filled out!</string>
     <string name="text_exit">Exit</string>
+    <string name="text_size">Size</string>
+    <string name="text_font_size">Fontsize</string>
+    <string name="text_database">Database</string>
     <string name="text_luggage_already_exists_in_packing_list">Luggage already exists in die Packing List! Please edit count of this Luggage, if you need more of them in your list!</string>
     <string name="text_warning_reset_database">If you perform this action, all data in the database will be deleted!</string>
+    <string name="text_data_successfully_saved">Data successfully saved!</string>
 
     <string name="text_category_info">This is the category named \"%1$s\".</string>
     <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
@@ -62,6 +66,7 @@
 
     <string name="description_click_to_add_luggage">Click to add a new piece of luggage</string>
     <string name="description_click_to_add_packing_list">Click to add a new packing list</string>
+    <string name="description_click_to_add_category">Click to add a new category</string>
 
     <string name="warning_packing_list_empty">This packing list contains no entries!</string>
     <string name="warning_delete_failed">Delete failed!</string>

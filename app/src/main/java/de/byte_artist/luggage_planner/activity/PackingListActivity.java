@@ -1,13 +1,14 @@
 package de.byte_artist.luggage_planner.activity;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import de.byte_artist.luggage_planner.listener.PackingListDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnLongClickListener;
 import de.byte_artist.luggage_planner.service.Date;
+import de.byte_artist.luggage_planner.service.TextSize;
 
 public class PackingListActivity extends AbstractActivity {
 
@@ -53,7 +55,7 @@ public class PackingListActivity extends AbstractActivity {
         refresh();
     }
 
-    public void refresh() {
+    protected void refresh() {
         loadPackingLists();
     }
 
@@ -69,14 +71,14 @@ public class PackingListActivity extends AbstractActivity {
         TextView title = new TextView(this);
         title.setText(R.string.label_packing_lists);
         title.setMaxLines(1);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        TextSize.convert(this, title, TextSize.TEXT_TYPE_HEADER);
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
         rowTitle.addView(title);
         table.addView(rowTitle);
 
-        PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
+        PackingListDbModel packingListDbModel = new PackingListDbModel(this);
         ArrayList<PackingListEntity> packingListEntities = packingListDbModel.load();
 
         TableRow.LayoutParams lp;
@@ -90,7 +92,12 @@ public class PackingListActivity extends AbstractActivity {
 
             TextView nameLabel = new TextView(this);
             nameLabel.setText(packingListEntity.getName());
+            TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
             nameLabel.setMaxLines(1);
+            nameLabel.setPadding(10, 0, 0, 0);
+            nameLabel.setGravity(Gravity.START);
+            nameLabel.setWidth(0);
+            nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
             nameLabel.setLayoutParams(lp);
             row.addView(nameLabel);
@@ -102,21 +109,22 @@ public class PackingListActivity extends AbstractActivity {
                 "",
                 currentLocale
             ));
+            TextSize.convert(this, dateLabel, TextSize.TEXT_TYPE_NORMAL);
             dateLabel.setGravity(Gravity.END);
+            dateLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
             dateLabel.setMaxLines(1);
             lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.4f);
             dateLabel.setLayoutParams(lp);
             row.addView(dateLabel);
 
-            TextView deleteBtn = new TextView(this);
-            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
-            lp.setMargins(0, -8, 0, -8);
+
+            ImageView deleteBtn = new ImageView(this);
+            lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
+            deleteBtn.setPadding(0, 2, 0, 2);
+            deleteBtn.setBackgroundColor(Color.WHITE);
             deleteBtn.setLayoutParams(lp);
-            deleteBtn.setMaxLines(1);
-            deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
-            deleteBtn.setGravity(Gravity.END);
-            deleteBtn.setScaleX(0.8f);
-            deleteBtn.setScaleY(0.8f);
+            deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
+            deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
             deleteBtn.setOnClickListener(new PackingListDeleteOnClickListener(this, packingListEntity));
             row.addView(deleteBtn);
 

@@ -18,6 +18,7 @@
         android:layout_alignStart="@+id/inputCategoryName"
         android:layout_marginTop="15dp"
         android:labelFor="@+id/inputCategoryName"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:text="@string/label_category" />
 
     <EditText

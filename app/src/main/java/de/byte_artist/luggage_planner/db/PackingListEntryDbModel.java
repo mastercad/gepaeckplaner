@@ -17,13 +17,12 @@ import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
  */
 public class PackingListEntryDbModel extends DbModel {
 
-    private final Context context;
-    private final SQLiteDatabase.CursorFactory cursorFactory;
+    public PackingListEntryDbModel(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
-    public PackingListEntryDbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public PackingListEntryDbModel(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        this.context = context;
-        this.cursorFactory = factory;
     }
 
     public ArrayList<PackingListEntryEntity> load() {
@@ -45,10 +44,10 @@ public class PackingListEntryDbModel extends DbModel {
             packingListEntryEntity.setLuggageListFk(packingListFk);
             packingListEntryEntity.setLuggageFk(luggageFk);
 
-            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context);
             packingListEntryEntity.setPackingListEntity(packingListDbModel.findPackingListById(packingListFk));
 
-            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context);
             packingListEntryEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
 
             collection.add(packingListEntryEntity);
@@ -116,10 +115,10 @@ public class PackingListEntryDbModel extends DbModel {
             packingListEntryEntity.setLuggageFk(luggageFk);
 
             /* @TODO hier muss eine andere funktion her, weil hier immer wieder eine komplett gefüllte packliste geladen wird! */
-            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context);
             packingListEntryEntity.setPackingListEntity(packingListDbModel.findPackingListById(packingListFk));
 
-            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context, DATABASE_NAME, this.cursorFactory, DATABASE_VERSION);
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context);
             packingListEntryEntity.setLuggageEntity(luggageDbModel.findLuggageById(luggageFk));
 
             collection.add(packingListEntryEntity);

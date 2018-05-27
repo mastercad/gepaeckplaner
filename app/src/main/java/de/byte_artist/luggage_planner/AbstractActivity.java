@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +15,7 @@ import de.byte_artist.luggage_planner.activity.CategoryActivity;
 import de.byte_artist.luggage_planner.activity.LuggageActivity;
 import de.byte_artist.luggage_planner.activity.MainActivity;
 import de.byte_artist.luggage_planner.activity.PackingListActivity;
+import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.dialog.OptionsFragment;
 
 @SuppressLint("Registered")
@@ -31,7 +31,7 @@ public class AbstractActivity extends AppCompatActivity {
         }
     }
 
-    public void refresh() {}
+    protected void refresh() {}
 
     @Override
     protected void onRestart() {
@@ -70,26 +70,6 @@ public class AbstractActivity extends AppCompatActivity {
                 startActivity(luggageIntent);
                 break;
             case R.id.mainMenuOptions:
-//                finish();
-//                Intent optionsIntent = new Intent(this, OptionsActivity.class);
-//                startActivity(optionsIntent);
-/*
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View optionsView = inflater.inflate(R.layout.activity_options, null);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.title_warning)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setMessage(R.string.text_warning_reset_database)
-                        .setView(optionsView)
-                        .setNegativeButton(R.string.text_close, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).show();
-*/
-
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 Fragment prev = getSupportFragmentManager().findFragmentByTag("options_dialog");
 
@@ -120,19 +100,22 @@ public class AbstractActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (MainActivity.class == getClass()) {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setCancelable(false)
-                    .setTitle(R.string.title_exit_application)
-                    .setMessage(R.string.text_warning_exit_app)
-                    .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        }
-                    })
-                    .setNegativeButton(R.string.text_cancel, null)
-                    .show();
+            CustomDialog dialog = new CustomDialog(this, R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
+            dialog.setTitle(R.string.label_attention);
+            dialog.setMessage(R.string.text_warning_exit_app);
+            dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finishAffinity();
+                }
+            });
+            dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            dialog.create();
+            dialog.show();
         } else {
             super.onBackPressed();
         }

@@ -2,20 +2,28 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.CategoryActivity">
 
-
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:clipToPadding="true"
+        android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/btnAddCategory"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,24 +33,25 @@
             android:layout_height="wrap_content">
 
         </TableLayout>
+
     </ScrollView>
 
     <ImageButton
         android:id="@+id/btnAddCategory"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="48dip"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_gravity="end|bottom"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:adjustViewBounds="false"
         android:background="@android:drawable/screen_background_light_transparent"
-        android:contentDescription="@string/title_category_new"
+        android:baselineAlignBottom="true"
+        android:contentDescription="@string/description_click_to_add_category"
         android:elevation="0dp"
-        android:saveEnabled="false"
-        android:scrollbars="none"
-        android:soundEffectsEnabled="true"
         android:src="@drawable/add_button"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0" />
 
 </android.support.constraint.ConstraintLayout>

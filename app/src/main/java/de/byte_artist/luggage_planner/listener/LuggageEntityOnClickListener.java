@@ -5,9 +5,13 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import de.byte_artist.luggage_planner.R;
+import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
-public class LuggageEntityOnClickListener implements View.OnClickListener {
+/**
+ * @deprecated use {@link LuggageEntityOnTouchListener}
+ */
+class LuggageEntityOnClickListener implements View.OnClickListener {
 
     private final LuggageEntity luggageEntity;
 
@@ -17,14 +21,5 @@ public class LuggageEntityOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-        alertDialog.setTitle(Long.toString(this.luggageEntity.getId()))
-            .setMessage(this.luggageEntity.getName())
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setPositiveButton(R.string.text_close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            // here you can add functions
-            }
-        }).show();
     }
 }

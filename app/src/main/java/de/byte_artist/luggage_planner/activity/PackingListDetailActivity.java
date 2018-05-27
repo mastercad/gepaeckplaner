@@ -1,15 +1,14 @@
 package de.byte_artist.luggage_planner.activity;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnLongClickListener;
+import de.byte_artist.luggage_planner.service.TextSize;
 
 public class PackingListDetailActivity extends AbstractActivity {
 
@@ -60,7 +60,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         refresh();
     }
 
-    public void refresh() {
+    protected void refresh() {
         if (0 < packingListId) {
             fillTable(packingListId);
         }
@@ -76,8 +76,8 @@ public class PackingListDetailActivity extends AbstractActivity {
 
         TextView title = new TextView(this);
         title.setText(R.string.label_luggage_list);
+        TextSize.convert(this, title, TextSize.TEXT_TYPE_HEADER);
         title.setMaxLines(1);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         title.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
         rowTitle.addView(title);
@@ -85,11 +85,11 @@ public class PackingListDetailActivity extends AbstractActivity {
 
         double weightSum = 0;
 
-        PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this, null, null, 1);
+        PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this);
         ArrayList<PackingListEntryEntity> packingListEntryCollection = packingListEntryDbModel.findPackingListById(packingListId);
 
         if (packingListEntryCollection.isEmpty()) {
-            PackingListDbModel packingListDbModel = new PackingListDbModel(this, null, null, 1);
+            PackingListDbModel packingListDbModel = new PackingListDbModel(this);
             PackingListEntity packingListEntity = packingListDbModel.findPackingListById(packingListId);
 
             title.setText(String.format(
@@ -140,7 +140,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                     TextView categoryHeadingLabel = new TextView(this);
                     categoryHeadingLabel.setMaxLines(1);
                     categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
-                    categoryHeadingLabel.setTextSize(14);
+                    TextSize.convert(this, categoryHeadingLabel, TextSize.TEXT_TYPE_NORMAL);
                     categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
                     categoryRow.addView(categoryHeadingLabel);
@@ -157,7 +157,9 @@ public class PackingListDetailActivity extends AbstractActivity {
                         packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
                 );
                 idLabel.setText(formattedEntryId);
+                TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
                 idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                idLabel.setPadding(15, 0, 0, 0);
                 idLabel.setGravity(Gravity.START);
                 idLabel.setMaxLines(1);
                 idLabel.setWidth(0);
@@ -168,6 +170,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 TextView nameLabel = new TextView(this);
                 nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
+                TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
                 nameLabel.setGravity(Gravity.START);
                 nameLabel.setMaxLines(1);
                 nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -177,6 +180,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 TextView countLabel = new TextView(this);
                 countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
+                TextSize.convert(this, countLabel, TextSize.TEXT_TYPE_NORMAL);
                 countLabel.setGravity(Gravity.END);
                 countLabel.setMaxLines(1);
                 countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -186,6 +190,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
                 TextView weightLabel = new TextView(this);
                 weightLabel.setText(String.format(currentLocale, "%.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
+                TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
                 weightLabel.setGravity(Gravity.END);
                 weightLabel.setMaxLines(1);
                 weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -193,17 +198,15 @@ public class PackingListDetailActivity extends AbstractActivity {
                 weightLabel.setLayoutParams(lp);
                 row.addView(weightLabel);
 
-                TextView deleteBtn = new TextView(this);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
-                lp.setMargins(0, -8, 0, -8);
-                deleteBtn.setLayoutParams(lp);
-                deleteBtn.setMaxLines(1);
-                deleteBtn.setBackground(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
-                deleteBtn.setGravity(Gravity.END);
-                deleteBtn.setScaleX(0.8f);
-                deleteBtn.setScaleY(0.8f);
-                deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
 
+                ImageView deleteBtn = new ImageView(this);
+                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
+                deleteBtn.setPadding(0, 2, 0, 2);
+                deleteBtn.setBackgroundColor(Color.WHITE);
+                deleteBtn.setLayoutParams(lp);
+                deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
+                deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
                 row.addView(deleteBtn);
 
                 row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
@@ -229,7 +232,7 @@ public class PackingListDetailActivity extends AbstractActivity {
 
             TextView summary = new TextView(this);
             summary.setText(String.format(currentLocale, "%,.0f g", weightSum));
-            summary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            TextSize.convert(this, summary, TextSize.TEXT_TYPE_FOOTER);
             summary.setGravity(Gravity.END);
             summary.setTypeface(Typeface.SERIF, Typeface.BOLD);
 

@@ -1,6 +1,5 @@
 package de.byte_artist.luggage_planner.dialog;
 
-import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,29 +33,30 @@ public class LuggageNewDialogFragment extends DialogFragment implements AdapterV
     @Nullable
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        CustomDialog dialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
+
         final View luggageEditView = View.inflate(getContext(), R.layout.activity_luggage_edit_dialog, null);
 
         final EditText luggageNameEdit = luggageEditView.findViewById(R.id.luggageNameEdit);
         final Spinner categorySpinner = luggageEditView.findViewById(R.id.categorySpinner);
         final EditText luggageWeightEdit = luggageEditView.findViewById(R.id.luggageWeight);
 
-        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(getActivity(), null, null, 1);
+        LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(getActivity());
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
         luggageCategoryEntities.add(0, new LuggageCategoryEntity(getActivity().getResources().getText(R.string.text_choose_category).toString()));
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(
+        ArrayAdapter<LuggageCategoryEntity> spinnerArrayAdapter = new ArrayAdapter<>(
             getActivity(),
-            android.R.layout.simple_spinner_item,
+            android.R.layout.simple_spinner_dropdown_item,
             luggageCategoryEntities
         );
 
         categorySpinner.setAdapter(spinnerArrayAdapter);
         categorySpinner.setOnItemSelectedListener(this);
 
-        builder.setTitle(R.string.title_luggage_new);
-        builder.setView(luggageEditView);
+        dialog.setTitle(R.string.title_luggage_new);
+        dialog.setView(luggageEditView);
 
-        builder.setPositiveButton(R.string.text_save, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_save), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             if (1 <= selectedCategory) {
                 String luggageName = luggageNameEdit.getText().toString();
@@ -70,12 +71,13 @@ public class LuggageNewDialogFragment extends DialogFragment implements AdapterV
                 ) {
                     showAlertNotAllNeededFieldsFilled();
                 } else {
-                    LuggageDbModel luggageDbModel = new LuggageDbModel(getActivity(), null, null, 1);
+                    LuggageDbModel luggageDbModel = new LuggageDbModel(getActivity());
                     LuggageEntity luggageEntity = new LuggageEntity(luggageName, selectedCategory, luggageWeight);
                     luggageDbModel.insert(luggageEntity);
 
                     getActivity().finish();
                     getActivity().startActivity(getActivity().getIntent());
+                    Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                 }
             } else {
                 showAlertBoxNoCategorySelected();
@@ -83,15 +85,14 @@ public class LuggageNewDialogFragment extends DialogFragment implements AdapterV
             }
         });
 
-        builder.setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
 
-        setRetainInstance(true);
-        builder.setOnDismissListener(this);
-
-        return builder.create();
+        dialog.create();
+        return dialog;
     }
 
     @Override
