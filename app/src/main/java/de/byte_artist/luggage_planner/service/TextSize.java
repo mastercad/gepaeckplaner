@@ -2,7 +2,6 @@ package de.byte_artist.luggage_planner.service;
 
 import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 

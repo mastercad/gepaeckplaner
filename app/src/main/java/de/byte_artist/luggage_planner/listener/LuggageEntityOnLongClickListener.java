@@ -8,6 +8,10 @@ import android.view.View;
 import de.byte_artist.luggage_planner.dialog.LuggageEditDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 
+/**
+ * @deprecated
+ * @see LuggageEntityOnTouchListener
+ */
 class LuggageEntityOnLongClickListener implements View.OnLongClickListener {
 
     private final LuggageEntity luggageEntity;
@@ -29,9 +33,9 @@ class LuggageEntityOnLongClickListener implements View.OnLongClickListener {
         }
         ft.addToBackStack(null);
 
-        LuggageEditDialogFragment alertDialog = LuggageEditDialogFragment.newInstance(luggageEntity);
-
-        alertDialog.show(ft, "luggage_edit_dialog");
+        LuggageEditDialogFragment fragment = new LuggageEditDialogFragment();
+        fragment.setComplexVariable(luggageEntity);
+        fragment.show(ft, "luggage_edit_dialog");
 
         return false;
     }

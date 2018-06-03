@@ -57,6 +57,10 @@
     <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">The piece of luggage \"%1$s\" is %2$dx in the list \"%3$s\" and therefore has a total weight of %4$,.0f g.</string>
 
+    <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="weight">Weight</string>
+
     <string name="placeholder_concat_packing_list_name">%1$s for %2$s</string>
     <string name="placeholder_luggage_of_packing_list">%1$s of %2$s</string>
     <string name="placeholder_delete_constraints_reason">Luggage \"%1$s\" could not be deleted because it is still in use!</string>
@@ -69,9 +73,14 @@
     <string name="description_click_to_add_category">Click to add a new category</string>
 
     <string name="warning_packing_list_empty">This packing list contains no entries!</string>
+    <string name="warning_luggage_list_empty">There are no luggage left!</string>
     <string name="warning_delete_failed">Delete failed!</string>
     <string name="warning_luggage_still_in_use">For this piece of luggage are still entries in luggage lists available!</string>
     <string name="warning_no_packing_list_found">No Packing List found! Please create first.</string>
+
+    <string name="error_category_already_exists">Category \"%1$s\" already exists!</string>
+    <string name="error_luggage_already_exists">Luggage \"%1$s\" already exists in Category \"%2$s\"!</string>
+    <string name="error_saving">When saving an error has occurred!</string>
 
     <string name="category1">Swimwear</string>
     <string name="luggage1_category1">Swimming Trunks</string>

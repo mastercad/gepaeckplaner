@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 640 x 480 and bigger -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="normal_text_size">10sp</dimen>
-    <dimen name="header_text_size">10sp</dimen>
-    <dimen name="footer_text_size">10sp</dimen>
-    <dimen name="message_text_size">10sp</dimen>
-    <dimen name="button_text_size">10sp</dimen>
+    <dimen name="header_text_size" tools:keep="@dimen/header_text_size">10sp</dimen>
+    <dimen name="footer_text_size" tools:keep="@dimen/footer_text_size">10sp</dimen>
+    <dimen name="message_text_size" tools:keep="@dimen/message_text_size">10sp</dimen>
+    <dimen name="button_text_size" tools:keep="@dimen/button_text_size">10sp</dimen>
 </resources>

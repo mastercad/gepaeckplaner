@@ -197,4 +197,28 @@ public class PackingListEntryDbModel extends DbModel {
 
         return luggageCount > 0;
     }
+
+    public PackingListEntryEntity checkPackingListEntryAlreadyExists(PackingListEntryEntity packingListEntryEntity) {
+        String query = "SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+" "+
+            "WHERE "+COLUMN_LUGGAGE_FK+" = '"+packingListEntryEntity.getId()+"' AND "+COLUMN_PACKING_LIST_FK+" = '"+packingListEntryEntity.getLuggageListFk()+"'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        PackingListEntryEntity packingListEntryEntityInDb = new PackingListEntryEntity();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            packingListEntryEntityInDb.setId(cursor.getLong(0));
+            packingListEntryEntityInDb.setLuggageListFk(cursor.getLong(1));
+            packingListEntryEntityInDb.setLuggageFk(cursor.getLong(2));
+            packingListEntryEntityInDb.setCount(cursor.getInt(3));
+        } else {
+            packingListEntryEntityInDb = null;
+        }
+        cursor.close();
+        db.close();
+
+        return packingListEntryEntityInDb;
+    }
 }

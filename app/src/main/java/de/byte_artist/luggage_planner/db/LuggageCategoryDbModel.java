@@ -114,6 +114,28 @@ public class LuggageCategoryDbModel extends DbModel {
         db.close();
 
         return luggageCategoryEntity;
+    }
 
+    public LuggageCategoryEntity checkLuggageCategoryAlreadyExists(LuggageCategoryEntity luggageCategoryEntity) {
+        String query = "SELECT * FROM "+TABLE_LUGGAGE_CATEGORY+" "+
+            "WHERE "+COLUMN_LUGGAGE_CATEGORY_NAME+" LIKE('"+luggageCategoryEntity.getName()+"')";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        LuggageCategoryEntity luggageCategoryEntityInDB = new LuggageCategoryEntity();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            luggageCategoryEntityInDB.setId(cursor.getLong(0));
+            luggageCategoryEntityInDB.setName(cursor.getString(1));
+        } else {
+            luggageCategoryEntityInDB = null;
+        }
+        cursor.close();
+        db.close();
+
+        return luggageCategoryEntityInDB;
     }
 }

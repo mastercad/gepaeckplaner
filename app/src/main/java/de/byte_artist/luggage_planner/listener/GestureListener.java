@@ -137,9 +137,9 @@ class GestureListener extends GestureDetector.SimpleOnGestureListener {
         }
         ft.addToBackStack(null);
 
-        LuggageEditDialogFragment alertDialog = LuggageEditDialogFragment.newInstance(luggageEntity);
-
-        alertDialog.show(ft, "luggage_edit_dialog");
+        LuggageEditDialogFragment fragment = new LuggageEditDialogFragment();
+        fragment.setComplexVariable(luggageEntity);
+        fragment.show(ft, "luggage_edit_dialog");
 
     }
 }

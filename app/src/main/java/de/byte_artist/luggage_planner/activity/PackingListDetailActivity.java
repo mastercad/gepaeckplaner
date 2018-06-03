@@ -1,5 +1,6 @@
 package de.byte_artist.luggage_planner.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -51,9 +52,9 @@ public class PackingListDetailActivity extends AbstractActivity {
                 }
                 ft.addToBackStack(null);
 
-                PackingListEntryNewDialogFragment alertDialog = PackingListEntryNewDialogFragment.newInstance(packingListId);
-
-                alertDialog.show(ft, "packing_list_entry_new_dialog");
+                PackingListEntryNewDialogFragment fragment = new PackingListEntryNewDialogFragment();
+                fragment.setComplexVariable(packingListId);
+                fragment.show(ft, "packing_list_entry_new_dialog");
             }
         });
 
@@ -92,10 +93,18 @@ public class PackingListDetailActivity extends AbstractActivity {
             PackingListDbModel packingListDbModel = new PackingListDbModel(this);
             PackingListEntity packingListEntity = packingListDbModel.findPackingListById(packingListId);
 
-            title.setText(String.format(
-                getResources().getString(R.string.placeholder_concat_packing_list_name),
-                title.getText(),
-                packingListEntity.getName())
+            if (null == packingListEntity) {
+                finish();
+                Intent packingListIntent = new Intent(this, PackingListActivity.class);
+                startActivity(packingListIntent);
+            }
+
+            title.setText(
+                String.format(
+                    getResources().getString(R.string.placeholder_concat_packing_list_name),
+                    title.getText(),
+                    packingListEntity.getName()
+                )
             );
 
             TableRow row = new TableRow(this);

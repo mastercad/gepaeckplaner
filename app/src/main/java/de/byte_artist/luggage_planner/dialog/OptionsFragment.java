@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PreferencesDbModel;
@@ -21,16 +22,16 @@ import de.byte_artist.luggage_planner.service.Preferences;
 
 public class OptionsFragment extends DialogFragment {
 
-    TextView tvProgressLabel;
-    SeekBar seekBar;
-    ViewGroup optionsView;
-    int fontSize;
-    final int MIN = 6;
+    private TextView tvProgressLabel;
+    private SeekBar seekBar;
+    private ViewGroup optionsView;
+    private int fontSize;
+    private final int MIN = 6;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final CustomDialog dialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
+        final CustomDialog dialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
 
         optionsView = (ViewGroup)View.inflate(getContext(), R.layout.activity_options, null);
         final PreferencesDbModel preferencesDbModel = new PreferencesDbModel(getContext());
@@ -48,26 +49,26 @@ public class OptionsFragment extends DialogFragment {
         btnResetDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
+                final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
 
-            alertDialog.setTitle(R.string.title_warning);
-            alertDialog.setMessage(R.string.text_warning_reset_database);
-            alertDialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    databaseService.resetDatabase();
+                alertDialog.setTitle(R.string.title_warning);
+                alertDialog.setMessage(R.string.text_warning_reset_database);
+                alertDialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseService.resetDatabase();
 
-                    getActivity().finish();
-                    getActivity().startActivity(getActivity().getIntent());
-                }
-            });
-            alertDialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    alertDialog.dismiss();
-                }
-            });
-            alertDialog.create();
-            alertDialog.show();
+                        getActivity().finish();
+                        getActivity().startActivity(getActivity().getIntent());
+                    }
+                });
+                alertDialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.create();
+                alertDialog.show();
             }
         });
 
@@ -155,7 +156,7 @@ public class OptionsFragment extends DialogFragment {
     }
 
     private void refreshProgressText(int progress) {
-        Locale locale = getActivity().getResources().getConfiguration().locale;
+        Locale locale = Objects.requireNonNull(getActivity()).getResources().getConfiguration().locale;
         tvProgressLabel.setText(
             String.format(
                 locale,

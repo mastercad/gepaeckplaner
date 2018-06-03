@@ -28,9 +28,13 @@ public class PackingListEntryOnLongClickListener implements View.OnLongClickList
         }
         ft.addToBackStack(null);
 
-        PackingListEntryEditDialogFragment alertDialog = PackingListEntryEditDialogFragment.newInstance(packingListEntryEntity);
+        PackingListEntryEditDialogFragment fragment = new PackingListEntryEditDialogFragment();
+        fragment.setComplexVariable(packingListEntryEntity);
+        fragment.setComplexVariable(packingListEntryEntity.getLuggageListFk());
 
-        alertDialog.show(ft, "packing_list_entry_edit_dialog");
+//        alertDialog.getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        fragment.show(ft, "packing_list_entry_edit_dialog");
 
         return false;
     }

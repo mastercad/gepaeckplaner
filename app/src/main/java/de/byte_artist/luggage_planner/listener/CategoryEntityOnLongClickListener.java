@@ -28,9 +28,10 @@ public class CategoryEntityOnLongClickListener implements View.OnLongClickListen
         }
         ft.addToBackStack(null);
 
-        CategoryEditDialogFragment alertDialog = CategoryEditDialogFragment.newInstance(luggageCategoryEntity);
+        CategoryEditDialogFragment fragment = new CategoryEditDialogFragment();
+        fragment.setComplexVariable(luggageCategoryEntity);
 
-        alertDialog.show(ft, "category_edit_dialog");
+        fragment.show(ft, "category_edit_dialog");
 
         return false;
     }

@@ -46,9 +46,8 @@ public class PackingListActivity extends AbstractActivity {
                 }
                 ft.addToBackStack(null);
 
-                PackingListNewDialogFragment alertDialog = PackingListNewDialogFragment.newInstance();
-
-                alertDialog.show(ft, "packing_list_new_dialog");
+                PackingListNewDialogFragment fragment = new PackingListNewDialogFragment();
+                fragment.show(ft, "packing_list_new_dialog");
             }
         });
 

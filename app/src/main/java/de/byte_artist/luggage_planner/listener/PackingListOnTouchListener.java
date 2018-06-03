@@ -5,6 +5,9 @@ import android.view.View;
 
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 
+/**
+ * @deprecated
+ */
 class PackingListOnTouchListener implements View.OnTouchListener {
 
 //    private PackingListEntryEntity luggageEntity;

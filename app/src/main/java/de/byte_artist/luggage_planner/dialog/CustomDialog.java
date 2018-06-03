@@ -29,8 +29,8 @@ public class CustomDialog extends AlertDialog {
     final public static String TYPE_INFO = "ic_dialog_info";
     final public static String TYPE_EDIT = "ic_menu_edit";
 
-    private FragmentActivity activity;
-    private String dialogType;
+    private final FragmentActivity activity;
+    private final String dialogType;
     private CharSequence title;
 
     public CustomDialog(@NonNull FragmentActivity activity, String dialogType) {

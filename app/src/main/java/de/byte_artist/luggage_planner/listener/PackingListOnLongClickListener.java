@@ -28,10 +28,10 @@ public class PackingListOnLongClickListener implements View.OnLongClickListener 
         }
         ft.addToBackStack(null);
 
-        PackingListEditDialogFragment alertDialog = PackingListEditDialogFragment.newInstance(packingListEntity);
+        PackingListEditDialogFragment fragment = new PackingListEditDialogFragment();
+        fragment.setComplexVariable(packingListEntity);
 
-        alertDialog.show(ft, "packing_list_edit_dialog");
-
+        fragment.show(ft, "packing_list_edit_dialog");
         return false;
     }
 }

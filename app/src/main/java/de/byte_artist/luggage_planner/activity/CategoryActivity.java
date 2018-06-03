@@ -45,8 +45,8 @@ public class CategoryActivity extends AbstractActivity {
                 }
                 ft.addToBackStack(null);
 
-                CategoryNewDialogFragment alertDialog = CategoryNewDialogFragment.newInstance();
-                alertDialog.show(ft, "category_new_dialog");
+                CategoryNewDialogFragment fragment = new CategoryNewDialogFragment();
+                fragment.show(ft, "category_new_dialog");
             }
         });
 

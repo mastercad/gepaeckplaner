@@ -56,6 +56,10 @@
     <string name="text_luggage_information">Das ist das Gepäckstück mit dem Namen \"%1$s\". Es befindet sich in der Kategory \"%2$s\" und hat ein Gewicht von %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">Das Gepäckstück \"%1$s\" befindet sich %2$dx in der Liste \"%3$s\" und hat damit eine Gesamtgewichtsbelastung von %4$,.0f g.</string>
 
+    <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="weight">Gewicht</string>
+
     <string name="placeholder_concat_packing_list_name">%1$s für %2$s</string>
     <string name="placeholder_luggage_of_packing_list">%1$s von %2$s</string>
     <string name="placeholder_delete_constraints_reason">Gepäckstück \"%1$s\" kann nicht gelöscht werden, da es noch verwendet wird!</string>
@@ -68,9 +72,14 @@
     <string name="description_click_to_add_category">Klicken, um eine neue Kategory hinzuzufügen</string>
 
     <string name="warning_packing_list_empty">Diese Packliste enthält noch keine Einträge!</string>
+    <string name="warning_luggage_list_empty">Es sind noch keine Gepäckstücke vorhanden!</string>
     <string name="warning_delete_failed">Löschen fehlgeschlagen!</string>
     <string name="warning_luggage_still_in_use">Dieses Gepäckstück wird noch in Packlisten verwendet!</string>
     <string name="warning_no_packing_list_found">Es wurde keine Packliste Gefunden! Bitte legen sie eine an.</string>
+
+    <string name="error_category_already_exists">Kategorie \"%1$s\" existiert bereits!</string>
+    <string name="error_luggage_already_exists">Gepäckstück \"%1$s\" existiert bereits in Kategorie \"%2$s\"!</string>
+    <string name="error_saving">Beim Speichern ist ein Fehler aufgetreten!</string>
 
     <string name="category1">Badesachen</string>
     <string name="luggage1_category1">Badehose</string>

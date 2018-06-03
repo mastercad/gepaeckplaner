@@ -55,6 +55,51 @@ public class LuggageDbModel extends DbModel {
         return collection;
     }
 
+    public ArrayList<LuggageEntity> load(String idSortOrder, String nameSortOrder, String weightSortOrder) {
+        String query = "SELECT * FROM "+TABLE_LUGGAGE+" ORDER BY ";
+
+        if (!idSortOrder.isEmpty()) {
+            query += COLUMN_LUGGAGE_CATEGORY_FK+" "+idSortOrder+", "+COLUMN_LUGGAGE_COUNT+" "+idSortOrder;
+        } else if (!nameSortOrder.isEmpty()) {
+            query += COLUMN_LUGGAGE_CATEGORY_FK+" "+idSortOrder+", "+COLUMN_LUGGAGE_NAME+" "+nameSortOrder;
+        } else if (!weightSortOrder.isEmpty()) {
+            query += COLUMN_LUGGAGE_CATEGORY_FK+" "+idSortOrder+", "+COLUMN_LUGGAGE_WEIGHT+" "+weightSortOrder;
+        }
+
+        if (idSortOrder.isEmpty()
+            && nameSortOrder.isEmpty()
+            && weightSortOrder.isEmpty()
+        ) {
+            query += COLUMN_LUGGAGE_CATEGORY_FK+", "+COLUMN_LUGGAGE_ID;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<LuggageEntity> collection = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            LuggageEntity luggageEntity = new LuggageEntity();
+            long luggageCategoryId = cursor.getInt(2);
+            luggageEntity.setId(cursor.getLong(0));
+            luggageEntity.setName(cursor.getString(1));
+            luggageEntity.setCategoryId(luggageCategoryId);
+            luggageEntity.setWeight(cursor.getInt(3));
+            luggageEntity.setCount(cursor.getInt(4));
+            luggageEntity.setActive(cursor.getString(5).equals("1"));
+
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
+            LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(luggageCategoryId);
+
+            luggageEntity.setCategoryEntity(luggageCategoryEntity);
+
+            collection.add(luggageEntity);
+        }
+        cursor.close();
+        db.close();
+
+        return collection;
+    }
+
     private int findMaxLuggageCountByCategory(long luggageCategoryId) {
         String query = "SELECT MAX("+COLUMN_LUGGAGE_COUNT+") FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_CATEGORY_FK+" = "+luggageCategoryId;
 
@@ -201,6 +246,36 @@ public class LuggageDbModel extends DbModel {
         db.close();
 
         return luggageEntity;
+    }
 
+    public LuggageEntity checkLuggageAlreadyExists(LuggageEntity luggageEntity) {
+        String query = "SELECT * FROM "+TABLE_LUGGAGE+" WHERE "+COLUMN_LUGGAGE_NAME+" LIKE('"+luggageEntity.getName()+"') AND "+COLUMN_LUGGAGE_CATEGORY_FK+" = "+luggageEntity.getCategoryId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        LuggageEntity luggageEntityInDb = new LuggageEntity();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            long categoryId = cursor.getLong(2);
+            luggageEntityInDb.setId(cursor.getLong(0));
+            luggageEntityInDb.setName(cursor.getString(1));
+            luggageEntityInDb.setWeight(cursor.getInt(3));
+            luggageEntityInDb.setCategoryId(categoryId);
+            luggageEntityInDb.setCount(cursor.getInt(4));
+            luggageEntityInDb.setActive(cursor.getString(5).equals("1"));
+
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
+            LuggageCategoryEntity luggageCategoryEntity = luggageCategoryDbModel.findCategoryById(categoryId);
+
+            luggageEntityInDb.setCategoryEntity(luggageCategoryEntity);
+        } else {
+            luggageEntityInDb = null;
+        }
+        cursor.close();
+        db.close();
+
+        return luggageEntityInDb;
     }
 }

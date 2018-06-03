@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 import de.byte_artist.luggage_planner.activity.CategoryActivity;
 import de.byte_artist.luggage_planner.activity.LuggageActivity;
 import de.byte_artist.luggage_planner.activity.MainActivity;
@@ -26,8 +28,10 @@ public class AbstractActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (MainActivity.class != this.getClass()) {
-            getSupportActionBar().setTitle(R.string.app_name);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (null != getSupportActionBar()) {
+                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
     }
 
@@ -78,9 +82,8 @@ public class AbstractActivity extends AppCompatActivity {
                 }
                 ft.addToBackStack(null);
 
-                OptionsFragment alertDialog = new OptionsFragment();
-
-                alertDialog.show(ft, "options_dialog");
+                OptionsFragment fragment = new OptionsFragment();
+                fragment.show(ft, "options_dialog");
 
                 break;
             case R.id.mainMenuPackingLists:
