@@ -19,9 +19,10 @@ import de.byte_artist.luggage_planner.activity.MainActivity;
 import de.byte_artist.luggage_planner.activity.PackingListActivity;
 import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.dialog.OptionsFragment;
+import de.byte_artist.luggage_planner.interfaces.RefreshableInterface;
 
 @SuppressLint("Registered")
-public class AbstractActivity extends AppCompatActivity {
+public class AbstractActivity extends AppCompatActivity implements RefreshableInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class AbstractActivity extends AppCompatActivity {
         }
     }
 
-    protected void refresh() {}
+    public void refresh() {}
 
     @Override
     protected void onRestart() {

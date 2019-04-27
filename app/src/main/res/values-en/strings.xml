@@ -28,6 +28,7 @@
     <string name="title_main_page">Main Page</string>
     <string name="title_exit_application">Close Application</string>
     <string name="text_please_select">Please select</string>
+    <string name="title_pairing_dialog">Pair with device</string>
 
     <string name="text_yes">Yes</string>
     <string name="text_ok">OK</string>
@@ -41,9 +42,12 @@
     <string name="text_update">Update</string>
     <string name="text_count">Count</string>
     <string name="text_reset_database">clear Database</string>
+    <string name="text_export_database">export Database</string>
+    <string name="text_import_database">import Database</string>
     <string name="text_create_database">create Demo Database</string>
     <string name="text_warning_exit_app">Are you sure you want to leave the program?</string>
     <string name="text_choose_category">Please choose a category!</string>
+    <string name="text_create_category">Please create a category first!</string>
     <string name="text_not_all_fields_filled">Not all necessary fields are filled out!</string>
     <string name="text_exit">Exit</string>
     <string name="text_size">Size</string>
@@ -81,6 +85,9 @@
     <string name="error_category_already_exists">Category \"%1$s\" already exists!</string>
     <string name="error_luggage_already_exists">Luggage \"%1$s\" already exists in Category \"%2$s\"!</string>
     <string name="error_saving">When saving an error has occurred!</string>
+    <string name="error_encoding_import_file">Format of the file could not be read!</string>
+    <string name="error_import_file">File could not be read!</string>
+    <string name="error_create_tables">Unable to create table!</string>
 
     <string name="category1">Swimwear</string>
     <string name="luggage1_category1">Swimming Trunks</string>

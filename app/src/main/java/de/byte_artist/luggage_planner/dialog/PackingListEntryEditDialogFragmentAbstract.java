@@ -35,12 +35,16 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
 
     private long selectedLuggage = 0;
     private long selectedCategory = 0;
-    private PackingListEntryEntity packingListEntryEntity;
-    private ArrayList<LuggageCategoryEntity> luggageCategoryEntities;
+
+    // selected luggage
+    private PackingListEntryEntity packingListEntryEntity = null;
+    // known categories
+    private ArrayList<LuggageCategoryEntity> luggageCategoryEntities = null;
+    // luggage in categories
+    private ArrayList<LuggageEntity> currentLuggageEntities = null;
 
     private AutoCompleteTextView luggageNames = null;
     private AutoCompleteTextView categoryNames = null;
-    private ArrayList<LuggageEntity> currentLuggageEntities = null;
     private LuggageDbModel luggageDbModel = null;
     private LuggageCategoryDbModel categoryDbModel = null;
     private PackingListEntryDbModel packingListEntryDbModel = null;
@@ -74,16 +78,28 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
 
         ViewGroup packingListEntryEditView = (ViewGroup) View.inflate(getContext(), R.layout.activity_packing_list_entry_edit_dialog, null);
 
-        dialog.setTitle(R.string.title_luggage_edit);
+        if (null == packingListEntryEntity) {
+            dialog.setTitle(R.string.title_luggage_new);
+        } else {
+            dialog.setTitle(R.string.title_luggage_edit);
+        }
         dialog.setView(packingListEntryEditView);
 
         categoryNames = packingListEntryEditView.findViewById(R.id.categoryNames);
         luggageNames = packingListEntryEditView.findViewById(R.id.luggageNames);
         luggageCount = packingListEntryEditView.findViewById(R.id.inputPackingListEntryCount);
+
         Button btnSave = packingListEntryEditView.findViewById(R.id.btnSave);
         Button btnCancel = packingListEntryEditView.findViewById(R.id.btnCancel);
 
         fillCategoryDropDown();
+
+        if (null == luggageCategoryEntities
+            || 0 == luggageCategoryEntities.size()
+        ) {
+            showAlertBoxNoCategoryExists();
+        }
+
         fillLuggageDropDown();
         fillLuggageCountEditField();
 
@@ -178,8 +194,14 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                 if (null != luggageNames.getAdapter()) {
                     luggageNames.setText("");
                     luggageNames.showDropDown();
-                } else {
+                } else if (0 == selectedCategory
+                    && null != luggageCategoryEntities
+                ) {
                     Toast.makeText(getContext(), R.string.text_choose_category, Toast.LENGTH_SHORT).show();
+                } else if (null == currentLuggageEntities
+                    || 0 == currentLuggageEntities.size()
+                ) {
+                    showAlertBoxNoLuggageExistsInCategory();
                 }
                 return true;
             }
@@ -200,6 +222,18 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                     @Override
                     public void afterTextChanged(Editable luggageName) {
                         selectedLuggage = 0;
+                        if (null == luggageCategoryEntities
+                            || 0 == luggageCategoryEntities.size()
+                        ) {
+                            showAlertBoxNoCategoryExists();
+                            return;
+                        }
+                        if (null == currentLuggageEntities
+                            || 0 == currentLuggageEntities.size()
+                        ) {
+                            showAlertBoxNoLuggageExistsInCategory();
+                            return;
+                        }
                         for (LuggageEntity luggageEntity: currentLuggageEntities) {
                             if (luggageEntity.getName().equals(luggageName.toString())) {
                                 selectedLuggage = luggageEntity.getId();
@@ -253,8 +287,18 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                     } else {
                         showAlertLuggageAlreadyExistsInThisPackingList();
                     }
-                } else {
+                } else if (0 == selectedCategory
+                    && 0 < luggageCategoryEntities.size()
+                ) {
                     showAlertBoxNoCategorySelected();
+                } else if (0 == luggageCategoryEntities.size()) {
+                    showAlertBoxNoCategoryExists();
+                } else if (0 == selectedLuggage
+                    && 0 == currentLuggageEntities.size()
+                ) {
+                   showAlertBoxNoLuggageExistsInCategory();
+                } else if (0 == selectedLuggage) {
+                    Toast.makeText(getContext(), "Bitte wählen sie ein Gepäckstück aus der Liste aus!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -279,6 +323,34 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
         ft.addToBackStack(null);
 
         AlertNoCategorySelected fragment = new AlertNoCategorySelected();
+
+        fragment.show(ft, "packing_list_entry_edit_dialog");
+    }
+
+    private void showAlertBoxNoCategoryExists() {
+        FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("packing_list_entry_edit_dialog");
+
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        AlertNoCategoryExists fragment = new AlertNoCategoryExists();
+
+        fragment.show(ft, "packing_list_entry_edit_dialog");
+    }
+
+    private void showAlertBoxNoLuggageExistsInCategory() {
+        FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("packing_list_entry_edit_dialog");
+
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        AlertNoLuggageExistsInCategory fragment = new AlertNoLuggageExistsInCategory();
 
         fragment.show(ft, "packing_list_entry_edit_dialog");
     }
@@ -319,7 +391,6 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
             selectedCategory = packingListEntryEntity.getLuggageEntity().getCategoryId();
             categoryNames.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
         }
-
     }
 
     private void considerSelectedLuggage() {
@@ -330,7 +401,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
             luggageNames.setText(currentLuggageEntity.getName());
         } else if (null != packingListEntryEntity
             && selectedCategory == packingListEntryEntity.getLuggageEntity().getCategoryId()
-        ){
+        ) {
             selectedCategory = packingListEntryEntity.getLuggageEntity().getCategoryId();
             selectedLuggage = packingListEntryEntity.getLuggageFk();
             luggageNames.setText(packingListEntryEntity.getLuggageEntity().getName());

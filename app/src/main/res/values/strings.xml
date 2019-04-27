@@ -27,6 +27,7 @@
     <string name="title_information">Information!</string>
     <string name="title_main_page">Hauptseite</string>
     <string name="title_exit_application">Anwendung schließen</string>
+    <string name="title_pairing_dialog">zu Gerät verbinden:</string>
 
     <string name="text_yes">Ja</string>
     <string name="text_ok">Ja</string>
@@ -40,10 +41,13 @@
     <string name="text_update">Aktualisieren</string>
     <string name="text_count">Anzahl</string>
     <string name="text_reset_database">Datenbank leeren</string>
+    <string name="text_export_database">Datenbank exportieren</string>
+    <string name="text_import_database">Datenbank importieren</string>
     <string name="text_create_database">Demo Datenbank erstellen</string>
     <string name="text_please_select">Bitte wählen</string>
     <string name="text_warning_exit_app">Sind sie sicher, dass sie das Programm verlassen möchten?</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
+    <string name="text_create_category">Bitte legen Sie eine zu erst Kategorie an!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
     <string name="text_exit">Verlassen</string>
     <string name="text_luggage_already_exists_in_packing_list">Dieses Gepäckstück existiert bereits in ihrer Packliste! Bitte bearbeiten sie die Anzahl dieses Eintrages, wenn sie mehr dieser Gepäckstücke planen!</string>
@@ -80,6 +84,9 @@
     <string name="error_category_already_exists">Kategorie \"%1$s\" existiert bereits!</string>
     <string name="error_luggage_already_exists">Gepäckstück \"%1$s\" existiert bereits in Kategorie \"%2$s\"!</string>
     <string name="error_saving">Beim Speichern ist ein Fehler aufgetreten!</string>
+    <string name="error_encoding_import_file">Format der Datei konnte nicht gelesen werden!</string>
+    <string name="error_import_file">Datei konnte nicht gelesen werden!</string>
+    <string name="error_create_tables">Tabelle konnte nicht angelegt werden!</string>
 
     <string name="category1">Badesachen</string>
     <string name="luggage1_category1">Badehose</string>

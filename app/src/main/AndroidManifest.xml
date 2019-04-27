@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.byte_artist.luggage_planner">
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
@@ -10,6 +13,7 @@
         android:roundIcon="@drawable/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +26,7 @@
         <activity android:name=".activity.LuggageActivity" />
         <activity android:name=".activity.PackingListActivity" />
         <activity android:name=".activity.PackingListDetailActivity" />
+        <activity android:name=".activity.ExportActivity" />
     </application>
 
 </manifest>

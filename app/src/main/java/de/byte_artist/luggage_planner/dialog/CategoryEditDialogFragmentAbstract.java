@@ -38,9 +38,11 @@ public class CategoryEditDialogFragmentAbstract extends DialogFragment {
 
         if (null != luggageCategoryEntity) {
             inputCategoryName.setText(luggageCategoryEntity.getName());
+            dialog.setTitle(R.string.title_category_edit);
+        } else {
+            dialog.setTitle(R.string.title_category_new);
         }
 
-        dialog.setTitle(R.string.title_luggage_edit);
         dialog.setView(categoryEditView);
 
         btnSave.setOnClickListener(new View.OnClickListener() {

@@ -165,7 +165,11 @@ public class Database {
     }
 
     public void resetDatabase() {
-        String filePathName = this.context.getFilesDir().getAbsolutePath()+"/../databases/luggage.db";
+        resetDatabase("luggage.db");
+    }
+
+    public void resetDatabase(String name) {
+        String filePathName = this.context.getDatabasePath(name).toString();
         File file = new File(filePathName);
 
         if (file.exists()) {

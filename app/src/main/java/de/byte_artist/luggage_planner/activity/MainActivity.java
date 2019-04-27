@@ -29,7 +29,7 @@ public class MainActivity extends AbstractActivity {
         refresh();
     }
 
-    protected void refresh() {
+    public void refresh() {
         fillTable();
     }
 

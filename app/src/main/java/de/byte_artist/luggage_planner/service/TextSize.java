@@ -1,6 +1,6 @@
 package de.byte_artist.luggage_planner.service;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
 import android.util.TypedValue;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,25 +16,25 @@ public class TextSize {
     public static final String TEXT_TYPE_BUTTON = "button_text_size";
     public static final String TEXT_TYPE_TITLE = "title_text_size";
 
-    public static TextView convert(FragmentActivity activity, TextView textView, String type) {
+    public static TextView convert(Context context, TextView textView, String type) {
 
-        Locale locale = activity.getResources().getConfiguration().locale;
+        Locale locale = context.getResources().getConfiguration().locale;
 
         // font size of needed type
-        int textSize = activity.getResources().getDimensionPixelSize(
-            activity.getResources().getIdentifier(
+        int textSize = context.getResources().getDimensionPixelSize(
+                context.getResources().getIdentifier(
                 type,
                 "dimen",
-                activity.getPackageName()
+                context.getPackageName()
             )
         );
 
         // font size of default type
-        int defaultTextSize = activity.getResources().getDimensionPixelSize(
-            activity.getResources().getIdentifier(
+        int defaultTextSize = context.getResources().getDimensionPixelSize(
+                context.getResources().getIdentifier(
                 TEXT_TYPE_NORMAL,
                 "dimen",
-                activity.getPackageName()
+                context.getPackageName()
             )
         );
 
@@ -42,7 +42,7 @@ public class TextSize {
             String.format(
                 locale,
                 "%.0f",
-                Float.parseFloat(Preferences.get(Preferences.FONT_SIZE, activity.getApplicationContext()).getValue())
+                Float.parseFloat(Preferences.get(Preferences.FONT_SIZE, context.getApplicationContext()).getValue())
             )
         );
 
@@ -53,25 +53,25 @@ public class TextSize {
         return textView;
     }
 
-    public static Spinner convert(FragmentActivity activity, Spinner spinner, String type) {
+    public static Spinner convert(Context context, Spinner spinner, String type) {
 
-        Locale locale = activity.getResources().getConfiguration().locale;
+        Locale locale = context.getResources().getConfiguration().locale;
 
         // font size of needed type
-        int textSize = activity.getResources().getDimensionPixelSize(
-            activity.getResources().getIdentifier(
+        int textSize = context.getResources().getDimensionPixelSize(
+                context.getResources().getIdentifier(
                 type,
                 "dimen",
-                activity.getPackageName()
+                context.getPackageName()
             )
         );
 
         // font size of default type
-        int defaultTextSize = activity.getResources().getDimensionPixelSize(
-            activity.getResources().getIdentifier(
+        int defaultTextSize = context.getResources().getDimensionPixelSize(
+                context.getResources().getIdentifier(
                 TEXT_TYPE_NORMAL,
                 "dimen",
-                activity.getPackageName()
+                context.getPackageName()
             )
         );
 
@@ -79,7 +79,7 @@ public class TextSize {
             String.format(
                 locale,
                 "%.0f",
-                Float.parseFloat(Preferences.get(Preferences.FONT_SIZE, activity.getApplicationContext()).getValue())
+                Float.parseFloat(Preferences.get(Preferences.FONT_SIZE, context.getApplicationContext()).getValue())
             )
         );
 

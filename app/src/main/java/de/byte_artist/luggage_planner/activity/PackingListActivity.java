@@ -54,7 +54,7 @@ public class PackingListActivity extends AbstractActivity {
         refresh();
     }
 
-    protected void refresh() {
+    public void refresh() {
         loadPackingLists();
     }
 

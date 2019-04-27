@@ -24,9 +24,12 @@ import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.dialog.PackingListEntryNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
+import de.byte_artist.luggage_planner.entity.PreferencesEntity;
+import de.byte_artist.luggage_planner.listener.CategoryCollapseOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnLongClickListener;
+import de.byte_artist.luggage_planner.service.Preferences;
 import de.byte_artist.luggage_planner.service.TextSize;
 
 public class PackingListDetailActivity extends AbstractActivity {
@@ -61,7 +64,7 @@ public class PackingListDetailActivity extends AbstractActivity {
         refresh();
     }
 
-    protected void refresh() {
+    public void refresh() {
         if (0 < packingListId) {
             fillTable(packingListId);
         }
@@ -118,7 +121,8 @@ public class PackingListDetailActivity extends AbstractActivity {
             int rowCount = 1;
 
             long tempCategory = -1;
-
+            boolean categoryVisible = true;
+            String visibilityPostfix = "PackingListCategoryVisible";
             TableRow.LayoutParams lp;
 
             Locale currentLocale = getResources().getConfiguration().locale;
@@ -137,12 +141,25 @@ public class PackingListDetailActivity extends AbstractActivity {
                 if (-1 == tempCategory
                     || tempCategory != currentCategory
                 ) {
+                    categoryVisible = true;
                     if (-1 != tempCategory) {
                         TableRow addLuggageRow = new TableRow(this);
                         TextView emptyLabel = new TextView(this);
                         addLuggageRow.addView(emptyLabel);
                         table.addView(addLuggageRow);
                     }
+
+                    String categoryVisibilityKey = packingListEntryEntity.getPackingListEntity().getId()+"_"+currentCategory+"_"+visibilityPostfix;
+
+                    PreferencesEntity preferencesEntity = Preferences.get(
+                        categoryVisibilityKey,
+                        getApplicationContext()
+                    );
+
+                    if (null != preferencesEntity) {
+                        categoryVisible = preferencesEntity.getValue().equals("1");
+                    }
+
                     tempCategory = currentCategory;
 
                     TableRow categoryRow = new TableRow(this);
@@ -151,78 +168,104 @@ public class PackingListDetailActivity extends AbstractActivity {
                     categoryHeadingLabel.setText(packingListEntryEntity.getLuggageEntity().getCategoryEntity().getName());
                     TextSize.convert(this, categoryHeadingLabel, TextSize.TEXT_TYPE_NORMAL);
                     categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    categoryHeadingLabel.setOnClickListener(new CategoryCollapseOnClickListener(
+                            this,
+                            packingListEntryEntity.getLuggageEntity().getCategoryEntity(),
+                            categoryVisibilityKey
+                        )
+                    );
 
                     categoryRow.addView(categoryHeadingLabel);
+
+                    TextView btnCategoryVisible = new TextView(this);
+                    btnCategoryVisible.setText(categoryVisible ? "↑" : "↓");
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+                    TextSize.convert(this, btnCategoryVisible, TextSize.TEXT_TYPE_NORMAL);
+                    btnCategoryVisible.setLayoutParams(lp);
+                    btnCategoryVisible.setMaxLines(1);
+                    btnCategoryVisible.setGravity(Gravity.START);
+                    btnCategoryVisible.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    btnCategoryVisible.setOnClickListener(new CategoryCollapseOnClickListener(
+                            this,
+                            packingListEntryEntity.getLuggageEntity().getCategoryEntity(),
+                            categoryVisibilityKey
+                        )
+                    );
+
+                    categoryRow.addView(btnCategoryVisible);
+
                     table.addView(categoryRow);
                 }
 
-                TableRow row = new TableRow(this);
-                row.setWeightSum(1);
+                if (categoryVisible) {
 
-                TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(
-                        currentLocale,
-                        "%d%02d",
-                        packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
-                );
-                idLabel.setText(formattedEntryId);
-                TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
-                idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
-                idLabel.setPadding(15, 0, 0, 0);
-                idLabel.setGravity(Gravity.START);
-                idLabel.setMaxLines(1);
-                idLabel.setWidth(0);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                idLabel.setLayoutParams(lp);
-                idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                row.addView(idLabel);
+                    TableRow row = new TableRow(this);
+                    row.setWeightSum(1);
 
-                TextView nameLabel = new TextView(this);
-                nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
-                TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
-                nameLabel.setGravity(Gravity.START);
-                nameLabel.setMaxLines(1);
-                nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.3f);
-                nameLabel.setLayoutParams(lp);
-                row.addView(nameLabel);
+                    TextView idLabel = new TextView(this);
+                    String formattedEntryId = String.format(
+                            currentLocale,
+                            "%d%02d",
+                            packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
+                    );
+                    idLabel.setText(formattedEntryId);
+                    TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
+                    idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    idLabel.setPadding(15, 0, 0, 0);
+                    idLabel.setGravity(Gravity.START);
+                    idLabel.setMaxLines(1);
+                    idLabel.setWidth(0);
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    idLabel.setLayoutParams(lp);
+                    idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    row.addView(idLabel);
 
-                TextView countLabel = new TextView(this);
-                countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
-                TextSize.convert(this, countLabel, TextSize.TEXT_TYPE_NORMAL);
-                countLabel.setGravity(Gravity.END);
-                countLabel.setMaxLines(1);
-                countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                countLabel.setLayoutParams(lp);
-                row.addView(countLabel);
+                    TextView nameLabel = new TextView(this);
+                    nameLabel.setText(packingListEntryEntity.getLuggageEntity().getName());
+                    TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
+                    nameLabel.setGravity(Gravity.START);
+                    nameLabel.setMaxLines(1);
+                    nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.3f);
+                    nameLabel.setLayoutParams(lp);
+                    row.addView(nameLabel);
 
-                TextView weightLabel = new TextView(this);
-                weightLabel.setText(String.format(currentLocale, "%.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
-                TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
-                weightLabel.setGravity(Gravity.END);
-                weightLabel.setMaxLines(1);
-                weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                weightLabel.setLayoutParams(lp);
-                row.addView(weightLabel);
+                    TextView countLabel = new TextView(this);
+                    countLabel.setText(String.format(currentLocale, "%dx", packingListEntryEntity.getCount()));
+                    TextSize.convert(this, countLabel, TextSize.TEXT_TYPE_NORMAL);
+                    countLabel.setGravity(Gravity.END);
+                    countLabel.setMaxLines(1);
+                    countLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    countLabel.setLayoutParams(lp);
+                    row.addView(countLabel);
+
+                    TextView weightLabel = new TextView(this);
+                    weightLabel.setText(String.format(currentLocale, "%.0f g", packingListEntryEntity.getLuggageEntity().getWeight()));
+                    TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
+                    weightLabel.setGravity(Gravity.END);
+                    weightLabel.setMaxLines(1);
+                    weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    weightLabel.setLayoutParams(lp);
+                    row.addView(weightLabel);
 
 
-                ImageView deleteBtn = new ImageView(this);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
-                deleteBtn.setPadding(0, 2, 0, 2);
-                deleteBtn.setBackgroundColor(Color.WHITE);
-                deleteBtn.setLayoutParams(lp);
-                deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
-                deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
-                row.addView(deleteBtn);
+                    ImageView deleteBtn = new ImageView(this);
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
+                    deleteBtn.setPadding(0, 2, 0, 2);
+                    deleteBtn.setBackgroundColor(Color.WHITE);
+                    deleteBtn.setLayoutParams(lp);
+                    deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
+                    deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    deleteBtn.setOnClickListener(new PackingListEntryDeleteOnClickListener(this, packingListEntryEntity));
+                    row.addView(deleteBtn);
 
-                row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
-                row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity));
+                    row.setOnClickListener(new PackingListEntryOnClickListener(PackingListDetailActivity.this, packingListEntryEntity));
+                    row.setOnLongClickListener(new PackingListEntryOnLongClickListener(PackingListDetailActivity.this, packingListEntryEntity));
 
-                table.addView(row);
-
+                    table.addView(row);
+                }
                 weightSum += (packingListEntryEntity.getLuggageEntity().getWeight() * packingListEntryEntity.getCount());
 
                 ++rowCount;

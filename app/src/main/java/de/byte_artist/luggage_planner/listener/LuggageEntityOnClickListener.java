@@ -9,8 +9,10 @@ import de.byte_artist.luggage_planner.entity.LuggageEntity;
  */
 class LuggageEntityOnClickListener implements View.OnClickListener {
 
+    LuggageEntity luggageEntity = null;
+
     public LuggageEntityOnClickListener(LuggageEntity luggageEntity) {
-        LuggageEntity luggageEntity1 = luggageEntity;
+        this.luggageEntity = luggageEntity;
     }
 
     @Override

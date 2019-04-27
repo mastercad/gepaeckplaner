@@ -23,8 +23,12 @@ import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
 import de.byte_artist.luggage_planner.dialog.LuggageNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
+import de.byte_artist.luggage_planner.entity.PreferencesEntity;
+import de.byte_artist.luggage_planner.interfaces.RefreshableInterface;
+import de.byte_artist.luggage_planner.listener.CategoryCollapseOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageEntityOnTouchListener;
+import de.byte_artist.luggage_planner.service.Preferences;
 import de.byte_artist.luggage_planner.service.TextSize;
 
 public class LuggageActivity extends AbstractActivity {
@@ -298,15 +302,18 @@ public class LuggageActivity extends AbstractActivity {
             table.addView(rowHeader);
 
             long tempCategory = -1;
-
+            boolean categoryVisible = true;
+            String visibilityPostfix = "CategoryVisible";
             Locale currentLocale = getResources().getConfiguration().locale;
 
             for (LuggageEntity luggageEntity : luggageEntities) {
                 long currentCategory = luggageEntity.getCategoryEntity().getId();
 
+                // new Category
                 if (-1 == tempCategory
-                        || tempCategory != currentCategory
-                        ) {
+                    || tempCategory != currentCategory
+                ) {
+                    categoryVisible = true;
                     if (-1 != tempCategory) {
                         TableRow addLuggageRow = new TableRow(this);
                         TextView emptyLabel = new TextView(this);
@@ -316,81 +323,122 @@ public class LuggageActivity extends AbstractActivity {
                         addLuggageRow.addView(emptyLabel);
                         table.addView(addLuggageRow);
                     }
+
+                    PreferencesEntity preferencesEntity = Preferences.get(
+                        currentCategory+"_"+visibilityPostfix,
+                        getApplicationContext()
+                    );
+
+                    if (null != preferencesEntity) {
+                        categoryVisible = preferencesEntity.getValue().equals("1");
+                    }
+
                     tempCategory = currentCategory;
 
                     TableRow categoryRow = new TableRow(this);
+
                     TextView categoryHeadingLabel = new TextView(this);
                     categoryHeadingLabel.setText(luggageEntity.getCategoryEntity().getName());
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                     TextSize.convert(this, categoryHeadingLabel, TextSize.TEXT_TYPE_NORMAL);
+                    categoryHeadingLabel.setLayoutParams(lp);
                     categoryHeadingLabel.setMaxLines(1);
                     categoryHeadingLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    categoryHeadingLabel.setOnClickListener(
+                        new CategoryCollapseOnClickListener(
+                            this,
+                            luggageEntity.getCategoryEntity(),
+                            currentCategory+"_"+visibilityPostfix
+                        )
+                    );
 
                     categoryRow.addView(categoryHeadingLabel);
+
+                    TextView btnCategoryVisible = new TextView(this);
+                    btnCategoryVisible.setText(categoryVisible ? "↑" : "↓");
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.1f);
+                    TextSize.convert(this, btnCategoryVisible, TextSize.TEXT_TYPE_NORMAL);
+                    btnCategoryVisible.setLayoutParams(lp);
+                    btnCategoryVisible.setMaxLines(1);
+                    btnCategoryVisible.setGravity(Gravity.START);
+                    btnCategoryVisible.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    btnCategoryVisible.setOnClickListener(
+                        new CategoryCollapseOnClickListener(
+                            this,
+                            luggageEntity.getCategoryEntity(),
+                            currentCategory+"_"+visibilityPostfix
+                        )
+                    );
+
+                    categoryRow.addView(btnCategoryVisible);
+
                     table.addView(categoryRow);
                 }
 
-                TableRow row = new TableRow(this);
-                row.setWeightSum(1);
-                lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f);
-                lp.setMargins(0, 0, 0, 0);
-                row.setLayoutParams(lp);
+                if (categoryVisible) {
+                    TableRow row = new TableRow(this);
+                    row.setWeightSum(1);
+                    lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f);
+                    lp.setMargins(0, 0, 0, 0);
+                    row.setLayoutParams(lp);
 
-                TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(currentLocale, "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                idLabel.setText(formattedEntryId);
-                TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
-                if (!luggageEntity.isActive()) {
-                    idLabel.setPaintFlags(idLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    TextView idLabel = new TextView(this);
+                    String formattedEntryId = String.format(currentLocale, "%d%02d", luggageEntity.getCategoryId(), luggageEntity.getCount());
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    idLabel.setText(formattedEntryId);
+                    TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
+                    if (!luggageEntity.isActive()) {
+                        idLabel.setPaintFlags(idLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                    idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
+                    idLabel.setMaxLines(1);
+                    idLabel.setPadding(10, 0, 0, 0);
+                    idLabel.setGravity(Gravity.START);
+                    idLabel.setWidth(0);
+                    idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    idLabel.setLayoutParams(lp);
+                    row.addView(idLabel);
+
+                    TextView nameLabel = new TextView(this);
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
+                    if (!luggageEntity.isActive()) {
+                        nameLabel.setPaintFlags(nameLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                    nameLabel.setLayoutParams(lp);
+                    nameLabel.setMaxLines(1);
+                    nameLabel.setGravity(Gravity.START);
+                    nameLabel.setText(luggageEntity.getName());
+                    TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
+                    nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    row.addView(nameLabel);
+
+                    TextView weightLabel = new TextView(this);
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    if (!luggageEntity.isActive()) {
+                        weightLabel.setPaintFlags(weightLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                    weightLabel.setLayoutParams(lp);
+                    weightLabel.setMaxLines(1);
+                    weightLabel.setText(String.format(currentLocale, "%.0f g", luggageEntity.getWeight()));
+                    TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
+                    weightLabel.setGravity(Gravity.END);
+                    weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    row.addView(weightLabel);
+
+                    ImageView deleteBtn = new ImageView(this);
+                    lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
+                    deleteBtn.setPadding(0, 2, 0, 2);
+                    deleteBtn.setBackgroundColor(Color.WHITE);
+                    deleteBtn.setLayoutParams(lp);
+                    deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
+                    deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    deleteBtn.setOnClickListener(new LuggageDeleteOnClickListener(LuggageActivity.this, luggageEntity));
+                    row.addView(deleteBtn);
+
+                    table.addView(row);
+
+                    row.setOnTouchListener(new LuggageEntityOnTouchListener(LuggageActivity.this, luggageEntity));
                 }
-                idLabel.setTypeface(Typeface.SERIF, Typeface.BOLD);
-                idLabel.setMaxLines(1);
-                idLabel.setPadding(10, 0, 0, 0);
-                idLabel.setGravity(Gravity.START);
-                idLabel.setWidth(0);
-                idLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                idLabel.setLayoutParams(lp);
-                row.addView(idLabel);
-
-                TextView nameLabel = new TextView(this);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.5f);
-                if (!luggageEntity.isActive()) {
-                    nameLabel.setPaintFlags(nameLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                }
-                nameLabel.setLayoutParams(lp);
-                nameLabel.setMaxLines(1);
-                nameLabel.setGravity(Gravity.START);
-                nameLabel.setText(luggageEntity.getName());
-                TextSize.convert(this, nameLabel, TextSize.TEXT_TYPE_NORMAL);
-                nameLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                row.addView(nameLabel);
-
-                TextView weightLabel = new TextView(this);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                if (!luggageEntity.isActive()) {
-                    weightLabel.setPaintFlags(weightLabel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                }
-                weightLabel.setLayoutParams(lp);
-                weightLabel.setMaxLines(1);
-                weightLabel.setText(String.format(currentLocale, "%.0f g", luggageEntity.getWeight()));
-                TextSize.convert(this, weightLabel, TextSize.TEXT_TYPE_NORMAL);
-                weightLabel.setGravity(Gravity.END);
-                weightLabel.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                row.addView(weightLabel);
-
-                ImageView deleteBtn = new ImageView(this);
-                lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.1f);
-                deleteBtn.setPadding(0, 2, 0, 2);
-                deleteBtn.setBackgroundColor(Color.WHITE);
-                deleteBtn.setLayoutParams(lp);
-                deleteBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getTheme()));
-                deleteBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                deleteBtn.setOnClickListener(new LuggageDeleteOnClickListener(LuggageActivity.this, luggageEntity));
-                row.addView(deleteBtn);
-
-                table.addView(row);
-
-                row.setOnTouchListener(new LuggageEntityOnTouchListener(LuggageActivity.this, luggageEntity));
             }
 
             considerCurrentOrderStateForView();

@@ -53,7 +53,7 @@ public class CategoryActivity extends AbstractActivity {
         refresh();
     }
 
-    protected void refresh() {
+    public void refresh() {
         loadCategories();
     }
 

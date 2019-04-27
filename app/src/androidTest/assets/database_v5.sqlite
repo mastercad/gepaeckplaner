@@ -1,0 +1,30 @@
+CREATE TABLE luggage_category (luggage_category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    luggage_category_name TEXT NOT NULL UNIQUE);
+
+CREATE TABLE luggage (luggage_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    luggage_name TEXT NOT NULL,
+    luggage_category_fk INTEGER NOT NULL REFERENCES luggage_category (luggag_category_id),
+    luggage_weight INTEGER NOT NULL,
+    luggage_count INTEGER NOT NULL,
+    luggage_active INTEGER NOT NULL DEFAULT 1
+    UNIQUE (luggage_name, luggage_category_fk));
+
+CREATE TABLE packing_list (
+    packing_list_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    packing_list_name TEXT NOT NULL,
+    packing_list_date REAL NOT NULL
+    UNIQUE (packing_list_name, packing_list_date));
+
+CREATE TABLE packing_list_entry (
+    packing_list_entry_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    packing_list_fk INTEGER NOT NULL,
+    luggage_fk INTEGER NOT NULL,
+    packing_list_entry_count REAL NOT NULL
+    UNIQUE (packing_list_fk, luggage_fk));
+
+CREATE TABLE preferences (
+    preferences_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    preferences_name TEXT NOT NULL UNIQUE,
+    preferences_vale REAL NOT NULL);
+
+INSERT INTO preferences (preferences_name, preferences_value) VALUES ('font_size', '15');

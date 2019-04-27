@@ -134,7 +134,7 @@ public class PackingListDbModel extends DbModel {
 
     public PackingListEntity findCurrentPackingList() {
         String query = "SELECT * FROM "+TABLE_PACKING_LIST+" WHERE "+COLUMN_PACKING_LIST_DATE+" >= date('now') "+
-                "ORDER BY date("+COLUMN_PACKING_LIST_DATE+") DESC LIMIT 1";
+                "ORDER BY date("+COLUMN_PACKING_LIST_DATE+") ASC LIMIT 1";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
