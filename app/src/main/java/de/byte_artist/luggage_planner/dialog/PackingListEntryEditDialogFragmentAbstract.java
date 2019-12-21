@@ -2,10 +2,10 @@ package de.byte_artist.luggage_planner.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -29,6 +29,7 @@ import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.service.TextSize;
 
 abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogFragment {
@@ -222,6 +223,13 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                     @Override
                     public void afterTextChanged(Editable luggageName) {
                         selectedLuggage = 0;
+
+                        if (0 == selectedCategory
+                            && null != luggageCategoryEntities
+                        ) {
+                            showAlertBoxNoCategorySelected();
+                            return;
+                        }
                         if (null == luggageCategoryEntities
                             || 0 == luggageCategoryEntities.size()
                         ) {
@@ -412,7 +420,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
         if (null != packingListEntryEntity
             && 0 < packingListEntryEntity.getCount()
         ) {
-            Locale currentLocale = getResources().getConfiguration().locale;
+            final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
             luggageCount.setText(String.format(currentLocale, "%d", packingListEntryEntity.getCount()));
         }
     }

@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,6 +25,7 @@ import java.util.Objects;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 
 abstract class PackingListEditDialogFragmentAbstract extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -38,7 +39,7 @@ abstract class PackingListEditDialogFragmentAbstract extends DialogFragment impl
     }
 
     private void setDate(final Calendar calendar) {
-        Locale currentLocale = getResources().getConfiguration().locale;
+        final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
 
         String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, currentLocale);

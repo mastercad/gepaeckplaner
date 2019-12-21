@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,6 +25,7 @@ import de.byte_artist.luggage_planner.dialog.PackingListEntryNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
 import de.byte_artist.luggage_planner.entity.PreferencesEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.listener.CategoryCollapseOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListEntryOnClickListener;
@@ -125,7 +126,7 @@ public class PackingListDetailActivity extends AbstractActivity {
             String visibilityPostfix = "PackingListCategoryVisible";
             TableRow.LayoutParams lp;
 
-            Locale currentLocale = getResources().getConfiguration().locale;
+            Locale currentLocale = LocaleHelper.investigateLocale(this);
 
             for (PackingListEntryEntity packingListEntryEntity : packingListEntryCollection) {
                 if (1 == rowCount) {

@@ -3,12 +3,10 @@ package de.byte_artist.luggage_planner;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.util.Log;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -35,19 +33,11 @@ public class DatabaseTest {
 //    static private final String DB_NAME = R.;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void createV1() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -72,7 +62,7 @@ public class DatabaseTest {
 
     @Test
     public void migrateV1V2() {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -100,7 +90,7 @@ public class DatabaseTest {
      * implementation for foreign keys of luggage
      */
     public void migrateV1V3() throws SQLiteException{
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -137,7 +127,7 @@ public class DatabaseTest {
      * implementation for preferences
      */
     public void migrateV1V4() {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -171,7 +161,7 @@ public class DatabaseTest {
      * implementation unique category names
      */
     public void migrateV1V5EnsureCategoryNameIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -202,7 +192,7 @@ public class DatabaseTest {
      * implementation unique luggage entries
      */
     public void migrateV1V5EnsureLuggageEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -239,7 +229,7 @@ public class DatabaseTest {
      * implementation unique packing lists
      */
     public void migrateV1V5EnsurePackingListIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -279,7 +269,7 @@ public class DatabaseTest {
      * implementation unique packing list entries
      */
     public void migrateV1V5EnsurePackingListEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -323,7 +313,7 @@ public class DatabaseTest {
      * implementation for foreign keys of luggage
      */
     public void migrateV2V3() throws SQLiteException{
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -364,7 +354,7 @@ public class DatabaseTest {
      * implementation for preferences
      */
     public void migrateV2V4() {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -403,7 +393,7 @@ public class DatabaseTest {
      * implementation unique category names
      */
     public void migrateV2V5EnsureCategoryNameIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -437,7 +427,7 @@ public class DatabaseTest {
      * implementation unique luggage entries
      */
     public void migrateV2V5EnsureLuggageEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -477,7 +467,7 @@ public class DatabaseTest {
      * implementation unique packing lists
      */
     public void migrateV2V5EnsurePackingListIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -520,7 +510,7 @@ public class DatabaseTest {
      * implementation unique packing list entries
      */
     public void migrateV2V5EnsurePackingListEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -567,7 +557,7 @@ public class DatabaseTest {
      * implementation for preferences
      */
     public void migrateV3V4() {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -605,7 +595,7 @@ public class DatabaseTest {
      * implementation unique category names
      */
     public void migrateV3V5EnsureCategoryNameIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -639,7 +629,7 @@ public class DatabaseTest {
      * implementation unique luggage entries
      */
     public void migrateV3V5EnsureLuggageEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -679,7 +669,7 @@ public class DatabaseTest {
      * implementation unique packing lists
      */
     public void migrateV3V5EnsurePackingListIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -722,7 +712,7 @@ public class DatabaseTest {
      * implementation unique packing list entries
      */
     public void migrateV3V5EnsurePackingListEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -769,7 +759,7 @@ public class DatabaseTest {
      * implementation unique category names
      */
     public void migrateV4V5EnsureCategoryNameIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -803,7 +793,7 @@ public class DatabaseTest {
      * implementation unique luggage entries
      */
     public void migrateV4V5EnsureLuggageEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -843,7 +833,7 @@ public class DatabaseTest {
      * implementation unique packing lists
      */
     public void migrateV4V5EnsurePackingListIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);
@@ -886,7 +876,7 @@ public class DatabaseTest {
      * implementation unique packing list entries
      */
     public void migrateV4V5EnsurePackingListEntryIsUnique() throws SQLiteException {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         Database databaseService = new Database(context);
         databaseService.resetDatabase(DB_NAME);

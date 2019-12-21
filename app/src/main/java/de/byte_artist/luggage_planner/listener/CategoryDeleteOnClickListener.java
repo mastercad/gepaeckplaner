@@ -2,7 +2,7 @@ package de.byte_artist.luggage_planner.listener;
 
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteConstraintException;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import de.byte_artist.luggage_planner.R;

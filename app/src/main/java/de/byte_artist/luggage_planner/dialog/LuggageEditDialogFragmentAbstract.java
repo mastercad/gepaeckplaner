@@ -3,10 +3,10 @@ package de.byte_artist.luggage_planner.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -27,6 +27,7 @@ import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.service.TextSize;
 
 abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
@@ -52,7 +53,7 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
         final EditText luggageWeightEdit = luggageEditView.findViewById(R.id.luggageWeight);
         categoryNames = luggageEditView.findViewById(R.id.categoryNames);
         categoryDbModel = new LuggageCategoryDbModel(getActivity());
-        Locale currentLocale = getResources().getConfiguration().locale;
+        final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
 
         try {
             Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
@@ -128,6 +129,7 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
 
         dialog.setTitle(R.string.title_luggage_edit);
         dialog.setView(luggageEditView);
+        final Locale locale = LocaleHelper.investigateLocale(this.getContext());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,8 +156,6 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
                                 && null == luggageEntity
                             )
                         ) {
-                            Locale locale = getResources().getConfiguration().locale;
-
                             final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
                             alertDialog.setTitle(R.string.title_error);
                             alertDialog.setMessage(String.format(locale, getResources().getString(R.string.error_luggage_already_exists), luggageName, luggageEntityInDb.getCategoryEntity().getName()));

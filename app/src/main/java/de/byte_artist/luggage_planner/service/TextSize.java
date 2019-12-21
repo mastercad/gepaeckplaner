@@ -1,11 +1,16 @@
 package de.byte_artist.luggage_planner.service;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.util.TypedValue;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Locale;
+
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 
 public class TextSize {
 
@@ -18,7 +23,7 @@ public class TextSize {
 
     public static TextView convert(Context context, TextView textView, String type) {
 
-        Locale locale = context.getResources().getConfiguration().locale;
+        Locale locale = LocaleHelper.investigateLocale(context);
 
         // font size of needed type
         int textSize = context.getResources().getDimensionPixelSize(
@@ -55,7 +60,7 @@ public class TextSize {
 
     public static Spinner convert(Context context, Spinner spinner, String type) {
 
-        Locale locale = context.getResources().getConfiguration().locale;
+        Locale locale = LocaleHelper.investigateLocale(context);
 
         // font size of needed type
         int textSize = context.getResources().getDimensionPixelSize(

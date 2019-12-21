@@ -17,6 +17,16 @@
         android:id="@+id/mainMenuOptions"
         android:title="@string/label_options" />
     <item
+        android:id="@+id/mainMenuSync"
+        android:title="@string/label_sync" />
+    <item
+        android:id="@+id/mainMenuUsage"
+        android:drawableRight="@android:drawable/ic_menu_help"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:title="@string/label_usage"
+        android:text="@string/label_usage" />
+    <item
         android:id="@+id/mainMenuExit"
         android:checkable="false"
         android:enabled="true"

@@ -15,7 +15,7 @@ class Database extends DbModel {
         this.setVersion(version);
     }
 
-    public void setVersion(int version) {
+    private void setVersion(int version) {
         DATABASE_VERSION = version;
     }
 

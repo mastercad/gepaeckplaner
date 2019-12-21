@@ -1,11 +1,10 @@
 package de.byte_artist.luggage_planner.dialog;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -40,10 +39,11 @@ public class CalenderDialogFragment extends DialogFragment implements DatePicker
         int day = calender.get(Calendar.DAY_OF_MONTH);
 
         return new DatePickerDialog(Objects.requireNonNull(getActivity()),
-            AlertDialog.THEME_HOLO_LIGHT,
+//            AlertDialog.THEME_HOLO_LIGHT,
 //            R.style.AlertDialogTheme,
 //            AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
 //            AlertDialog.THEME_TRADITIONAL,
+            android.R.style.Theme_Material_Light_Dialog_Alert,
             this,
             year,
             month,

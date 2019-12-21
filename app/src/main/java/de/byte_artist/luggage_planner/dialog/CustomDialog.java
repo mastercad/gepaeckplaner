@@ -4,11 +4,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
@@ -62,7 +63,8 @@ public class CustomDialog extends AlertDialog {
         titleTextView.setText(title);
         TextSize.convert(this.activity, titleTextView, TextSize.TEXT_TYPE_TITLE);
         titleTextView.setGravity(Gravity.START);
-        titleTextView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+//        titleTextView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+        titleTextView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorPrimary));
         titleTextView.setTextColor(Color.WHITE);
         titleTextView.setPadding(25, 25, 25, 25);
 
@@ -75,7 +77,8 @@ public class CustomDialog extends AlertDialog {
         titleTextView.setText(this.title);
         TextSize.convert(this.activity, titleTextView, TextSize.TEXT_TYPE_TITLE);
         titleTextView.setGravity(Gravity.START);
-        titleTextView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+//        titleTextView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+        titleTextView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorPrimary));
         titleTextView.setTextColor(Color.WHITE);
         titleTextView.setPadding(25, 25, 25, 25);
 
@@ -160,7 +163,8 @@ public class CustomDialog extends AlertDialog {
             title.setText(stringBuilder, TextView.BufferType.SPANNABLE);
             TextSize.convert(activity, title, TextSize.TEXT_TYPE_TITLE);
             title.setGravity(Gravity.START);
-            title.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+//            title.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+            title.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorPrimary));
             title.setTextColor(Color.WHITE);
             title.setPadding(25, 25, 25, 25);
             this.setCustomTitle(title);

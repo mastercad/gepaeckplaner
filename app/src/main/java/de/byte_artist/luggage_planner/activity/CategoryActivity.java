@@ -3,8 +3,8 @@ package de.byte_artist.luggage_planner.activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,6 +21,7 @@ import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.dialog.CategoryNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.listener.CategoryDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.CategoryEntityOnClickListener;
 import de.byte_artist.luggage_planner.listener.CategoryEntityOnLongClickListener;
@@ -78,7 +79,7 @@ public class CategoryActivity extends AbstractActivity {
         LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this);
         ArrayList<LuggageCategoryEntity> luggageCategoryEntities = luggageCategoryDbModel.load();
 
-        Locale currentLocale = getResources().getConfiguration().locale;
+        Locale currentLocale = LocaleHelper.investigateLocale(this);
 
         for (LuggageCategoryEntity luggageCategoryEntity : luggageCategoryEntities) {
             TableRow row = new TableRow(this);

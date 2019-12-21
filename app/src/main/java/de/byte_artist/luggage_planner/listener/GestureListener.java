@@ -1,8 +1,8 @@
 package de.byte_artist.luggage_planner.listener;
 
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 

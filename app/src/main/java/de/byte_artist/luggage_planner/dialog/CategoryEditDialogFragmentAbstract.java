@@ -3,8 +3,8 @@ package de.byte_artist.luggage_planner.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +18,7 @@ import java.util.Objects;
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.entity.LuggageCategoryEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 
 public class CategoryEditDialogFragmentAbstract extends DialogFragment {
 
@@ -44,11 +45,11 @@ public class CategoryEditDialogFragmentAbstract extends DialogFragment {
         }
 
         dialog.setView(categoryEditView);
+        final Locale locale = LocaleHelper.investigateLocale(this.getContext());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Locale locale = getResources().getConfiguration().locale;
 
                 LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(getActivity());
                 String categoryName = inputCategoryName.getText().toString();

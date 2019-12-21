@@ -1,6 +1,6 @@
 package de.byte_artist.luggage_planner.listener;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
@@ -11,12 +11,10 @@ import de.byte_artist.luggage_planner.service.Preferences;
 
 public class CategoryCollapseOnClickListener implements View.OnClickListener {
 
-    private final LuggageCategoryEntity luggageCategoryEntity;
     private final AbstractActivity activity;
     private final String key;
 
     public CategoryCollapseOnClickListener(AbstractActivity activity, LuggageCategoryEntity luggageCategoryEntity, String key) {
-        this.luggageCategoryEntity = luggageCategoryEntity;
         this.activity = activity;
         this.key = key;
     }

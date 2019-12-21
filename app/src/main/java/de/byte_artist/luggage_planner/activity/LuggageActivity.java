@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,7 +24,7 @@ import de.byte_artist.luggage_planner.db.LuggageDbModel;
 import de.byte_artist.luggage_planner.dialog.LuggageNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.LuggageEntity;
 import de.byte_artist.luggage_planner.entity.PreferencesEntity;
-import de.byte_artist.luggage_planner.interfaces.RefreshableInterface;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.listener.CategoryCollapseOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.LuggageEntityOnTouchListener;
@@ -304,7 +304,7 @@ public class LuggageActivity extends AbstractActivity {
             long tempCategory = -1;
             boolean categoryVisible = true;
             String visibilityPostfix = "CategoryVisible";
-            Locale currentLocale = getResources().getConfiguration().locale;
+            Locale currentLocale = LocaleHelper.investigateLocale(this);
 
             for (LuggageEntity luggageEntity : luggageEntities) {
                 long currentCategory = luggageEntity.getCategoryEntity().getId();

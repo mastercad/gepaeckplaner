@@ -1,8 +1,15 @@
 package de.byte_artist.luggage_planner.service;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
@@ -175,5 +182,153 @@ public class Database {
         if (file.exists()) {
             file.delete();
         }
+    }
+
+    public String exportDatabaseToJson() {
+        JSONObject jsonContainer = new JSONObject();
+        try {
+            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context);
+            ArrayList<PackingListEntity> packingListCollection = packingListDbModel.load();
+            JSONArray packingListCollectionJsonArray = new JSONArray();
+
+            for (PackingListEntity packingListEntity: packingListCollection) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", packingListEntity.getId());
+                jsonObject.put("date", packingListEntity.getDate());
+                jsonObject.put("name", packingListEntity.getName());
+
+                packingListCollectionJsonArray.put(jsonObject);
+            }
+
+            PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this.context);
+            ArrayList<PackingListEntryEntity> packingListEntryCollection = packingListEntryDbModel.load();
+            JSONArray packingListEntryCollectionJsonArray = new JSONArray();
+
+            for (PackingListEntryEntity packingListEntryEntity : packingListEntryCollection) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", packingListEntryEntity.getId());
+                jsonObject.put("count", packingListEntryEntity.getCount());
+                jsonObject.put("name", packingListEntryEntity.getId());
+                jsonObject.put("luggageFk", packingListEntryEntity.getLuggageFk());
+                jsonObject.put("packingListFk", packingListEntryEntity.getLuggageListFk());
+
+                packingListEntryCollectionJsonArray.put(jsonObject);
+            }
+
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
+            ArrayList<LuggageCategoryEntity> luggageCategoryCollection = luggageCategoryDbModel.load();
+            JSONArray luggageCategoryCollectionJsonArray = new JSONArray();
+
+            for (LuggageCategoryEntity luggageCategoryEntity : luggageCategoryCollection) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", luggageCategoryEntity.getId());
+                jsonObject.put("name", luggageCategoryEntity.getName());
+
+                luggageCategoryCollectionJsonArray.put(jsonObject);
+            }
+
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context);
+            ArrayList<LuggageEntity> luggageCollection = luggageDbModel.load();
+            JSONArray luggageCollectionJsonArray = new JSONArray();
+
+            for (LuggageEntity luggageEntity : luggageCollection) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", luggageEntity.getId());
+                jsonObject.put("name", luggageEntity.getName());
+                jsonObject.put("categoryFk", luggageEntity.getCategoryId());
+                jsonObject.put("count", luggageEntity.getCount());
+                jsonObject.put("weight", luggageEntity.getWeight());
+                jsonObject.put("active", luggageEntity.isActive());
+
+                luggageCollectionJsonArray.put(jsonObject);
+            }
+
+            jsonContainer.put("packingListEntries", packingListEntryCollectionJsonArray);
+            jsonContainer.put("packingLists", packingListCollectionJsonArray);
+            jsonContainer.put("luggageCategories", luggageCategoryCollectionJsonArray);
+            jsonContainer.put("luggage", luggageCollectionJsonArray);
+        } catch (JSONException exception) {
+            Toast.makeText(context, "Error create database output content!", Toast.LENGTH_SHORT).show();
+            Log.e("DATABASE SERVICE", "EXPORT DATABASE TO JSON: "+exception.getMessage(), exception);
+        }
+
+        return jsonContainer.toString();
+    }
+
+    /**
+     * Import the given JSON String to database.
+     *
+     * @param jsonContent the JSON String content to import
+     *
+     * @return boolean value depending on import status
+     */
+    public boolean importDatabaseByJson(String jsonContent) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonContent);
+
+            JSONArray packingListEntryCollection = jsonObject.getJSONArray("packingListEntries");
+            JSONArray packingListCollection = jsonObject.getJSONArray("packingLists");
+            JSONArray luggageCategoryCollection = jsonObject.getJSONArray("luggageCategories");
+            JSONArray luggageCollection = jsonObject.getJSONArray("luggage");
+
+            resetDatabase();
+
+            LuggageDbModel luggageDbModel = new LuggageDbModel(this.context);
+            LuggageCategoryDbModel luggageCategoryDbModel = new LuggageCategoryDbModel(this.context);
+            PackingListDbModel packingListDbModel = new PackingListDbModel(this.context);
+            PackingListEntryDbModel packingListEntryDbModel = new PackingListEntryDbModel(this.context);
+
+            int i;
+
+            for (i = 0; i < luggageCategoryCollection.length(); i++) {
+                JSONObject row = luggageCategoryCollection.getJSONObject(i);
+                LuggageCategoryEntity luggageCategoryEntity = new LuggageCategoryEntity();
+                luggageCategoryEntity.setId(row.getInt("id"));
+                luggageCategoryEntity.setName(row.getString("name"));
+
+                luggageCategoryDbModel.insert(luggageCategoryEntity);
+            }
+
+            for (i = 0; i < luggageCollection.length(); i++) {
+                JSONObject row = luggageCollection.getJSONObject(i);
+                LuggageEntity luggageEntity = new LuggageEntity();
+                luggageEntity.setId(row.getInt("id"));
+                luggageEntity.setName(row.getString("name"));
+                luggageEntity.setCategoryId(row.getInt("categoryFk"));
+                luggageEntity.setCount(row.getInt("count"));
+                luggageEntity.setWeight(row.getInt("weight"));
+                luggageEntity.setActive(row.getBoolean("active"));
+
+                luggageDbModel.insert(luggageEntity);
+            }
+
+            for (i = 0; i < packingListCollection.length(); i++) {
+                JSONObject row = packingListCollection.getJSONObject(i);
+                PackingListEntity packingListEntity = new PackingListEntity();
+                packingListEntity.setDate(row.getString("date"));
+                packingListEntity.setId(row.getInt("id"));
+                packingListEntity.setName(row.getString("name"));
+
+                packingListDbModel.insert(packingListEntity);
+            }
+
+            for (i = 0; i < packingListEntryCollection.length(); i++) {
+                JSONObject row = packingListEntryCollection.getJSONObject(i);
+                PackingListEntryEntity packingListEntryEntity = new PackingListEntryEntity();
+                packingListEntryEntity.setId(row.getInt("id"));
+                packingListEntryEntity.setCount(row.getInt("count"));
+                packingListEntryEntity.setLuggageFk(row.getInt("luggageFk"));
+                packingListEntryEntity.setLuggageListFk(row.getInt("packingListFk"));
+
+                packingListEntryDbModel.insert(packingListEntryEntity);
+            }
+
+            return true;
+
+        } catch (JSONException exception) {
+            Toast.makeText(context, R.string.error_convert_data, Toast.LENGTH_SHORT).show();
+            Log.e("DATABASE SERVICE", "IMPORT DATABASE FROM JSON: "+exception.getMessage(), exception);
+        }
+        return false;
     }
 }

@@ -14,12 +14,15 @@
     <string name="label_packing_list_name">Packing List Name</string>
     <string name="label_delete">Delete</string>
     <string name="label_attention">Attention</string>
+    <string name="label_usage">Usage</string>
+    <string name="label_sync">Sync</string>
 
     <string name="title_category_edit">Edit Category</string>
     <string name="title_category_new">Add Category</string>
     <string name="title_luggage_edit">Edit Luggage</string>
     <string name="title_luggage_new">Add Luggage</string>
     <string name="title_options">Options</string>
+    <string name="title_usage">Usage</string>
     <string name="title_packing_list_edit">Edit Packing list</string>
     <string name="title_packing_list_new">Add Packing list</string>
     <string name="title_error">Error!</string>
@@ -43,12 +46,14 @@
     <string name="text_count">Count</string>
     <string name="text_reset_database">clear Database</string>
     <string name="text_export_database">export Database</string>
+    <string name="text_sync_database">sync Database</string>
     <string name="text_import_database">import Database</string>
     <string name="text_create_database">create Demo Database</string>
     <string name="text_warning_exit_app">Are you sure you want to leave the program?</string>
     <string name="text_choose_category">Please choose a category!</string>
     <string name="text_create_category">Please create a category first!</string>
     <string name="text_not_all_fields_filled">Not all necessary fields are filled out!</string>
+    <string name="text_create_luggage_for_category">Please create a piece of luggage for this category first!</string>
     <string name="text_exit">Exit</string>
     <string name="text_size">Size</string>
     <string name="text_font_size">Fontsize</string>
@@ -60,7 +65,20 @@
     <string name="text_category_info">This is the category named \"%1$s\".</string>
     <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">The piece of luggage \"%1$s\" is %2$dx in the list \"%3$s\" and therefore has a total weight of %4$,.0f g.</string>
-
+    <string name="text_usage_general"><![CDATA[<b>General</b>:<br />
+<br />
+Creating a packing list requires a package that is stored in a category.<br />
+<br />
+It is therefore important to have a category in which there is a piece of luggage in order to be able to create a packing list.<br />
+<br />
+The following sequence must therefore be observed:<br />
+<br />
+<ul>
+    <li>Create category</li>
+    <li>Store packages in category</li>
+    <li>Create a packing list with packages from the respective categories</li>
+</ul>
+]]></string>
     <string name="id">ID</string>
     <string name="name">Name</string>
     <string name="weight">Weight</string>
@@ -88,6 +106,7 @@
     <string name="error_encoding_import_file">Format of the file could not be read!</string>
     <string name="error_import_file">File could not be read!</string>
     <string name="error_create_tables">Unable to create table!</string>
+    <string name="error_convert_data">Error occurred during convert!</string>
 
     <string name="category1">Swimwear</string>
     <string name="luggage1_category1">Swimming Trunks</string>
@@ -105,5 +124,27 @@
 
     <string name="packing_list1">Vacation Spreewald</string>
     <string name="packing_list2">Vacation Ostsee</string>
+
+    <string name="title_paired_devices" >Paired Devices</string>
+    <string name="title_other_devices">Other Devices</string>
+    <string name="button_scan">Scan</string>
+
+    <!--  BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">Connecting…</string>
+    <string name="title_connected_to">Connected to: </string>
+    <string name="title_not_connected">Not connected</string>
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices…</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <!-- Options Menu -->
+    <string name="connect">Connect a device</string>
+    <string name="discoverable">Make discoverable</string>
+
+    <string name="hint_chat_input">Input your chat message here…</string>
 
 </resources>

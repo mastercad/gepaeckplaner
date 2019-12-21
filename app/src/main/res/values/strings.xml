@@ -14,6 +14,8 @@
     <string name="label_packing_list_name">Packliste Name</string>
     <string name="label_delete">Löschen</string>
     <string name="label_attention">Achtung</string>
+    <string name="label_usage">Bedienung</string>
+    <string name="label_sync">Synchronisieren</string>
 
     <string name="title_category_edit">Kategory bearbeiten</string>
     <string name="title_category_new">Kategory anlegen</string>
@@ -22,6 +24,7 @@
     <string name="title_packing_list_edit">Packliste bearbeiten</string>
     <string name="title_packing_list_new">Packliste anlegen</string>
     <string name="title_options">Einstellungen</string>
+    <string name="title_usage">Bedienung</string>
     <string name="title_error">Fehler!</string>
     <string name="title_warning">Achtung!</string>
     <string name="title_information">Information!</string>
@@ -41,6 +44,7 @@
     <string name="text_update">Aktualisieren</string>
     <string name="text_count">Anzahl</string>
     <string name="text_reset_database">Datenbank leeren</string>
+    <string name="text_sync_database">Datenbank synchronisieren</string>
     <string name="text_export_database">Datenbank exportieren</string>
     <string name="text_import_database">Datenbank importieren</string>
     <string name="text_create_database">Demo Datenbank erstellen</string>
@@ -48,6 +52,7 @@
     <string name="text_warning_exit_app">Sind sie sicher, dass sie das Programm verlassen möchten?</string>
     <string name="text_choose_category">Bitte wählen Sie eine Kategorie aus!</string>
     <string name="text_create_category">Bitte legen Sie eine zu erst Kategorie an!</string>
+    <string name="text_create_luggage_for_category">Bitte legen sie erst ein Gepäckstück für diese Kategorie an!</string>
     <string name="text_not_all_fields_filled">Es sind nicht alle notwendigen Felder ausgefüllt!</string>
     <string name="text_exit">Verlassen</string>
     <string name="text_luggage_already_exists_in_packing_list">Dieses Gepäckstück existiert bereits in ihrer Packliste! Bitte bearbeiten sie die Anzahl dieses Eintrages, wenn sie mehr dieser Gepäckstücke planen!</string>
@@ -59,7 +64,26 @@
     <string name="text_category_info">Das ist die Kategory mit dem Namen \"%1$s\".</string>
     <string name="text_luggage_information">Das ist das Gepäckstück mit dem Namen \"%1$s\". Es befindet sich in der Kategory \"%2$s\" und hat ein Gewicht von %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">Das Gepäckstück \"%1$s\" befindet sich %2$dx in der Liste \"%3$s\" und hat damit eine Gesamtgewichtsbelastung von %4$,.0f g.</string>
-
+    <string name="text_usage_general"><![CDATA[Allgemeines:<br />
+<br />
+Für das Anlegen einer Packliste ist ein Packstück notwendig, welches in einer Kategorie abgelegt ist.<br />
+<br />
+Daher ist es wichtig, eine Kategorie angelegt zu haben, in der sich ein Gepäckstück befindet um eine Packliste anlegen zu können.<br />
+<br />
+Folgende Reihenfolge ist daher einzuhalten:<br />
+<br />
+<ul>
+<li>
+Kategorie anlegen
+</li>
+<li>
+Packstücke in Kategorie hinterlegen
+</li>
+<li>
+Packliste mit Packstücken aus den jeweiligen Kategorien anlegen
+</li>
+</ul>
+]]></string>
     <string name="id">ID</string>
     <string name="name">Name</string>
     <string name="weight">Gewicht</string>
@@ -87,6 +111,7 @@
     <string name="error_encoding_import_file">Format der Datei konnte nicht gelesen werden!</string>
     <string name="error_import_file">Datei konnte nicht gelesen werden!</string>
     <string name="error_create_tables">Tabelle konnte nicht angelegt werden!</string>
+    <string name="error_convert_data">Beim umwandeln trat ein Fehler auf!</string>
 
     <string name="category1">Badesachen</string>
     <string name="luggage1_category1">Badehose</string>
@@ -104,5 +129,26 @@
 
     <string name="packing_list1">Urlaub Spreewald</string>
     <string name="packing_list2">Urlaub Ostsee</string>
+
+    <!--  BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="not_connected">Es besteht keine Verbindung zu einem Gerät.</string>
+    <string name="bt_not_enabled_leaving">Bluetooth ist nicht aktiviert, beende.</string>
+    <string name="title_connecting">Verbinde…</string>
+    <string name="title_connected_to">Verbunden mit: </string>
+    <string name="title_not_connected">Nicht verbunden</string>
+    <!--  DeviceListActivity -->
+    <string name="scanning">Suche nach Geräten…</string>
+    <string name="select_device">Gerät zum Verbinden auswählen</string>
+    <string name="none_paired">Mit keinem Gerät verbunden</string>
+    <string name="none_found">Kein Gerät gefunden</string>
+    <string name="title_paired_devices">Verbundene Geräte</string>
+    <string name="title_other_devices">Weitere verfügbare Geräte</string>
+    <string name="button_scan">Nach Geräten suchen</string>
+    <!-- Options Menu -->
+    <string name="connect">Verbinde zu einem Gerät</string>
+    <string name="discoverable">Gerät sichtbar machen</string>
+
+    <string name="hint_chat_input">Nachricht hier eingeben…</string>
 
 </resources>

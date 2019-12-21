@@ -17,6 +17,7 @@ import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.db.PackingListEntryDbModel;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
 import de.byte_artist.luggage_planner.entity.PackingListEntryEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.service.TextSize;
 
 public class MainActivity extends AbstractActivity {
@@ -67,7 +68,7 @@ public class MainActivity extends AbstractActivity {
             TableRow.LayoutParams lp;
             double weightSum = 0;
 
-            Locale currentLocale = getResources().getConfiguration().locale;
+            Locale currentLocale = LocaleHelper.investigateLocale(this);
 
             for (PackingListEntryEntity packingListEntryEntity : luggageListEntryCollection) {
 
@@ -110,7 +111,11 @@ public class MainActivity extends AbstractActivity {
                 row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 4f));
 
                 TextView idLabel = new TextView(this);
-                String formattedEntryId = String.format(currentLocale, "%d%02d", packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount());
+                String formattedEntryId = String.format(
+                    currentLocale,
+                    "%d%02d",
+                    packingListEntryEntity.getLuggageEntity().getCategoryId(), packingListEntryEntity.getLuggageEntity().getCount()
+                );
                 idLabel.setText(formattedEntryId);
                 TextSize.convert(this, idLabel, TextSize.TEXT_TYPE_NORMAL);
                 idLabel.setMaxLines(1);

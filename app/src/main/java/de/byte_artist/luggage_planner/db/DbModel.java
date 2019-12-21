@@ -1,6 +1,5 @@
 package de.byte_artist.luggage_planner.db;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,8 +14,8 @@ import de.byte_artist.luggage_planner.service.Preferences;
 
 public class DbModel extends SQLiteOpenHelper {
 
-    public static Integer DATABASE_VERSION = 5;
-    public static final String DATABASE_NAME = "luggage.db";
+    protected static Integer DATABASE_VERSION = 5;
+    static final String DATABASE_NAME = "luggage.db";
 
     static final String TABLE_LUGGAGE = "luggage";
     static final String TABLE_LUGGAGE_CATEGORY = "luggage_category";
@@ -49,7 +48,7 @@ public class DbModel extends SQLiteOpenHelper {
 
     final Context context;
 
-    public DbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    protected DbModel(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name.isEmpty() ? DATABASE_NAME : name, factory, 0 == version ? DATABASE_VERSION : version);
         this.context = context;
     }
@@ -184,9 +183,6 @@ public class DbModel extends SQLiteOpenHelper {
         if (3 > oldVersion
             && 3 <= newVersion
         ) {
-            ArrayList<LuggageEntity> duplicateLuggageExists = this.collectDuplicateLuggageEntries(db);
-            ArrayList<LuggageEntity> luggageCategoryFkWithoutReferenceExists = this.collectLuggageCategoryFkWithoutReference(db);
-
             createTable = "CREATE TABLE luggage_temp AS SELECT * FROM " + TABLE_LUGGAGE + ";";
 
             db.execSQL(createTable);

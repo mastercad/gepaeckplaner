@@ -3,8 +3,8 @@ package de.byte_artist.luggage_planner.activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,6 +21,7 @@ import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
 import de.byte_artist.luggage_planner.dialog.PackingListNewDialogFragment;
 import de.byte_artist.luggage_planner.entity.PackingListEntity;
+import de.byte_artist.luggage_planner.helper.LocaleHelper;
 import de.byte_artist.luggage_planner.listener.PackingListDeleteOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnClickListener;
 import de.byte_artist.luggage_planner.listener.PackingListOnLongClickListener;
@@ -83,7 +84,7 @@ public class PackingListActivity extends AbstractActivity {
         TableRow.LayoutParams lp;
         Date dateService = new Date();
 
-        Locale currentLocale = getResources().getConfiguration().locale;
+        Locale currentLocale = LocaleHelper.investigateLocale(this);
 
         for (PackingListEntity packingListEntity : packingListEntities) {
             TableRow row = new TableRow(this);

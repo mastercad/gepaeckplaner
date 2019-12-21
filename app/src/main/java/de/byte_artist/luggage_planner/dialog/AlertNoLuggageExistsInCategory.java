@@ -2,11 +2,11 @@ package de.byte_artist.luggage_planner.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Objects;
 import de.byte_artist.luggage_planner.R;
@@ -22,7 +22,7 @@ public class AlertNoLuggageExistsInCategory extends DialogFragment {
                 CustomDialog.TYPE_ALERT
         );
         dialog.setTitle(R.string.title_error);
-        dialog.setMessage(R.string.text_create_category);
+        dialog.setMessage(R.string.text_create_luggage_for_category);
         dialog.setButton(CustomDialog.BUTTON_POSITIVE, getActivity().getResources().getText(R.string.text_understood), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

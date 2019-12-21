@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * basic class to execute needed database operations to prepare the database
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
 
     private Context context = null;
     static final private String DB_NAME = "test_luggage.db";
@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void execute(String statement) {
+    private void execute(String statement) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {

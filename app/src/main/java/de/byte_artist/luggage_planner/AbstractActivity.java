@@ -3,10 +3,11 @@ package de.byte_artist.luggage_planner;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +18,10 @@ import de.byte_artist.luggage_planner.activity.CategoryActivity;
 import de.byte_artist.luggage_planner.activity.LuggageActivity;
 import de.byte_artist.luggage_planner.activity.MainActivity;
 import de.byte_artist.luggage_planner.activity.PackingListActivity;
+import de.byte_artist.luggage_planner.activity.SyncActivity;
 import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.dialog.OptionsFragment;
+import de.byte_artist.luggage_planner.dialog.UsageFragment;
 import de.byte_artist.luggage_planner.interfaces.RefreshableInterface;
 
 @SuppressLint("Registered")
@@ -27,12 +30,10 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (MainActivity.class != this.getClass()) {
-            if (null != getSupportActionBar()) {
-                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+        if (null != getSupportActionBar()) {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         }
     }
 
@@ -74,6 +75,10 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
                 Intent luggageIntent = new Intent(this, LuggageActivity.class);
                 startActivity(luggageIntent);
                 break;
+            case R.id.mainMenuSync:
+                Intent myIntent = new Intent(this, SyncActivity.class);
+                this.startActivity(myIntent);
+                break;
             case R.id.mainMenuOptions:
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 Fragment prev = getSupportFragmentManager().findFragmentByTag("options_dialog");
@@ -86,6 +91,18 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
                 OptionsFragment fragment = new OptionsFragment();
                 fragment.show(ft, "options_dialog");
 
+                break;
+            case R.id.mainMenuUsage:
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                Fragment previousFragment = getSupportFragmentManager().findFragmentByTag("usage_dialog");
+
+                if (previousFragment != null) {
+                    fragmentTransaction.remove(previousFragment);
+                }
+                fragmentTransaction.addToBackStack(null);
+
+                UsageFragment currentFragment = new UsageFragment();
+                currentFragment.show(fragmentTransaction, "usage_dialog");
                 break;
             case R.id.mainMenuPackingLists:
 //                finish();
