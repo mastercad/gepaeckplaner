@@ -37,6 +37,7 @@ public class PreferencesEntity {
         return this.value;
     }
 
+    @SuppressWarnings("NullableProblems")
     public String toString() {
         if (0 < this.id) {
             return this.name + " => "+this.getValue();

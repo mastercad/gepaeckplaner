@@ -437,7 +437,8 @@ public class BluetoothSyncService {
                     && !currentWriteMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)
                 ) {
                     writeMessage = bytes;
-                } else if (writeStatusStart
+                } else //noinspection ConstantConditions
+                    if (writeStatusStart
                     && currentWriteMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)
                 ) {
                     writeStatusStart = false;

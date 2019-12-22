@@ -62,10 +62,6 @@ public class SyncActivity extends AbstractActivity {
 
     private MessageAdapter mAdapter;
 
-    private RecyclerView mRecyclerView;
-
-    private LinearLayoutManager mLayoutManager;
-
     private List<de.byte_artist.luggage_planner.entity.Message> messageList = new ArrayList<>();
 
     private int counter = 0;
@@ -76,10 +72,10 @@ public class SyncActivity extends AbstractActivity {
 
         setContentView(R.layout.activity_sync);
 
-        mRecyclerView = findViewById(R.id.sync_recycler_view);
+        RecyclerView mRecyclerView = findViewById(R.id.sync_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new MessageAdapter(messageList);

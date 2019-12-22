@@ -76,6 +76,7 @@ public class LuggageEntity {
         return this.active;
     }
 
+    @SuppressWarnings("NullableProblems")
     public String toString() {
 //        if (0 < this.id) {
 //            return this.id + " " + this.name;

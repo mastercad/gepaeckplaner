@@ -1,5 +1,6 @@
 package de.byte_artist.luggage_planner.service;
 
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private List<Message> messageList;
 
-    public static final int SENDER = 0;
-    public static final int RECIPIENT = 1;
+    private static final int SENDER = 0;
+    private static final int RECIPIENT = 1;
 
     public MessageAdapter(List<Message> messages) {
         messageList = messages;
@@ -33,24 +34,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_purple, parent, false);
-            ViewHolder vh = new ViewHolder((LinearLayout) v);
-            return vh;
-        } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_green, parent, false);
-            ViewHolder vh = new ViewHolder((LinearLayout) v);
-            return vh;
+            return new ViewHolder((LinearLayout) v);
         }
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_green, parent, false);
+        return new ViewHolder((LinearLayout) v);
     }
 
     public void remove(int pos) {
-        int position = pos;
-        messageList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, messageList.size());
+        messageList.remove(pos);
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, messageList.size());
 
     }
 
