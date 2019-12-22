@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.SyncActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/sync_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -15,19 +17,36 @@
         android:paddingRight="10dp"
         android:scrollbars="vertical" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/option_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_send"
-            android:layout_width="wrap_content"
+            android:id="@+id/button_sync"
+            android:layout_width="219dp"
             android:layout_height="wrap_content"
-            android:text="@string/send" />
-    </LinearLayout>
+            android:text="@string/label_sync"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_send"
+            app:layout_constraintBottom_toBottomOf="@+id/option_container"
+            app:layout_constraintEnd_toEndOf="@+id/option_container"
+            app:layout_constraintStart_toEndOf="@id/button_sync"
+            app:layout_constraintTop_toTopOf="@id/option_container" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/connection_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -39,15 +58,21 @@
             android:layout_height="wrap_content"
             android:onClick="connect"
             android:text="@string/connect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
-            android:id="@+id/discoverable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="discoverable"
             android:text="@string/discoverable"
+            app:layout_constraintBottom_toBottomOf="@+id/connection_container"
+            app:layout_constraintEnd_toEndOf="@+id/connection_container"
+            app:layout_constraintStart_toEndOf="@id/scan"
+            app:layout_constraintTop_toTopOf="@id/connection_container"
             style="?android:attr/buttonBarButtonStyle" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

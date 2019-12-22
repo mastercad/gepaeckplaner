@@ -20,6 +20,7 @@ public class Preferences {
         }
 
         for (PreferencesEntity currentPreferencesEntity : preferencesEntities) {
+            // @TODO break should be possible here because every key should unique in the table!
             if (preferenceName.equals(currentPreferencesEntity.getName())) {
                 preferencesEntity = currentPreferencesEntity;
             }

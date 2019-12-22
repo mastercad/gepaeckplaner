@@ -162,7 +162,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                             currentLuggageEntities = luggageDbModel.findLuggageByCategoryId(selectedCategory, false);
 
                             final ArrayAdapter<LuggageEntity> luggageArrayAdapter = new ArrayAdapter<>(
-                                    getActivity(),
+                                    Objects.requireNonNull(getActivity()),
                                     android.R.layout.simple_dropdown_item_1line,
                                     currentLuggageEntities
                             );
@@ -288,7 +288,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                                 packingListEntryEntity.setCount(count);
                                 packingListEntryDbModel.insert(packingListEntryEntity);
                             }
-                            getActivity().finish();
+                            Objects.requireNonNull(getActivity()).finish();
                             getActivity().startActivity(getActivity().getIntent());
                             Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                         }
@@ -306,7 +306,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
                 ) {
                    showAlertBoxNoLuggageExistsInCategory();
                 } else if (0 == selectedLuggage) {
-                    Toast.makeText(getContext(), "Bitte wählen sie ein Gepäckstück aus der Liste aus!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.text_please_select_luggage_from_list), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -420,7 +420,7 @@ abstract public class PackingListEntryEditDialogFragmentAbstract extends DialogF
         if (null != packingListEntryEntity
             && 0 < packingListEntryEntity.getCount()
         ) {
-            final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
+            final Locale currentLocale = LocaleHelper.investigateLocale(Objects.requireNonNull(this.getContext()));
             luggageCount.setText(String.format(currentLocale, "%d", packingListEntryEntity.getCount()));
         }
     }

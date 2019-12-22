@@ -158,7 +158,7 @@ public class DbModel extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String createTable;
-
+        /*
         String query = "SELECT name FROM sqlite_master WHERE type='table'";
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<String> tables = new ArrayList<>();
@@ -171,6 +171,7 @@ public class DbModel extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+         */
 
         if (2 > oldVersion
             && 2 <= newVersion

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
@@ -107,7 +108,7 @@ public class PackingListDetailActivity extends AbstractActivity {
                 String.format(
                     getResources().getString(R.string.placeholder_concat_packing_list_name),
                     title.getText(),
-                    packingListEntity.getName()
+                    Objects.requireNonNull(packingListEntity).getName()
                 )
             );
 

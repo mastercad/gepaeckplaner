@@ -1,6 +1,5 @@
 package de.byte_artist.luggage_planner.listener;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import de.byte_artist.luggage_planner.AbstractActivity;

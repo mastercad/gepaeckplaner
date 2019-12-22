@@ -4,7 +4,7 @@
 extern "C" JNIEXPORT jstring
 
 JNICALL
-Java_de_byte_1artist_luggage_1planer_MainActivity_stringFromJNI(
+Java_de_byte_artist_luggage_planer_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";

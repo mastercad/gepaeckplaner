@@ -13,9 +13,14 @@ import android.widget.TextView;
 import java.util.Objects;
 
 import de.byte_artist.luggage_planner.R;
-import de.byte_artist.luggage_planner.db.PreferencesDbModel;
 
 public class UsageFragment extends DialogFragment {
+
+    private String currentClassName = "";
+
+    public UsageFragment(String currentClassName) {
+        this.currentClassName = currentClassName;
+    }
 
     @NonNull
     @Override
@@ -23,24 +28,49 @@ public class UsageFragment extends DialogFragment {
         final CustomDialog dialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_EDIT);
 
         final ViewGroup usageView = (ViewGroup)View.inflate(getContext(), R.layout.activity_usage, null);
-        final PreferencesDbModel preferencesDbModel = new PreferencesDbModel(getContext());
 
-        dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
+        dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_understood), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
         dialog.setTitle(R.string.title_usage);
-        String formattedText = getString(R.string.text_usage_general);
 
         TextView textView = usageView.findViewById(R.id.textGeneral);
 
-        textView.setText(HtmlCompat.fromHtml(formattedText, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        textView.setText(HtmlCompat.fromHtml(considerCurrentClassNameForUsageText(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         dialog.setView(usageView);
         dialog.create();
 
         return dialog;
+    }
+
+    private String considerCurrentClassNameForUsageText() {
+
+        String usageText = "";
+
+        switch (currentClassName) {
+            case "CategoryActivity":
+                usageText = getString(R.string.text_usage_category);
+                break;
+            case "LuggageActivity":
+                usageText = getString(R.string.text_usage_luggage);
+                break;
+            case "PackingListActivity":
+                usageText = getString(R.string.text_usage_packinglist);
+                break;
+            case "PackingListDetailActivity":
+                usageText = getString(R.string.text_usage_packinglist_detail);
+                break;
+            case "SyncActivity":
+                usageText = getString(R.string.text_usage_sync);
+                break;
+            default:
+                usageText = getString(R.string.text_usage_general);
+        }
+
+        return usageText;
     }
 }

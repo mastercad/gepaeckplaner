@@ -2,8 +2,13 @@ package de.byte_artist.luggage_planner.activity;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,6 +43,8 @@ public class MainActivity extends AbstractActivity {
         TableLayout table = findViewById(R.id.PackagesTable);
         table.removeAllViews();
         table.setStretchAllColumns(true);
+//        table.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 20, 1f)); <- leads in error ...
+
         TableRow rowTitle = new TableRow(this);
         rowTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -56,7 +63,18 @@ public class MainActivity extends AbstractActivity {
         PackingListEntity currentPackingList = packingListDbModel.findCurrentPackingList();
 
         if (null == currentPackingList) {
-            title.setText(getResources().getString(R.string.warning_no_packing_list_found));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                title.setText(Html.fromHtml(getString(R.string.text_no_packing_list_found), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                title.setText(Html.fromHtml(getString(R.string.text_no_packing_list_found)));
+            }
+//            title.setText(getString(R.string.warning_no_packing_list_found));
+            TextSize.convert(this, title, TextSize.TEXT_TYPE_HEADER);
+            title.setWidth(0);
+            title.setMaxLines(Integer.MAX_VALUE);
+            title.setSingleLine(false);
+            title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+
             return;
         }
 
@@ -183,7 +201,17 @@ public class MainActivity extends AbstractActivity {
             rowSummary.addView(summary);
             table.addView(rowSummary);
         } else {
-            title.setText(getResources().getString(R.string.warning_no_packing_list_found));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                title.setText(Html.fromHtml(getString(R.string.text_no_packing_list_found), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                title.setText(Html.fromHtml(getString(R.string.text_no_packing_list_found)));
+            }
+//            title.setText(getString(R.string.warning_no_packing_list_found));
+            TextSize.convert(this, title, TextSize.TEXT_TYPE_HEADER);
+            title.setWidth(0);
+            title.setMaxLines(Integer.MAX_VALUE);
+            title.setSingleLine(false);
+            title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         }
     }
 }

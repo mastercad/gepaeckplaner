@@ -39,7 +39,7 @@ abstract class PackingListEditDialogFragmentAbstract extends DialogFragment impl
     }
 
     private void setDate(final Calendar calendar) {
-        final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
+        final Locale currentLocale = LocaleHelper.investigateLocale(Objects.requireNonNull(this.getContext()));
 
         String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, currentLocale);
@@ -80,7 +80,12 @@ abstract class PackingListEditDialogFragmentAbstract extends DialogFragment impl
             inputPackingListDate.setText(packingListEntity.getDate());
         }
 
-        dialog.setTitle(R.string.title_packing_list_new);
+
+        if (null != packingListEntity) {
+            dialog.setTitle(R.string.title_packing_list_edit);
+        } else {
+            dialog.setTitle(R.string.title_packing_list_new);
+        }
         dialog.setView(packingListEditView);
 
         inputPackingListDate.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +125,7 @@ abstract class PackingListEditDialogFragmentAbstract extends DialogFragment impl
                         packingListDbModel.insert(packingListEntity);
                     }
 
-                    getActivity().finish();
+                    Objects.requireNonNull(getActivity()).finish();
                     getActivity().startActivity(getActivity().getIntent());
                     Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                 }

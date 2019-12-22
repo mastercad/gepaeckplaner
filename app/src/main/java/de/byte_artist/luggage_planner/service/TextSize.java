@@ -1,9 +1,6 @@
 package de.byte_artist.luggage_planner.service;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.util.TypedValue;
 import android.widget.Spinner;
 import android.widget.TextView;

@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.byte_artist.luggage_planner.R;
+import de.byte_artist.luggage_planner.activity.SyncActivity;
 import de.byte_artist.luggage_planner.db.LuggageCategoryDbModel;
 import de.byte_artist.luggage_planner.db.LuggageDbModel;
 import de.byte_artist.luggage_planner.db.PackingListDbModel;
@@ -262,7 +263,7 @@ public class Database {
      *
      * @return boolean value depending on import status
      */
-    public boolean importDatabaseByJson(String jsonContent) {
+    public boolean importDatabaseByJson(String jsonContent, BluetoothSyncService bluetoothSyncService) {
         try {
             JSONObject jsonObject = new JSONObject(jsonContent);
 
@@ -289,6 +290,10 @@ public class Database {
                 luggageCategoryDbModel.insert(luggageCategoryEntity);
             }
 
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+            sendMessage(bluetoothSyncService, luggageCategoryCollection.length()+" Category Entries processed.");
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+
             for (i = 0; i < luggageCollection.length(); i++) {
                 JSONObject row = luggageCollection.getJSONObject(i);
                 LuggageEntity luggageEntity = new LuggageEntity();
@@ -302,6 +307,10 @@ public class Database {
                 luggageDbModel.insert(luggageEntity);
             }
 
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+            sendMessage(bluetoothSyncService, luggageCollection.length()+" Luggage Entries processed.");
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+
             for (i = 0; i < packingListCollection.length(); i++) {
                 JSONObject row = packingListCollection.getJSONObject(i);
                 PackingListEntity packingListEntity = new PackingListEntity();
@@ -311,6 +320,10 @@ public class Database {
 
                 packingListDbModel.insert(packingListEntity);
             }
+
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+            sendMessage(bluetoothSyncService, packingListCollection.length()+" Packing Lists processed.");
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
 
             for (i = 0; i < packingListEntryCollection.length(); i++) {
                 JSONObject row = packingListEntryCollection.getJSONObject(i);
@@ -323,6 +336,14 @@ public class Database {
                 packingListEntryDbModel.insert(packingListEntryEntity);
             }
 
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+            sendMessage(bluetoothSyncService, packingListEntryCollection.length()+" Packing List Entries processed.");
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+            sendMessage(bluetoothSyncService, "Database successfully written.");
+            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+
             return true;
 
         } catch (JSONException exception) {
@@ -330,5 +351,17 @@ public class Database {
             Log.e("DATABASE SERVICE", "IMPORT DATABASE FROM JSON: "+exception.getMessage(), exception);
         }
         return false;
+    }
+
+    private void sendMessage(BluetoothSyncService bluetoothSyncService, String message) {
+        // Check that we're actually connected before trying anything
+        if (bluetoothSyncService.getState() != BluetoothSyncService.STATE_CONNECTED) {
+            Toast.makeText(this.context, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            bluetoothSyncService.write(message.getBytes());
+        }
     }
 }

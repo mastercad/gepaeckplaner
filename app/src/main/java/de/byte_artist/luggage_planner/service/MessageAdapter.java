@@ -1,6 +1,5 @@
 package de.byte_artist.luggage_planner.service;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private List<Message> messageList;
 
-    private static final int SENDER = 0;
-    private static final int RECIPIENT = 1;
+    public static final int SENDER = 0;
+    public static final int RECIPIENT = 1;
 
-    public MessageAdapter(Context context, List<Message> messages) {
+    public MessageAdapter(List<Message> messages) {
         messageList = messages;
     }
 
@@ -80,7 +79,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         } else {
             return RECIPIENT;
         }
-
     }
 
 }

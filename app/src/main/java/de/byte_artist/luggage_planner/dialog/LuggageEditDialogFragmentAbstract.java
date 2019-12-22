@@ -53,7 +53,7 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
         final EditText luggageWeightEdit = luggageEditView.findViewById(R.id.luggageWeight);
         categoryNames = luggageEditView.findViewById(R.id.categoryNames);
         categoryDbModel = new LuggageCategoryDbModel(getActivity());
-        final Locale currentLocale = LocaleHelper.investigateLocale(this.getContext());
+        final Locale currentLocale = LocaleHelper.investigateLocale(Objects.requireNonNull(this.getContext()));
 
         try {
             Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
@@ -127,7 +127,11 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
             luggageWeightEdit.setText(String.format(currentLocale, "%.0f", luggageEntity.getWeight()));
         }
 
-        dialog.setTitle(R.string.title_luggage_edit);
+        if (null != luggageEntity) {
+            dialog.setTitle(R.string.title_luggage_edit);
+        } else {
+            dialog.setTitle(R.string.title_luggage_new);
+        }
         dialog.setView(luggageEditView);
         final Locale locale = LocaleHelper.investigateLocale(this.getContext());
 
@@ -156,7 +160,7 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
                                 && null == luggageEntity
                             )
                         ) {
-                            final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
+                            final CustomDialog alertDialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
                             alertDialog.setTitle(R.string.title_error);
                             alertDialog.setMessage(String.format(locale, getResources().getString(R.string.error_luggage_already_exists), luggageName, luggageEntityInDb.getCategoryEntity().getName()));
                             alertDialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_understood), new DialogInterface.OnClickListener() {
@@ -184,7 +188,7 @@ abstract class LuggageEditDialogFragmentAbstract extends DialogFragment {
                                     luggageDbModel.insert(luggageEntity);
                                 }
 
-                                getActivity().finish();
+                                Objects.requireNonNull(getActivity()).finish();
                                 getActivity().startActivity(getActivity().getIntent());
                                 Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                             } catch (Exception exception) {

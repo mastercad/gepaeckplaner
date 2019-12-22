@@ -29,9 +29,9 @@ public class CalenderDialogFragment extends DialogFragment implements DatePicker
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
             try {
-                calender.setTime(dateFormat.parse(this.date));
+                calender.setTime(Objects.requireNonNull(dateFormat.parse(this.date)));
             } catch (ParseException exception) {
-                Toast.makeText(getContext(), this.date+" konnte nicht geparsed werden!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), this.date+" has invalid Format!", Toast.LENGTH_SHORT).show();
             }
         }
         int year = calender.get(Calendar.YEAR);
@@ -39,10 +39,6 @@ public class CalenderDialogFragment extends DialogFragment implements DatePicker
         int day = calender.get(Calendar.DAY_OF_MONTH);
 
         return new DatePickerDialog(Objects.requireNonNull(getActivity()),
-//            AlertDialog.THEME_HOLO_LIGHT,
-//            R.style.AlertDialogTheme,
-//            AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
-//            AlertDialog.THEME_TRADITIONAL,
             android.R.style.Theme_Material_Light_Dialog_Alert,
             this,
             year,

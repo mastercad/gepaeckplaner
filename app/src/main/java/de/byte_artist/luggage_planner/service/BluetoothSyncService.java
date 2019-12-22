@@ -13,7 +13,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import de.byte_artist.luggage_planner.activity.SyncActivity;
@@ -24,7 +23,7 @@ import de.byte_artist.luggage_planner.activity.SyncActivity;
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-public class BluetoothChatService {
+public class BluetoothSyncService {
 
     // Name for the SDP record when creating server socket
     private static final String NAME = "BluetoothChat";
@@ -46,13 +45,17 @@ public class BluetoothChatService {
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
+    // Important for ConnectedThread
+    private boolean writeStatusStart = false;
+    private byte[] writeMessage;
+
     /**
      * Constructor. Prepares a new BluetoothChat session.
      *
      * @param context The UI Activity Context
      * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothChatService(Context context, Handler handler) {
+    public BluetoothSyncService(Context context, Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
@@ -148,6 +151,7 @@ public class BluetoothChatService {
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
+
         // Send the name of the connected device back to the UI Activity
         Message msg = mHandler.obtainMessage(SyncActivity.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
@@ -177,7 +181,7 @@ public class BluetoothChatService {
     }
 
     /**
-     * Write to the ConnectedThread in an unsynchronized manner
+     * Write to the ConnectedThread in an un synchronized manner
      *
      * @param out The bytes to write
      * @see ConnectedThread#write(byte[])
@@ -191,7 +195,7 @@ public class BluetoothChatService {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
-        // Perform the write unsynchronized
+        // Perform the write un synchronized
         r.write(out);
     }
 
@@ -235,14 +239,14 @@ public class BluetoothChatService {
             // Create a new listening server socket
             try {
                 tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME, MY_UUID);
-            } catch (IOException exception) {
+            } catch (IOException ignored) {
             }
             mmServerSocket = tmp;
         }
 
         public void run() {
             setName("AcceptThread");
-            BluetoothSocket socket = null;
+            BluetoothSocket socket;
             // Listen to the server socket if we're not connected
             while (mState != STATE_CONNECTED) {
                 try {
@@ -254,7 +258,7 @@ public class BluetoothChatService {
                 }
                 // If a connection was accepted
                 if (socket != null) {
-                    synchronized (BluetoothChatService.this) {
+                    synchronized (BluetoothSyncService.this) {
                         switch (mState) {
                             case STATE_LISTEN:
                             case STATE_CONNECTING:
@@ -266,7 +270,7 @@ public class BluetoothChatService {
                                 // Either not ready or already connected. Terminate new socket.
                                 try {
                                     socket.close();
-                                } catch (IOException exception) {
+                                } catch (IOException ignored) {
                                 }
                                 break;
                         }
@@ -278,7 +282,7 @@ public class BluetoothChatService {
         public void cancel() {
             try {
                 mmServerSocket.close();
-            } catch (IOException exception) {
+            } catch (IOException ignored) {
             }
         }
     }
@@ -299,7 +303,7 @@ public class BluetoothChatService {
             // given BluetoothDevice
             try {
                 tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException exception) {
+            } catch (IOException ignored) {
             }
             mmSocket = tmp;
         }
@@ -318,14 +322,14 @@ public class BluetoothChatService {
                 // Close the socket
                 try {
                     mmSocket.close();
-                } catch (IOException exception2) {
+                } catch (IOException ignored) {
                 }
                 // Start the service over to restart listening mode
-                BluetoothChatService.this.start();
+                BluetoothSyncService.this.start();
                 return;
             }
             // Reset the ConnectThread because we're done
-            synchronized (BluetoothChatService.this) {
+            synchronized (BluetoothSyncService.this) {
                 mConnectThread = null;
             }
             // Start the connected thread
@@ -335,7 +339,7 @@ public class BluetoothChatService {
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException exception) {
+            } catch (IOException ignored) {
             }
         }
     }
@@ -359,12 +363,12 @@ public class BluetoothChatService {
             try {
                 tmpIn = socket.getInputStream();
             } catch (IOException exception) {
-                Log.e("BLUETOOTHCHATSERVICE", "Error occurred when creating input stream", exception);
+                Log.e("BLUETOOTHSYNCSERVICE", "Error occurred when creating input stream", exception);
             }
             try {
                 tmpOut = socket.getOutputStream();
             } catch (IOException exception) {
-                Log.e("BLUETOOTHCHATSERVICE", "Error occurred when creating output stream", exception);
+                Log.e("BLUETOOTHSYNCSERVICE", "Error occurred when creating output stream", exception);
             }
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -374,10 +378,11 @@ public class BluetoothChatService {
             setName("ConnectedThread");
             byte[] buffer = new byte[1024];
             int bytes;
+            // Sync requested from connected device
             boolean syncActive = false;
 
             // Keep listening to the InputStream while connected
-            String tmp_msg = "";
+            String tmpMsg = "";
             while (true) {
                 try {
                     // Read from the InputStream
@@ -385,18 +390,31 @@ public class BluetoothChatService {
                     String readMessage = new String(buffer, 0, bytes);
                     if (readMessage.equals(SyncActivity.MESSAGE_HEADER_END)
                         || readMessage.equals(SyncActivity.MESSAGE_HEADER_SYNC_END)
+                        || readMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)
                     ) {
-                        byte[] currentBuffer = tmp_msg.getBytes();
+                        byte[] currentBuffer = tmpMsg.getBytes();
                         int currentBufferLength = currentBuffer.length;
-                        tmp_msg = "";
+                        tmpMsg = "";
                         // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(SyncActivity.MESSAGE_READ, currentBufferLength,-1, currentBuffer).sendToTarget();
-                    } else if (readMessage.equals(SyncActivity.MESSAGE_HEADER_START)) {
+
+                        if (readMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)) {
+                            mHandler.obtainMessage(SyncActivity.MESSAGE_STATUS, currentBufferLength,-1, currentBuffer).sendToTarget();
+                        } else {
+                            mHandler.obtainMessage(SyncActivity.MESSAGE_READ, currentBufferLength,-1, currentBuffer).sendToTarget();
+                        }
+                    } else if (readMessage.equals(SyncActivity.MESSAGE_HEADER_START)
+                        || readMessage.equals(SyncActivity.MESSAGE_HEADER_SYNC_START)
+                        || readMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_START)
+                    ) {
+                        // header can only be send from connected device => Sync Request.
+                        if (readMessage.equals(SyncActivity.MESSAGE_HEADER_SYNC_START)) {
+                            syncActive = true;
+                        }
                     } else {
-                        tmp_msg = tmp_msg.concat(readMessage);
+                        tmpMsg = tmpMsg.concat(readMessage);
                     }
                 } catch (IOException exception) {
-                    Log.e("BLUETOOTHCHATSERVICE", "Input stream was disconnected", exception);
+                    Log.e("BLUETOOTHSYNCSERVICE", "Input stream was disconnected", exception);
                     connectionLost();
                     break;
                 }
@@ -410,15 +428,35 @@ public class BluetoothChatService {
          */
         public void write(byte[] bytes) {
             try {
+                String currentWriteMessage = new String(bytes, 0, bytes.length);
+
+                // NO HEADER INFORMATION TO UI!
+                if (currentWriteMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_START)) {
+                    writeStatusStart = true;
+                } else if (writeStatusStart
+                    && !currentWriteMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)
+                ) {
+                    writeMessage = bytes;
+                } else if (writeStatusStart
+                    && currentWriteMessage.equals(SyncActivity.MESSAGE_HEADER_STATUS_END)
+                ) {
+                    writeStatusStart = false;
+                    String tmpMessage = new String(writeMessage, 0, writeMessage.length);
+
+                    // Share the sent message back to the UI Activity
+                    mHandler.obtainMessage(SyncActivity.MESSAGE_WRITE, -1, -1, writeMessage)
+                        .sendToTarget();
+                    writeMessage = null;
+                }
                 mmOutStream.write(bytes);
-                sleep(1000);
+                sleep(500);
 
                 // Share the sent message with the UI activity.
 //                Message writtenMsg = mHandler.obtainMessage(
 //                        SyncActivity.MESSAGE_WRITE, -1, -1, mmBuffer);
 //                writtenMsg.sendToTarget();
             } catch (IOException exception) {
-                Log.e("BLUETOOTHCHATSERVICE", "Error occurred when sending data", exception);
+                Log.e("BLUETOOTHSYNCSERVICE", "Error occurred when sending data", exception);
 
                 // Send a failure message back to the activity.
 //                Message writeErrorMsg = mHandler.obtainMessage(SyncActivity.MESSAGE_TOAST);
@@ -426,7 +464,7 @@ public class BluetoothChatService {
 //                bundle.putString("toast", "Couldn't send data to the other device");
 //                writeErrorMsg.setData(bundle);
 //                mHandler.sendMessage(writeErrorMsg);
-            } catch (InterruptedException exception) {
+            } catch (InterruptedException ignored) {
 
             }
         }
@@ -435,7 +473,7 @@ public class BluetoothChatService {
             try {
                 mmSocket.close();
             } catch (IOException exception) {
-                Log.e("BLUETOOTHCHATSERVICE", "Could not close the connect socket", exception);
+                Log.e("BLUETOOTHSYNCSERVICE", "Could not close the connect socket", exception);
             }
         }
     }

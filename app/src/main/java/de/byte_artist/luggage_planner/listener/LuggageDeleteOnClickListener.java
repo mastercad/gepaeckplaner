@@ -35,9 +35,9 @@ public class LuggageDeleteOnClickListener implements View.OnClickListener {
                     alertDialog.setTitle(R.string.title_error);
                     alertDialog.setMessage(R.string.warning_luggage_still_in_use);
                     alertDialog.setButton(CustomDialog.BUTTON_POSITIVE, activity.getResources().getString(R.string.text_understood), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                        deleteLuggage(luggageEntity, view);
-                            }
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteLuggage(luggageEntity, view);
+                        }
                     });
                     alertDialog.setButton(CustomDialog.BUTTON_NEGATIVE, activity.getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

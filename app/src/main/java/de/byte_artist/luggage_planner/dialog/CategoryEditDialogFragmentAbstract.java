@@ -45,7 +45,7 @@ public class CategoryEditDialogFragmentAbstract extends DialogFragment {
         }
 
         dialog.setView(categoryEditView);
-        final Locale locale = LocaleHelper.investigateLocale(this.getContext());
+        final Locale locale = LocaleHelper.investigateLocale(Objects.requireNonNull(this.getContext()));
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +71,7 @@ public class CategoryEditDialogFragmentAbstract extends DialogFragment {
                         && null == luggageCategoryEntity
                     )
                 ) {
-                    final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
+                    final CustomDialog alertDialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
                     alertDialog.setTitle(R.string.title_error);
                     alertDialog.setMessage(String.format(locale, getResources().getString(R.string.error_category_already_exists), categoryName));
                     alertDialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_understood), new DialogInterface.OnClickListener() {
@@ -93,7 +93,7 @@ public class CategoryEditDialogFragmentAbstract extends DialogFragment {
                         luggageCategoryDbModel.insert(luggageCategoryEntity);
                     }
 
-                    getActivity().finish();
+                    Objects.requireNonNull(getActivity()).finish();
                     getActivity().startActivity(getActivity().getIntent());
                     Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                 }

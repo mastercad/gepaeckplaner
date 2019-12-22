@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
+import androidx.core.view.MenuCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +32,29 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (null != getSupportActionBar()) {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name)+considerCurrentActivityForTitle());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        }
+    }
+
+    private String considerCurrentActivityForTitle() {
+        switch (this.getClass().getSimpleName()) {
+            case "MainActivity":
+            case "PackingListActivity":
+                return " | "+getString(R.string.label_packing_lists);
+            case "LuggageActivity":
+                return " | "+getString(R.string.label_luggage_list);
+            case "CategoryActivity":
+                return " | "+getString(R.string.label_categories);
+            case "PackingListDetailActivity":
+                return " | "+getString(R.string.label_packing_list);
+            case "SyncActivity":
+                return " | "+getString(R.string.label_sync);
+            default:
+                return "";
         }
     }
 
@@ -49,6 +70,8 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.complete, menu);
+
+        MenuCompat.setGroupDividerEnabled(menu, true);
 
         return true;
     }
@@ -101,7 +124,7 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
                 }
                 fragmentTransaction.addToBackStack(null);
 
-                UsageFragment currentFragment = new UsageFragment();
+                UsageFragment currentFragment = new UsageFragment(this.getClass().getSimpleName());
                 currentFragment.show(fragmentTransaction, "usage_dialog");
                 break;
             case R.id.mainMenuPackingLists:

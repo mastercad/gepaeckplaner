@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_usage_general">
+        <![CDATA[
+            <b>General</b>:<br />
+            <br />
+            Creating a packing list requires a package that is stored in a category.<br />
+            <br />
+            It is therefore important to have a category in which there is a piece of luggage in order to be able to create a packing list.<br />
+            <br />
+            The following sequence must therefore be observed:<br />
+            <br />
+            <ul>
+                <li>
+                    Create category
+                </li>
+                <li>
+                    Store packages in category
+                </li>
+                <li>
+                    Create a packing list with packages from the respective categories
+                </li>
+            </ul>
+        ]]>
+    </string>
+
+    <string name="text_usage_sync">
+        <![CDATA[
+            <b>Sync</b>:<br />
+            <i>(currently only the database is copied from the calling device to the connected device)</i><br />
+            <br />
+            In order to synchronize the databases, both devices must be in this overview. In addition, both devices must be connected.<br />
+            <br />
+            Pressing "Send" replaces the database of the connected device with that of the current device.<br />
+            <br />
+            The "Synchronize" option will be activated later, so that the databases of the two devices will be brought together.
+        ]]>
+    </string>
+
+    <string name="text_usage_category">
+        <![CDATA[
+            <b>Categories</b>:<br />
+            <br />
+            A category represents a division in which luggage is categorized.<br />
+            <br />
+            With the plus at the bottom right a new category can be created.<br />
+            <br />
+            A simple press on the entry of a category will display the details.<br />
+            <br />
+            A long press on the entry of a category leads to editing the category.<br />
+            <br />
+            Pressing the trash can behind a category will delete that category. This is not possible as long as there are luggage in the category.<br />
+        ]]>
+    </string>
+
+    <string name="text_usage_luggage">
+        <![CDATA[
+            <b>Luggage</b>:<br />
+            <br />
+            A new piece of luggage can be created with the plus at the bottom right.<br />
+            To do this, you must first select a category that has already been created, then enter a name for the new piece of luggage and, finally, save the weight of the piece of luggage.
+            This entry is saved with "Save".<br />
+            <br />
+            A simple press on a column name sorts the luggage.<br />
+            <br />
+            A simple press on the entry of a piece of luggage shows the details.<br />
+            <br />
+            A long press on the entry of a piece of luggage leads to the processing of the piece of luggage.<br />
+            <br />
+            A swipe over an entry to the right deactivates an entry. This entry is then no longer available for creating a packing list.<br />
+            <br />
+            A swipe left over an entry reactivates a deactivated entry.<br />
+            <br />
+            Pressing the trash can behind a piece of luggage deletes that piece of luggage. This is not possible as long as the baggage is still in a packing list.<br />
+        ]]>
+    </string>
+
+    <string name="text_usage_packinglist">
+        <![CDATA[
+            <b>Packing Lists</b>:<br />
+            <br />
+            To create a packing list, a package is required, which is stored in a category.<br />
+            <br />
+            It is therefore important to have a category in which there is a piece of luggage in order to be able to create a packing list.<br />
+            <br />
+            The following sequence must therefore be observed:<br />
+            <br />
+            <ul>
+                <li>
+                    Create category
+                </li>
+                <li>
+                    Store packages in category
+                </li>
+                <li>
+                    Create packing list with packages from the respective categories
+                </li>
+            </ul>
+        ]]>
+    </string>
+
+    <string name="text_usage_packinglist_detail">
+        <![CDATA[
+            <b>Packing list detailed view</b>:<br />
+            <br />
+            All items of luggage stored in a packing list are displayed in this overview.<br />
+            <br />
+            Clicking on the respective category shows or hides it.<br />
+            <br />
+            With the plus at the bottom right, an already created piece of luggage can be added to the current packing list.<br />
+            A category is selected from the dropdown.<br />
+            It is then possible to select a piece of luggage from the category.<br />
+            Finally, enter the desired number of this piece of luggage for the current packing list and confirm with "Save".<br />
+            <br />
+            A simple press on an entry in the luggage list shows the details of the stored luggage.<br />
+            <br />
+            A long press on an entry in the baggage list leads to the editing of the entry. The procedure here is analogous to "Create new".<br />
+            <br />
+            Pressing the trash can behind an entry removes this item from the current packing list. However, it remains in the database.<br />
+        ]]>
+    </string>
+</resources>

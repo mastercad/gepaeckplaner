@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.BaseActivity">
 
-    <item
-        android:id="@+id/mainMenuMain"
-        android:title="@string/title_main_page" />
-    <item
-        android:id="@+id/mainMenuCategories"
-        android:title="@string/label_categories" />
-    <item
-        android:id="@+id/mainMenuLuggage"
-        android:title="@string/label_luggage_list" />
-    <item
-        android:id="@+id/mainMenuPackingLists"
-        android:title="@string/label_packing_lists" />
-    <item
-        android:id="@+id/mainMenuOptions"
-        android:title="@string/label_options" />
-    <item
-        android:id="@+id/mainMenuSync"
-        android:title="@string/label_sync" />
+    <group>
+        <item
+            android:id="@+id/mainMenuMain"
+            android:title="@string/title_main_page" />
+        <item
+            android:id="@+id/mainMenuCategories"
+            android:title="@string/label_categories" />
+        <item
+            android:id="@+id/mainMenuLuggage"
+            android:title="@string/label_luggage_list" />
+        <item
+            android:id="@+id/mainMenuPackingLists"
+            android:title="@string/label_packing_lists" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/mainMenuOptions"
+            android:title="@string/label_options" />
+        <item
+            android:id="@+id/mainMenuSync"
+            android:title="@string/label_sync" />
+    </group>
+
     <item
         android:id="@+id/mainMenuUsage"
         android:drawableRight="@android:drawable/ic_menu_help"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_help"
         android:title="@string/label_usage"
         android:text="@string/label_usage" />
     <item

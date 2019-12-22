@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_usage_general">
+        <![CDATA[
+            <b>Allgemeines</b>:<br />
+            <br />
+            In dieser Übersicht wird die als nächstes anstehende Packliste angezeigt.<br />
+            <br />
+            Für das Anlegen einer Packliste ist ein Packstück notwendig, welches in einer Kategorie abgelegt ist.<br />
+            <br />
+            Daher ist es wichtig, eine Kategorie angelegt zu haben, in der sich ein Gepäckstück befindet um eine Packliste anlegen zu können.<br />
+            <br />
+            Folgende Reihenfolge ist daher einzuhalten:<br />
+            <br />
+            <ul>
+                <li>
+                    Kategorie anlegen
+                </li>
+                <li>
+                    Packstücke in Kategorie hinterlegen
+                </li>
+                <li>
+                    Packliste mit Packstücken aus den jeweiligen Kategorien anlegen
+                </li>
+            </ul>
+        ]]>
+    </string>
+
+    <string name="text_usage_sync">
+        <![CDATA[
+            <b>Synchronisieren</b>:<br />
+            <i>(aktuell wird nur die Datenbank vom aufrufenden Gerät auf das verbundene Gerät kopiert)</i><br />
+            <br />
+            Für das Synchronisieren der Datenbanken müssen sich beide Geräte in dieser Übersicht befinden. Außerdem müssen beide Geräte verbunden sein.<br />
+            <br />
+            Durch drücken auf "Senden" wird die Datenbank des verbundenen Geräts durch die des aktuellen Geräts ersetzt.<br />
+            <br />
+            Später wird noch die Option "Synchronisieren" aktiv sein, damit werden die Datenbanken der beiden Geräte auf einen gemeinsamen Stand gebracht.
+        ]]>
+    </string>
+
+    <string name="text_usage_luggage">
+        <![CDATA[
+            <b>Gepäckstücke</b>:<br />
+            <br />
+            Mit dem Plus unten rechts kann ein neues Gepäckstück angelegt werden.<br />
+            Dafür muss erst eine bereits angelegte Kategorie ausgewählt werden, dann gibt man einen Namen für das neue Gepäckstück an und hinterlegt als letztes noch das Gewicht des Gepäckstückes.
+            Gespeichert wird dieser Eintrag mit "Speichern".<br />
+            <br />
+            Ein einfacher Druck auf einen Spaltennamen sortiert die Gepäckstücke.<br />
+            <br />
+            Ein einfacher Druck auf den Eintrag eines Gepäckstückes werden die Details angezeigt.<br />
+            <br />
+            Ein langer Druck auf den Eintrag eines Gepäckstückes führt zum Bearbeiten des Gepäckstückes.<br />
+            <br />
+            Ein Swipe über einem Eintrag nach rechts deaktiviert einen Eintrag. Dieser Eintrag ist dann nicht mehr Verfügbar für das Erstellen einer Packliste.<br />
+            <br />
+            Ein Swipe über einem Eintrag nach links aktiviert einen deaktivierten Eintrag wieder.<br />
+            <br />
+            Ein Druck auf den Mülleimer hinter einem Gepäckstück löscht dieses Gepäckstück. Das ist nicht möglich, so lange sich das Gepäckstück noch in einer Packliste befindet.<br />
+        ]]>
+    </string>
+
+    <string name="text_usage_category">
+        <![CDATA[
+            <b>Kategorie</b>:<br />
+            <br />
+            Eine Kategorie repräsentiert eine Sparte, in der Gepäckstücke kategorisiert werden.<br />
+            <br />
+            Mit dem Plus unten rechts kann eine neue Kategorie angelegt werden.<br />
+            <br />
+            Ein einfacher Druck auf den Eintrag einer Kategorie werden die Details angezeigt.<br />
+            <br />
+            Ein langer Druck auf den Eintrag einer Kategorie führt zum Bearbeiten der Kategorie.<br />
+            <br />
+            Ein Druck auf den Mülleimer hinter einer Kategorie löscht diese Kategorie. Das ist nicht möglich, so lange sich in der Kategorie noch Gepäckstücke befinden.<br />
+        ]]>
+    </string>
+
+    <string name="text_usage_packinglist">
+        <![CDATA[
+            <b>Packlisten</b>:<br />
+            <br />
+            Für das Anlegen einer Packliste ist ein Gepäckstück notwendig, welches in einer Kategorie abgelegt ist.<br />
+            <br />
+            Daher ist es wichtig, eine Kategorie angelegt zu haben, in der sich ein Gepäckstück befindet um eine Packliste anlegen zu können.<br />
+            <br />
+            Folgende Reihenfolge ist daher einzuhalten:<br />
+            <br />
+            <ul>
+                <li>
+                    Kategorie anlegen
+                </li>
+                <li>
+                    Packstücke in Kategorie hinterlegen
+                </li>
+                <li>
+                    Packliste mit Packstücken aus den jeweiligen Kategorien anlegen
+                </li>
+            </ul>
+        ]]>
+    </string>
+
+    <string name="text_usage_packinglist_detail">
+        <![CDATA[
+            <b>Packliste Detailansicht</b>:<br />
+            <br />
+            In dieser Übersicht werden alle in einer Packliste hinterlegten Gepäckstücke angezeigt.<br />
+            <br />
+            Ein Klick auf die jeweilige Kategorie blendet diese ein oder aus.<br />
+            <br />
+            Mit dem Plus unten rechts kann zur aktuellen Packliste ein bereits angelegtes Gepäckstück hinzugefügt werden.<br />
+            Dazu wird über das Dropdown eine Kategorie ausgewählt.<br />
+            Darauf hin ist es möglich aus der Kategorie ein Gepäckstück auszuwählen.<br />
+            Abschließend gibt man noch die gewünschte Anzahl dieses Gepäckstückes für die aktuelle Packliste ein und bestätigt mit "Speichern".<br />
+            <br />
+            Ein einfacher Druck auf einen Eintrag in der Packliste zeigt die Details zu dem hinterlegten Gepäckstück an.<br />
+            <br />
+            Ein langer Druck auf einen Eintrag in der Packliste führt zum Bearbeiten des Eintrages. Das Vorgehen ist hier analog zum "Neu anlegen".<br />
+            <br />
+            Ein Druck auf den Mülleimer hinter einem Eintrag entfernt dieses Gepäckstück aus der aktuellen Packliste. Es bleibt aber in der Datenbank erhalten.<br />
+        ]]>
+    </string>
+</resources>

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -66,8 +65,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
-        String[] queries = statement.split(";");
-            for(String query : queries){
+            String[] queries = statement.split(";");
+            for (String query : queries) {
                 query = query.trim();
                 if (!query.isEmpty()) {
                     db.execSQL(query);

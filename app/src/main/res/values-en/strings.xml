@@ -16,6 +16,7 @@
     <string name="label_attention">Attention</string>
     <string name="label_usage">Usage</string>
     <string name="label_sync">Sync</string>
+    <string name="label_send">Send</string>
 
     <string name="title_category_edit">Edit Category</string>
     <string name="title_category_new">Add Category</string>
@@ -29,25 +30,16 @@
     <string name="title_warning">Warning!</string>
     <string name="title_information">Information!</string>
     <string name="title_main_page">Main Page</string>
-    <string name="title_exit_application">Close Application</string>
     <string name="text_please_select">Please select</string>
-    <string name="title_pairing_dialog">Pair with device</string>
+    <string name="text_please_select_luggage_from_list">Please select luggage from list!</string>
 
-    <string name="text_yes">Yes</string>
     <string name="text_ok">OK</string>
-    <string name="text_of">of</string>
     <string name="text_close">Close</string>
     <string name="text_understood">Understood</string>
-    <string name="text_no">No</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_save">Save</string>
-    <string name="text_for">for</string>
-    <string name="text_update">Update</string>
     <string name="text_count">Count</string>
     <string name="text_reset_database">clear Database</string>
-    <string name="text_export_database">export Database</string>
-    <string name="text_sync_database">sync Database</string>
-    <string name="text_import_database">import Database</string>
     <string name="text_create_database">create Demo Database</string>
     <string name="text_warning_exit_app">Are you sure you want to leave the program?</string>
     <string name="text_choose_category">Please choose a category!</string>
@@ -61,24 +53,26 @@
     <string name="text_luggage_already_exists_in_packing_list">Luggage already exists in die Packing List! Please edit count of this Luggage, if you need more of them in your list!</string>
     <string name="text_warning_reset_database">If you perform this action, all data in the database will be deleted!</string>
     <string name="text_data_successfully_saved">Data successfully saved!</string>
+    <string name="text_no_packing_list_found">
+        <![CDATA[
+             No current or future packing list was found! Please create one.<br />
+             <br />
+             In order to create a packing list, you need pieces of luggage that are arranged in categories.<br />
+             <br />
+             So first create categories in which you want to classify your luggage.<br />
+             <br />
+             Afterwards it is possible to create luggage that you can assign to the respective categories.<br />
+             <br />
+             If categories and luggage are created, packing lists can be created.<br />
+             <br />
+             <i>Use the Info button on the respective pages to get more information!</i>
+        ]]>
+    </string>
 
     <string name="text_category_info">This is the category named \"%1$s\".</string>
     <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">The piece of luggage \"%1$s\" is %2$dx in the list \"%3$s\" and therefore has a total weight of %4$,.0f g.</string>
-    <string name="text_usage_general"><![CDATA[<b>General</b>:<br />
-<br />
-Creating a packing list requires a package that is stored in a category.<br />
-<br />
-It is therefore important to have a category in which there is a piece of luggage in order to be able to create a packing list.<br />
-<br />
-The following sequence must therefore be observed:<br />
-<br />
-<ul>
-    <li>Create category</li>
-    <li>Store packages in category</li>
-    <li>Create a packing list with packages from the respective categories</li>
-</ul>
-]]></string>
+
     <string name="id">ID</string>
     <string name="name">Name</string>
     <string name="weight">Weight</string>
@@ -98,12 +92,10 @@ The following sequence must therefore be observed:<br />
     <string name="warning_luggage_list_empty">There are no luggage left!</string>
     <string name="warning_delete_failed">Delete failed!</string>
     <string name="warning_luggage_still_in_use">For this piece of luggage are still entries in luggage lists available!</string>
-    <string name="warning_no_packing_list_found">No Packing List found! Please create first.</string>
 
     <string name="error_category_already_exists">Category \"%1$s\" already exists!</string>
     <string name="error_luggage_already_exists">Luggage \"%1$s\" already exists in Category \"%2$s\"!</string>
     <string name="error_saving">When saving an error has occurred!</string>
-    <string name="error_encoding_import_file">Format of the file could not be read!</string>
     <string name="error_import_file">File could not be read!</string>
     <string name="error_create_tables">Unable to create table!</string>
     <string name="error_convert_data">Error occurred during convert!</string>
@@ -123,28 +115,24 @@ The following sequence must therefore be observed:<br />
     <string name="luggage3_category3">Towel (small)</string>
 
     <string name="packing_list1">Vacation Spreewald</string>
-    <string name="packing_list2">Vacation Ostsee</string>
 
     <string name="title_paired_devices" >Paired Devices</string>
     <string name="title_other_devices">Other Devices</string>
     <string name="button_scan">Scan</string>
 
     <!--  BluetoothChat -->
-    <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
-    <string name="title_connecting">Connecting…</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Sync.</string>
     <string name="title_connected_to">Connected to: </string>
-    <string name="title_not_connected">Not connected</string>
+
     <!--  DeviceListActivity -->
     <string name="scanning">scanning for devices…</string>
     <string name="select_device">select a device to connect</string>
     <string name="none_paired">No devices have been paired</string>
     <string name="none_found">No devices found</string>
+
     <!-- Options Menu -->
     <string name="connect">Connect a device</string>
     <string name="discoverable">Make discoverable</string>
-
-    <string name="hint_chat_input">Input your chat message here…</string>
 
 </resources>

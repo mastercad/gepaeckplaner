@@ -5,6 +5,7 @@ import android.content.Context;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Date {
 
@@ -23,7 +24,7 @@ public class Date {
                 return dateString;
             }
             java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
-            return dateFormat.format(date);
+            return dateFormat.format(Objects.requireNonNull(date));
         }
         return dateString;
     }

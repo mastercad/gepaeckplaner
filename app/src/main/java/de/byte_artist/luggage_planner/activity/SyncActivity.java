@@ -1,6 +1,7 @@
 package de.byte_artist.luggage_planner.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -10,57 +11,64 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
-import de.byte_artist.luggage_planner.service.BluetoothChatService;
+import de.byte_artist.luggage_planner.service.BluetoothSyncService;
 import de.byte_artist.luggage_planner.service.Database;
+import de.byte_artist.luggage_planner.service.MessageAdapter;
 
-public class SyncActivity extends AppCompatActivity {
+public class SyncActivity extends AbstractActivity {
 
-    // Message types sent from the BluetoothChatService Handler
+    // Message types sent from the BluetoothSyncService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_STATUS = 6;
 
     public static final String MESSAGE_HEADER_START = "start";
     public static final String MESSAGE_HEADER_END = "end";
+    public static final String MESSAGE_HEADER_STATUS_START = "status_start";
+    public static final String MESSAGE_HEADER_STATUS_END = "status_end";
     public static final String MESSAGE_HEADER_SYNC_START = "sync_start";
     public static final String MESSAGE_HEADER_SYNC_END = "sync_end";
     public static final String MESSAGE_HEADER_FINISHED = "finished";
 
-    // Key names received from the BluetoothChatService Handler
+    // Key names received from the BluetoothSyncService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
+
+    // Name of the connected device
+    private String mConnectedDeviceName = null;
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
-    private EditText mOutEditText;
-
-    // String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
-
-    public static String address = "default_address";
 
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
 
     // Member object for the chat services
-    private BluetoothChatService mChatService = null;
+    private BluetoothSyncService mSyncService = null;
 
-    private List<de.byte_artist.luggage_planner.entity.Message> messageList = new ArrayList<de.byte_artist.luggage_planner.entity.Message>();
+    private MessageAdapter mAdapter;
+
+    private RecyclerView mRecyclerView;
+
+    private LinearLayoutManager mLayoutManager;
+
+    private List<de.byte_artist.luggage_planner.entity.Message> messageList = new ArrayList<>();
+
+    private int counter = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,12 +76,15 @@ public class SyncActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_sync);
 
-//        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-//        mRecyclerView.setHasFixedSize(true);
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mAdapter = new MessageAdapter(getBaseContext(), messageList);
-//        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView = findViewById(R.id.sync_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new MessageAdapter(messageList);
+        mRecyclerView.setAdapter(mAdapter);
+
 //        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -87,31 +98,33 @@ public class SyncActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        } else {
-            if (mChatService == null) setupChat();
+        } else if (null == mSyncService) {
+            setupSync();
         }
     }
 
     @Override
     public synchronized void onResume() {
         super.onResume();
-        if (mChatService != null) {
-            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-                mChatService.start();
-            }
+        if (mSyncService != null
+            && mSyncService.getState() == BluetoothSyncService.STATE_NONE
+        ) {
+            mSyncService.start();
         }
     }
 
-    private void setupChat() {
+    private void setupSync() {
         Button mSendButton = findViewById(R.id.button_send);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                resetRecyclerView();
+
                 Database databaseService = new Database(getApplicationContext());
                 String jsonContent = databaseService.exportDatabaseToJson();
-                Log.d("SYNCACTIVITY", jsonContent);
 
                 sendMessage(MESSAGE_HEADER_START);
                 sendMessage(jsonContent);
@@ -119,18 +132,17 @@ public class SyncActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(this, mHandler);
-
-        // Initialize the buffer for outgoing messages
-        mOutStringBuffer = new StringBuffer();
+        // Initialize the BluetoothSyncService to perform bluetooth connections
+        mSyncService = new BluetoothSyncService(this, mHandler);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         // Stop the Bluetooth chat services
-        if (mChatService != null) mChatService.stop();
+        if (mSyncService != null) {
+            mSyncService.stop();
+        }
     }
 
     private void ensureDiscoverable() {
@@ -141,51 +153,72 @@ public class SyncActivity extends AppCompatActivity {
         }
     }
 
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
 
         // Check that we're actually connected before trying anything
-        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+        if (mSyncService.getState() != BluetoothSyncService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
         }
         // Check that there's actually something to send
         if (message.length() > 0) {
-            mChatService.write(message.getBytes());
-            // Reset out string buffer to zero and clear the edit text field
-            mOutStringBuffer.setLength(0);
+            mSyncService.write(message.getBytes());
         }
     }
 
-    // The Handler that gets information back from the BluetoothChatService
+    // The Handler that gets information back from the BluetoothSyncService
     private final Handler mHandler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
-//                case MESSAGE_WRITE:
-//                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-//                    String writeMessage = new String(writeBuf);
-//                    mAdapter.notifyDataSetChanged();
-//                    messageList.add(new de.byte_artist.luggage_planner.entity.Message(counter++, writeMessage, "Me"));
-//                    break;
+                case MESSAGE_STATUS:
+                    String statusMessage;
+
+                    if (null != msg.getData().getString("status")) {
+                        statusMessage = msg.getData().getString("status");
+                    } else {
+                        byte[] statusBuf = (byte[]) msg.obj;
+                        statusMessage = new String(statusBuf, 0, msg.arg1);
+                    }
+                    // construct a string from the valid bytes in the buffer
+                    Log.d("SYNCACTIVITY", "HABE IN MESSAGE_STATUS: "+statusMessage);
+                    mAdapter.notifyDataSetChanged();
+                    messageList.add(new de.byte_artist.luggage_planner.entity.Message(counter++, statusMessage, mConnectedDeviceName));
+
+                    break;
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    String writeMessage = new String(writeBuf);
+
+                    Log.d("SYNCACTIVITY", "HABE IN MESSAGE_WRITE: "+writeMessage);
+                    mAdapter.notifyDataSetChanged();
+                    messageList.add(new de.byte_artist.luggage_planner.entity.Message(counter++, writeMessage, "Me"));
+
+                    break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Database databaseService = new Database(getApplicationContext());
-                    databaseService.importDatabaseByJson(readMessage);
 
-//                    mAdapter.notifyDataSetChanged();
+                    resetRecyclerView();
+
+                    // construct a string from the valid bytes in the buffer
+                    Database databaseService = new Database(getApplicationContext());
+                    databaseService.importDatabaseByJson(readMessage, mSyncService);
+
 //                    messageList.add(new de.byte_artist.luggage_planner.entity.Message(counter++, readMessage, mConnectedDeviceName));
+//                    mAdapter.notifyDataSetChanged();
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     // Name of the connected device
-                    String mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(
                         getApplicationContext(),
-                        getResources().getString(R.string.title_connected_to)
-                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        getResources().getString(R.string.title_connected_to)+mConnectedDeviceName, Toast.LENGTH_SHORT
+                    ).show();
+
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(
@@ -193,6 +226,7 @@ public class SyncActivity extends AppCompatActivity {
                         msg.getData().getString(TOAST),
                         Toast.LENGTH_SHORT
                     ).show();
+
                     break;
             }
         }
@@ -204,25 +238,35 @@ public class SyncActivity extends AppCompatActivity {
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
                     // Get the device MAC address
-                    address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                    String address = Objects.requireNonNull(data.getExtras()).getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     // Get the BluetoothDevice object
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
                     // Attempt to connect to the device
-                    mChatService.connect(device);
+                    mSyncService.connect(device);
                 }
                 break;
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up a chat session
-                    setupChat();
+                    setupSync();
                 } else {
-                    // User did not enable Bluetooth or an error occured
+                    // User did not enable Bluetooth or an error occurred
                     Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                     finish();
                 }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public final void directSendNotification(String message) {
+        mAdapter.notifyDataSetChanged();
+        messageList.add(new de.byte_artist.luggage_planner.entity.Message(counter++, message, "Me"));
+    }
+
+    public void resetRecyclerView() {
+        messageList.clear();
+        mAdapter.notifyDataSetChanged();
     }
 
     public void connect(View v) {

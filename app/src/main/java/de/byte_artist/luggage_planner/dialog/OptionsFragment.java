@@ -37,7 +37,7 @@ public class OptionsFragment extends DialogFragment {
 
         optionsView = (ViewGroup)View.inflate(getContext(), R.layout.activity_options, null);
         final PreferencesDbModel preferencesDbModel = new PreferencesDbModel(getContext());
-        final Locale locale = LocaleHelper.investigateLocale(getContext());
+        final Locale locale = LocaleHelper.investigateLocale(Objects.requireNonNull(getContext()));
         tvProgressLabel = optionsView.findViewById(R.id.fontSizeText);
 
         final Database databaseService = new Database(getContext());
@@ -51,7 +51,7 @@ public class OptionsFragment extends DialogFragment {
         btnResetDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
+                final CustomDialog alertDialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
 
                 alertDialog.setTitle(R.string.title_warning);
                 alertDialog.setMessage(R.string.text_warning_reset_database);
@@ -77,7 +77,7 @@ public class OptionsFragment extends DialogFragment {
         btnCreateDemoDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            final CustomDialog alertDialog = new CustomDialog(getActivity(), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
+            final CustomDialog alertDialog = new CustomDialog(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme, CustomDialog.TYPE_WARNING);
 
             alertDialog.setTitle(R.string.title_warning);
             alertDialog.setMessage(R.string.text_warning_reset_database);
@@ -116,7 +116,7 @@ public class OptionsFragment extends DialogFragment {
 
                     preferencesDbModel.update(preferencesEntity);
 
-                    getActivity().finish();
+                    Objects.requireNonNull(getActivity()).finish();
                     getActivity().startActivity(getActivity().getIntent());
                     Toast.makeText(getContext(), getResources().getString(R.string.text_data_successfully_saved), Toast.LENGTH_LONG).show();
                 }
@@ -163,7 +163,7 @@ public class OptionsFragment extends DialogFragment {
             String.format(
                 locale,
                 "%s: %d",
-                getActivity().getResources().getString(R.string.text_size),
+                Objects.requireNonNull(getActivity()).getResources().getString(R.string.text_size),
                 (progress + MIN)
             )
         );
