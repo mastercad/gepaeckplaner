@@ -290,9 +290,7 @@ public class Database {
                 luggageCategoryDbModel.insert(luggageCategoryEntity);
             }
 
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
-            sendMessage(bluetoothSyncService, luggageCategoryCollection.length()+" Category Entries processed.");
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+            notifyState(bluetoothSyncService, luggageCategoryCollection.length(), this.context.getString(R.string.label_category));
 
             for (i = 0; i < luggageCollection.length(); i++) {
                 JSONObject row = luggageCollection.getJSONObject(i);
@@ -307,9 +305,7 @@ public class Database {
                 luggageDbModel.insert(luggageEntity);
             }
 
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
-            sendMessage(bluetoothSyncService, luggageCollection.length()+" Luggage Entries processed.");
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+            notifyState(bluetoothSyncService, luggageCollection.length(), this.context.getString(R.string.label_luggage));
 
             for (i = 0; i < packingListCollection.length(); i++) {
                 JSONObject row = packingListCollection.getJSONObject(i);
@@ -321,9 +317,7 @@ public class Database {
                 packingListDbModel.insert(packingListEntity);
             }
 
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
-            sendMessage(bluetoothSyncService, packingListCollection.length()+" Packing Lists processed.");
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+            notifyState(bluetoothSyncService, packingListCollection.length(), this.context.getString(R.string.label_packing_list));
 
             for (i = 0; i < packingListEntryCollection.length(); i++) {
                 JSONObject row = packingListEntryCollection.getJSONObject(i);
@@ -336,12 +330,10 @@ public class Database {
                 packingListEntryDbModel.insert(packingListEntryEntity);
             }
 
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
-            sendMessage(bluetoothSyncService, packingListEntryCollection.length()+" Packing List Entries processed.");
-            sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
+            notifyState(bluetoothSyncService, packingListEntryCollection.length(), this.context.getString(R.string.label_packing_list_entry));
 
             sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
-            sendMessage(bluetoothSyncService, "Database successfully written.");
+            sendMessage(bluetoothSyncService, this.context.getString(R.string.text_data_successfully_saved));
             sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
 
             return true;
@@ -351,6 +343,12 @@ public class Database {
             Log.e("DATABASE SERVICE", "IMPORT DATABASE FROM JSON: "+exception.getMessage(), exception);
         }
         return false;
+    }
+
+    private void notifyState(BluetoothSyncService bluetoothSyncService, int count, String tableName) {
+        sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_START);
+        sendMessage(bluetoothSyncService, count+" "+tableName+" "+this.context.getString(R.string.text_entries_processed));
+        sendMessage(bluetoothSyncService, SyncActivity.MESSAGE_HEADER_STATUS_END);
     }
 
     private void sendMessage(BluetoothSyncService bluetoothSyncService, String message) {

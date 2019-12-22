@@ -4,6 +4,7 @@
     <string name="label_category">Category</string>
     <string name="label_categories">Categories</string>
     <string name="label_luggage_list">Luggage</string>
+    <string name="label_luggage">Luggage</string>
     <string name="label_packing_list">Packing List</string>
     <string name="label_packing_lists">Packing Lists</string>
     <string name="label_options">Options</string>
@@ -17,6 +18,7 @@
     <string name="label_usage">Usage</string>
     <string name="label_sync">Sync</string>
     <string name="label_send">Send</string>
+    <string name="label_packing_list_entry">Packing List Entry</string>
 
     <string name="title_category_edit">Edit Category</string>
     <string name="title_category_new">Add Category</string>
@@ -48,6 +50,7 @@
     <string name="text_create_luggage_for_category">Please create a piece of luggage for this category first!</string>
     <string name="text_exit">Exit</string>
     <string name="text_size">Size</string>
+    <string name="text_entries_processed">Entries processed.</string>
     <string name="text_font_size">Fontsize</string>
     <string name="text_database">Database</string>
     <string name="text_luggage_already_exists_in_packing_list">Luggage already exists in die Packing List! Please edit count of this Luggage, if you need more of them in your list!</string>
@@ -72,6 +75,8 @@
     <string name="text_category_info">This is the category named \"%1$s\".</string>
     <string name="text_luggage_information">This is the piece of luggage named \"%1$s\". It is in the category \"%2$s\" and has a weight of %3$,.0f g.</string>
     <string name="text_packing_list_entry_entity_information">The piece of luggage \"%1$s\" is %2$dx in the list \"%3$s\" and therefore has a total weight of %4$,.0f g.</string>
+    <string name="text_unable_to_connect">Unable to connect device.</string>
+    <string name="text_device_connection_was_lost">Device connection was lost.</string>
 
     <string name="id">ID</string>
     <string name="name">Name</string>
@@ -92,6 +97,7 @@
     <string name="warning_luggage_list_empty">There are no luggage left!</string>
     <string name="warning_delete_failed">Delete failed!</string>
     <string name="warning_luggage_still_in_use">For this piece of luggage are still entries in luggage lists available!</string>
+    <string name="warning_sync_database">Caution! With this you delete the complete database on the target device and overwrite with the content of this device!</string>
 
     <string name="error_category_already_exists">Category \"%1$s\" already exists!</string>
     <string name="error_luggage_already_exists">Luggage \"%1$s\" already exists in Category \"%2$s\"!</string>

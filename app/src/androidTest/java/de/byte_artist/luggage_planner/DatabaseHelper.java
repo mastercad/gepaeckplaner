@@ -64,6 +64,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private void execute(String statement) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             String[] queries = statement.split(";");
             for (String query : queries) {

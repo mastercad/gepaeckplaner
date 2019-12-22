@@ -11,12 +11,14 @@
     <string name="label_weight">Gewicht</string>
     <string name="label_date">Datum</string>
     <string name="label_luggage_name">Gepäckstück Name</string>
+    <string name="label_luggage">Gepäckstück</string>
     <string name="label_packing_list_name">Packliste Name</string>
     <string name="label_delete">Löschen</string>
     <string name="label_attention">Achtung</string>
     <string name="label_usage">Bedienung</string>
     <string name="label_sync">Synchronisieren</string>
     <string name="label_send">Senden</string>
+    <string name="label_packing_list_entry">Packlisten Gepäckstücke</string>
 
     <string name="title_category_edit">Kategory bearbeiten</string>
     <string name="title_category_new">Kategory anlegen</string>
@@ -51,6 +53,7 @@
     <string name="text_warning_reset_database">Wenn Sie diese Aktion auführen, werden sämtliche Daten in der Datenbank gelöscht!</string>
     <string name="text_data_successfully_saved">Die Daten wurden erfolgreich gespeichert!</string>
     <string name="text_size">Größe</string>
+    <string name="text_entries_processed">Einträge verarbeitet.</string>
     <string name="text_font_size">Schriftgröße</string>
     <string name="text_database">Datenbank</string>
     <string name="text_category_info">Das ist die Kategory mit dem Namen \"%1$s\".</string>
@@ -72,6 +75,8 @@
              <i>Nutzen sie auch den Info Button auf den jeweiligen Seiten um nähere Informationen zu erhalten!</i>
         ]]>
     </string>
+    <string name="text_unable_to_connect">Es kann keine Verbindung zum Gerät hergestellt werden.</string>
+    <string name="text_device_connection_was_lost">Geräteverbindung wurde unterbrochen.</string>
 
     <string name="id">ID</string>
     <string name="name">Name</string>
@@ -92,6 +97,7 @@
     <string name="warning_luggage_list_empty">Es sind noch keine Gepäckstücke vorhanden!</string>
     <string name="warning_delete_failed">Löschen fehlgeschlagen!</string>
     <string name="warning_luggage_still_in_use">Dieses Gepäckstück wird noch in Packlisten verwendet!</string>
+    <string name="warning_sync_database">Achtung! Hiermit löschen sie auf dem Zielgerät die komplette Datenbank und überschreiben sie mit dem Inhalt von diesem Gerät!</string>
 
     <string name="error_category_already_exists">Kategorie \"%1$s\" existiert bereits!</string>
     <string name="error_luggage_already_exists">Gepäckstück \"%1$s\" existiert bereits in Kategorie \"%2$s\"!</string>

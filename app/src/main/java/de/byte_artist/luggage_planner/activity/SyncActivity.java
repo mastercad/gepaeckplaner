@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 import de.byte_artist.luggage_planner.AbstractActivity;
 import de.byte_artist.luggage_planner.R;
+import de.byte_artist.luggage_planner.dialog.CustomDialog;
 import de.byte_artist.luggage_planner.service.BluetoothSyncService;
 import de.byte_artist.luggage_planner.service.Database;
 import de.byte_artist.luggage_planner.service.MessageAdapter;
@@ -115,16 +117,36 @@ public class SyncActivity extends AbstractActivity {
 
     private void setupSync() {
         Button mSendButton = findViewById(R.id.button_send);
+        final SyncActivity activity = this;
         mSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                resetRecyclerView();
 
-                Database databaseService = new Database(getApplicationContext());
-                String jsonContent = databaseService.exportDatabaseToJson();
+                final CustomDialog dialog = new CustomDialog(activity, R.style.AlertDialogTheme, CustomDialog.TYPE_ALERT);
+                dialog.setTitle(R.string.title_warning);
+                dialog.setMessage(R.string.warning_sync_database);
 
-                sendMessage(MESSAGE_HEADER_START);
-                sendMessage(jsonContent);
-                sendMessage(MESSAGE_HEADER_END);
+                dialog.setButton(CustomDialog.BUTTON_NEGATIVE, getResources().getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.setButton(CustomDialog.BUTTON_POSITIVE, getResources().getString(R.string.text_understood), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        resetRecyclerView();
+
+                        Database databaseService = new Database(getApplicationContext());
+                        String jsonContent = databaseService.exportDatabaseToJson();
+
+                        sendMessage(MESSAGE_HEADER_START);
+                        sendMessage(jsonContent);
+                        sendMessage(MESSAGE_HEADER_END);
+                    }
+                });
+
+                dialog.create();
+                dialog.show();
             }
         });
 

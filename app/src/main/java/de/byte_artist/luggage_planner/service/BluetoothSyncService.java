@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import de.byte_artist.luggage_planner.R;
 import de.byte_artist.luggage_planner.activity.SyncActivity;
 
 /**
@@ -29,7 +30,7 @@ public class BluetoothSyncService {
     private static final String NAME = "BluetoothChat";
 
     // Unique UUID for this application
-    private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    private static final UUID MY_UUID = UUID.fromString("22d9c3fc-250a-11ea-978f-2e728ce88125");
 
     // Member fields
     private final BluetoothAdapter mAdapter;
@@ -49,6 +50,8 @@ public class BluetoothSyncService {
     private boolean writeStatusStart = false;
     private byte[] writeMessage;
 
+    private Context context;
+
     /**
      * Constructor. Prepares a new BluetoothChat session.
      *
@@ -56,6 +59,7 @@ public class BluetoothSyncService {
      * @param handler A Handler to send messages back to the UI Activity
      */
     public BluetoothSyncService(Context context, Handler handler) {
+        this.context = context;
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
@@ -207,7 +211,7 @@ public class BluetoothSyncService {
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(SyncActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(SyncActivity.TOAST, "Unable to connect device");
+        bundle.putString(SyncActivity.TOAST, this.context.getString(R.string.text_unable_to_connect));
         msg.setData(bundle);
         mHandler.sendMessage(msg);
     }
@@ -220,7 +224,7 @@ public class BluetoothSyncService {
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(SyncActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(SyncActivity.TOAST, "Device connection was lost");
+        bundle.putString(SyncActivity.TOAST, this.context.getString(R.string.text_device_connection_was_lost));
         msg.setData(bundle);
         mHandler.sendMessage(msg);
     }
