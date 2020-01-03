@@ -1,0 +1,41 @@
+
+{
+	"buildFiles" : 
+	[
+		"/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/CMakeLists.txt"
+	],
+	"cleanCommands" : 
+	[
+		"/media/programme/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /media/mastercad/Seagate\\ Expansion\\ Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/debug/arm64-v8a --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"native-lib-Debug-arm64-v8a" : 
+		{
+			"abi" : "arm64-v8a",
+			"artifactName" : "native-lib",
+			"buildCommand" : "/media/programme/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /media/mastercad/Seagate\\ Expansion\\ Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/debug/arm64-v8a --target native-lib",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android21 --gcc-toolchain=/media/programme/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/media/programme/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info -fno-experimental-isel  -fPIC    -c ",
+					"src" : "/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/src/main/cpp/native-lib.cpp",
+					"workingDirectory" : "/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/debug/arm64-v8a"
+				}
+			],
+			"output" : "/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so",
+			"toolchain" : "2153170867441878677"
+		}
+	},
+	"toolchains" : 
+	{
+		"2153170867441878677" : 
+		{
+			"cCompilerExecutable" : "/media/programme/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/media/programme/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+		}
+	}
+}

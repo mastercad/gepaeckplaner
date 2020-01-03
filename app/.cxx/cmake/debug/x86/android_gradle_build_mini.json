@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/media/programme/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /media/mastercad/Seagate\\ Expansion\\ Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/debug/x86 --target clean"
+  ],
+  "libraries": {
+    "native-lib-Debug-x86": {
+      "artifactName": "native-lib",
+      "buildCommand": "/media/programme/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /media/mastercad/Seagate\\ Expansion\\ Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/debug/x86 --target native-lib",
+      "abi": "x86",
+      "output": "/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/build/intermediates/cmake/debug/obj/x86/libnative-lib.so"
+    }
+  }
+}
