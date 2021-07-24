@@ -2,6 +2,9 @@
 .idea/
 .DS_Store
 
+app/service-account-key.json
+gepaeckplaner-5a8861c2cf34.json
+
 # Built application files
 *.apk
 *.aar
