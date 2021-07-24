@@ -37,20 +37,20 @@ jobs:
         run: ./gradlew lintRelease
 
       - name: Upload Linter results
-          uses: actions/upload-artifact@v1
-          with:
-            name: unit-tests-results
-            path: app/build/reports/lint-results-release.html
+        uses: actions/upload-artifact@v1
+        with:
+          name: unit-tests-results
+          path: app/build/reports/lint-results-release.html
 
       # Step 4: Yun your unit tests
       - name: Run Debug Unit Tests
         run: ./gradlew test
 
       - name: Upload Unit tests results
-           uses: actions/upload-artifact@v1
-           with:
-             name: unit-tests-results
-             path: app/build/reports/lint-results-release.html
+        uses: actions/upload-artifact@v1
+        with:
+          name: unit-tests-results
+          path: app/build/reports/lint-results-release.html
 
       - name: Assemble Android Tests
         run: ./gradlew assembleAndroidTest
