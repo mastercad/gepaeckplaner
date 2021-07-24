@@ -1,3 +1,0 @@
-/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
-/media/mastercad/Seagate Expansion Drive1/Projekte/AndroidStudioProjects/SybillesGepaeckPlaner/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir

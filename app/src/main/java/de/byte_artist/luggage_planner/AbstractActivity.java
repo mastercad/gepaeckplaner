@@ -34,9 +34,22 @@ public class AbstractActivity extends AppCompatActivity implements RefreshableIn
         super.onCreate(savedInstanceState);
 
         if (null != getSupportActionBar()) {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name)+considerCurrentActivityForTitle());
+            Objects.requireNonNull(getSupportActionBar()).setTitle(
+                getString(R.string.app_name)+considerCurrentActivityForTitle()
+            );
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+            // API 23
+//            getSupportActionBar().setBackgroundDrawable(
+//                new ColorDrawable(
+//                    getResources().getColor(R.color.colorPrimaryDark, getBaseContext().getTheme())
+//                )
+//            );
+            // API 21
+            getSupportActionBar().setBackgroundDrawable(
+                new ColorDrawable(
+                    getResources().getColor(R.color.colorPrimaryDark)
+                )
+            );
         }
     }
 
