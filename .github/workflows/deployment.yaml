@@ -22,10 +22,10 @@ jobs:
           java-version: 1.8
 
       # Step 2: Decode Google services configuration file
-      - name: Decode google-services.json
-        env:
-          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-        run: echo $FIREBASE_CONFIG > app/google-services.json
+#      - name: Decode google-services.json
+#        env:
+#          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+#        run: echo $FIREBASE_CONFIG > app/google-services.json
 
       # Step 3: Decode the service account json key, needed on the next job
       - name: Decode service account key
