@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+    lintOptions {
+        checkReleaseBuilds false
+        //If you want to continue even if errors found use following line
+        abortOnError false
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "de.byte_artist.luggage_planner"
