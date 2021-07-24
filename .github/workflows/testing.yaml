@@ -37,11 +37,11 @@ jobs:
         run: ./gradlew lintRelease
 
       # Step 4: Yun your unit tests
-      - name: Run Unit Tests
+      - name: Run Debug Unit Tests
         run: ./gradlew testDebugUnitTest
 
-      - name: Run Release APK
+      - name: Run Release Unit Tests
         run: ./gradlew testReleaseUnitTest
 
-      - name: Assemble Debug Test APK
-        run: ./gradlew assembleStagingDebugAndroidTest
+      - name: Assemble Android Tests
+        run: ./gradlew assembleAndroidTest
