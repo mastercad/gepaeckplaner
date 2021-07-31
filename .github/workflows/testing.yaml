@@ -12,6 +12,10 @@ jobs:
     name: Lint Check and Testing
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [21, 23, 29]
+        target: [default, google_apis]
 
     steps:
       - name: Clone Repo
@@ -32,7 +36,6 @@ jobs:
 #      - name: Run Kotlin Linter
 #        run: ./gradlew ktlintStagingDebugCheck
 
-      # Step 3: Check the code with Android linter
       - name: Run Android Linter
         run: ./gradlew lintRelease
 
@@ -42,31 +45,65 @@ jobs:
           name: linter-results
           path: app/build/reports/lint-results-release.html
 
-      # Step 4: Run all checks
       - name: Run all checks
         run: ./gradlew check
 
-      # Step 5: Run unit tests for all variants
       - name: Run Unit Tests
         run: ./gradlew test
 
-      # Step 5: Run android tests
-      - name: Run android tests for min version 21
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Gradle cache
+        uses: actions/cache@v2
         with:
-          api-level: 21
-          arch: x86
-          disable-animations: true
-          script: ./gradlew connectedAndroidTest --stacktrace
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
-      # Step 5: Run android tests
-      - name: Run android tests for recommendet version 28
+      - name: AVD cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 28
-          arch: x86
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedAndroidTest --stacktrace
+          script: ./gradlew connectedAndroidTest
+
+#      - name: Run android tests for min version 21
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.api-level }}
+#          target: ${{ matrix.target }}
+#          arch: x86_64
+#          profile: Nexus 6
+#          disable-animations: true
+#          script: ./gradlew connectedAndroidTest --stacktrace
+
+#      - name: Run android tests for recommendet version 29
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 29
+#          arch: x86
+#          disable-animations: true
+#          script: ./gradlew connectedAndroidTest --stacktrace
 
       - name: Upload Unit tests results
         uses: actions/upload-artifact@v1
