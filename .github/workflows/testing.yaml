@@ -9,7 +9,7 @@ on:
 
 env:
   ANDROID_HOME: "/Users/runner/Library/android-sdk"
-  ANDROID_SDK_TOOLS: "6609375_latest"
+  ANDROID_SDK_TOOLS: "7425822_latest"
 
 jobs:
   testing:
