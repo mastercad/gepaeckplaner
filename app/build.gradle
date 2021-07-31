@@ -24,7 +24,7 @@ android {
 //                version "22.1.7171670"
             }
         }
-        testFunctionalTest = false
+        testFunctionalTest = true
     }
 //    signingConfigs {
 //        release {
@@ -70,9 +70,6 @@ android {
             assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/']
             res.srcDirs = ['src/main/res', 'src/androidTest/res']
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
