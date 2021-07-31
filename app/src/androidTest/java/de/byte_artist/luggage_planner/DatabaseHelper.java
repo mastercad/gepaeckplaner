@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * basic class to execute needed database operations to prepare the database
@@ -73,8 +75,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                     db.execSQL(query);
                 }
             }
-        } catch (Exception e) {
-            Toast.makeText(context, R.string.error_create_tables, Toast.LENGTH_SHORT).show();
+        } catch (Exception exception) {
+            Log.e("Database Helper execute exception:", Objects.requireNonNull(exception.getMessage()));
+//            Toast.makeText(context, R.string.error_create_tables, Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }

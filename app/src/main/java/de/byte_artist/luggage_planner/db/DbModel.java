@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class DbModel extends SQLiteOpenHelper {
     static final String COLUMN_LUGGAGE_ID = "luggage_id";
     static final String COLUMN_LUGGAGE_NAME = "luggage_name";
     static final String COLUMN_LUGGAGE_COUNT = "luggage_count";
-    static final String COLUMN_LUGGAGE_WEIGHT = "luggage_weigh";
+    static final String COLUMN_LUGGAGE_WEIGHT = "luggage_weight";
     static final String COLUMN_LUGGAGE_ACTIVE = "luggage_active";
     static final String COLUMN_LUGGAGE_CATEGORY_FK = "luggage_category_fk";
 
@@ -172,6 +173,8 @@ public class DbModel extends SQLiteOpenHelper {
         cursor.close();
          */
 
+        Log.i("on upgrade", "Old Version: "+oldVersion+" / New Version: "+newVersion);
+
         if (2 > oldVersion
             && 2 <= newVersion
         ) {
@@ -183,17 +186,17 @@ public class DbModel extends SQLiteOpenHelper {
         if (3 > oldVersion
             && 3 <= newVersion
         ) {
-            createTable = "CREATE TABLE luggage_temp AS SELECT * FROM " + TABLE_LUGGAGE + ";";
+            createTable = "CREATE TABLE luggage_temp AS SELECT * FROM "+TABLE_LUGGAGE+";";
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_LUGGAGE;
+            createTable = "DROP TABLE "+TABLE_LUGGAGE;
 
             db.execSQL(createTable);
 
             this.createLuggageTable(db);
 
-            createTable = "INSERT INTO " + TABLE_LUGGAGE + " SELECT * FROM luggage_temp;";
+            createTable = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
 
             db.execSQL(createTable);
 
@@ -209,19 +212,19 @@ public class DbModel extends SQLiteOpenHelper {
         }
 
         if (5 > oldVersion
-            && 5 == newVersion
+            && 5 <= newVersion
         ) {
-            createTable = "CREATE TABLE luggage_category_temp AS SELECT * FROM " + TABLE_LUGGAGE_CATEGORY + ";";
+            createTable = "CREATE TABLE luggage_category_temp AS SELECT * FROM "+TABLE_LUGGAGE_CATEGORY+";";
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_LUGGAGE_CATEGORY + ";";
+            createTable = "DROP TABLE "+TABLE_LUGGAGE_CATEGORY+";";
 
             db.execSQL(createTable);
 
             this.createLuggageCategoryTable(db);
 
-            createTable = "INSERT INTO " + TABLE_LUGGAGE_CATEGORY + " SELECT * FROM luggage_category_temp;";
+            createTable = "INSERT INTO "+TABLE_LUGGAGE_CATEGORY+" SELECT * FROM luggage_category_temp;";
 
             db.execSQL(createTable);
 
@@ -229,17 +232,17 @@ public class DbModel extends SQLiteOpenHelper {
 
             db.execSQL(createTable);
 
-            createTable = "CREATE TABLE packing_list_entry_tmp AS SELECT * FROM " + TABLE_PACKING_LIST_ENTRY + ";";
+            createTable = "CREATE TABLE packing_list_entry_tmp AS SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+";";
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_PACKING_LIST_ENTRY + ";";
+            createTable = "DROP TABLE "+TABLE_PACKING_LIST_ENTRY+";";
 
             db.execSQL(createTable);
 
             this.createPackingListEntriesTable(db);
 
-            createTable = "INSERT INTO " + TABLE_PACKING_LIST_ENTRY + " SELECT * FROM packing_list_entry_tmp;";
+            createTable = "INSERT INTO "+TABLE_PACKING_LIST_ENTRY+" SELECT * FROM packing_list_entry_tmp;";
 
             db.execSQL(createTable);
 
@@ -251,13 +254,13 @@ public class DbModel extends SQLiteOpenHelper {
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_LUGGAGE + ";";
+            createTable = "DROP TABLE "+TABLE_LUGGAGE+";";
 
             db.execSQL(createTable);
 
             this.createLuggageTable(db);
 
-            createTable = "INSERT INTO " + TABLE_LUGGAGE + " SELECT * FROM luggage_temp;";
+            createTable = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
 
             db.execSQL(createTable);
 
@@ -265,17 +268,17 @@ public class DbModel extends SQLiteOpenHelper {
 
             db.execSQL(createTable);
 
-            createTable = "CREATE TABLE packing_list_tmp AS SELECT * FROM " + TABLE_PACKING_LIST + ";";
+            createTable = "CREATE TABLE packing_list_tmp AS SELECT * FROM "+TABLE_PACKING_LIST + ";";
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_PACKING_LIST + ";";
+            createTable = "DROP TABLE "+TABLE_PACKING_LIST+";";
 
             db.execSQL(createTable);
 
             this.createPackingListTable(db);
 
-            createTable = "INSERT INTO " + TABLE_PACKING_LIST + " SELECT * FROM packing_list_tmp;";
+            createTable = "INSERT INTO "+TABLE_PACKING_LIST+" SELECT * FROM packing_list_tmp;";
 
             db.execSQL(createTable);
 
@@ -283,17 +286,17 @@ public class DbModel extends SQLiteOpenHelper {
 
             db.execSQL(createTable);
 
-            createTable = "CREATE TABLE preferences_tmp AS SELECT * FROM " + TABLE_PREFERENCES + ";";
+            createTable = "CREATE TABLE preferences_tmp AS SELECT * FROM "+TABLE_PREFERENCES + ";";
 
             db.execSQL(createTable);
 
-            createTable = "DROP TABLE " + TABLE_PREFERENCES + ";";
+            createTable = "DROP TABLE "+TABLE_PREFERENCES+";";
 
             db.execSQL(createTable);
 
             this.createPreferencesTable(db);
 
-            createTable = "INSERT INTO " + TABLE_PREFERENCES + " SELECT * FROM preferences_tmp;";
+            createTable = "INSERT INTO "+TABLE_PREFERENCES+" SELECT * FROM preferences_tmp;";
 
             db.execSQL(createTable);
 

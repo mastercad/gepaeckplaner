@@ -47,6 +47,7 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V1:", Objects.requireNonNull(exception.getMessage()));
@@ -60,6 +61,7 @@ public class DatabaseTest {
         thrown.expectMessage("no such column: luggage_active (code 1 SQLITE_ERROR): , while compiling: SELECT luggage_active FROM luggage");
 
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -71,16 +73,18 @@ public class DatabaseTest {
 
         try (DatabaseHelper databaseHelper = new DatabaseHelper(context)) {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V2:", Objects.requireNonNull(exception.getMessage()));
         }
 
         de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        String query = "SELECT luggage_active FROM luggage";
-
         SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+
+        String query = "SELECT luggage_active FROM luggage";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -96,17 +100,19 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V3:", Objects.requireNonNull(exception.getMessage()));
         }
 
         de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+
+        String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -114,10 +120,11 @@ public class DatabaseTest {
         thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage 2', 2, 5, 2);";
 
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -133,25 +140,29 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V4:", Objects.requireNonNull(exception.getMessage()));
         }
 
         de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
+        SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+
         ArrayList<String> tables = database.showTables();
 
         boolean found = false;
         for (String table: tables) {
             if (table.equals("preferences")) {
                 found = true;
+                break;
             }
         }
 
         assertTrue(found);
         String query = "SELECT luggage_active FROM luggage";
-        SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -167,6 +178,7 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V5EnsureCategoryNameIsUnique:", Objects.requireNonNull(exception.getMessage()));
@@ -183,6 +195,7 @@ public class DatabaseTest {
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -198,6 +211,7 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V5EnsureLuggageEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
@@ -209,7 +223,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -217,9 +231,10 @@ public class DatabaseTest {
         thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -235,6 +250,7 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V5EnsurePackingListIsUnique:", Objects.requireNonNull(exception.getMessage()));
@@ -246,7 +262,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -260,6 +276,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -275,6 +292,7 @@ public class DatabaseTest {
         try {
             InputStream inputStream = context.getAssets().open("database_v1.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(1);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV1V5EnsurePackingListEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
@@ -286,7 +304,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -304,6 +322,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -317,23 +336,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V3:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -341,10 +358,11 @@ public class DatabaseTest {
         thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage 2', 2, 5, 2);";
 
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -358,18 +376,16 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V4:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
-        sqLiteDatabase = database.getReadableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
+        SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
 
         ArrayList<String> tables = database.showTables();
 
@@ -377,6 +393,7 @@ public class DatabaseTest {
         for (String table: tables) {
             if (table.equals("preferences")) {
                 found = true;
+                break;
             }
         }
 
@@ -384,6 +401,7 @@ public class DatabaseTest {
 
         String query = "SELECT luggage_active FROM luggage";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -397,18 +415,16 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V5EnsureCategoryNameIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -418,6 +434,7 @@ public class DatabaseTest {
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -431,23 +448,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V5EnsureLuggageEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -455,9 +470,10 @@ public class DatabaseTest {
         thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -471,23 +487,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V5EnsurePackingListIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -501,6 +515,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -514,23 +529,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v2.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(2);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV2V5EnsurePackingListEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 2);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -548,6 +561,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -561,18 +575,16 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v3.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(3);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV3V4:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
-        sqLiteDatabase = database.getReadableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
+        SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
 
         ArrayList<String> tables = database.showTables();
 
@@ -580,12 +592,14 @@ public class DatabaseTest {
         for (String table: tables) {
             if (table.equals("preferences")) {
                 found = true;
+                break;
             }
         }
 
         assertTrue(found);
         String query = "SELECT luggage_active FROM luggage";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -599,28 +613,26 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v3.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(3);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV3V5EnsureCategoryNameIsUnique:", Objects.requireNonNull(exception.getMessage()), exception);
         }
 
-        de.byte_artist.luggage_planner.Database database;
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
         thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
-//        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (Sqlite code 2067 SQLITE_CONSTRAINT_UNIQUE), (OS error - 2:No such file or directory)");
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -634,23 +646,23 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v3.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(3);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV3V5EnsureLuggageEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        database.getReadableDatabase().setVersion(5);
 
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -659,9 +671,10 @@ public class DatabaseTest {
         thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -675,23 +688,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v3.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(3);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV3V5EnsurePackingListIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -705,6 +716,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -718,23 +730,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v3.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(3);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV3V5EnsurePackingListEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -752,6 +762,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -765,18 +776,16 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v4.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(4);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV4V5EnsureCategoryNameIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 4);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -786,6 +795,7 @@ public class DatabaseTest {
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -799,23 +809,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v4.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(4);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV4V5EnsureLuggageEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -823,9 +831,10 @@ public class DatabaseTest {
         thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -839,23 +848,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v4.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(4);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV4V5EnsurePackingListIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -869,6 +876,7 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 
     @Test
@@ -882,23 +890,21 @@ public class DatabaseTest {
         databaseService.resetDatabase(DB_NAME);
 
         try {
-            InputStream inputStream = context.getAssets().open("database_v1.sqlite");
+            InputStream inputStream = context.getAssets().open("database_v4.sqlite");
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.getReadableDatabase().setVersion(4);
             databaseHelper.execute(inputStream);
         } catch (IOException exception) {
             Log.e("DatabaseTest migrateV4V5EnsurePackingListEntryIsUnique:", Objects.requireNonNull(exception.getMessage()));
         }
 
-        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 3);
-        SQLiteDatabase sqLiteDatabase;
-
-        database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
-        sqLiteDatabase = database.getWritableDatabase();
+        de.byte_artist.luggage_planner.Database database = new de.byte_artist.luggage_planner.Database(context, DB_NAME, null, 5);
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -916,5 +922,6 @@ public class DatabaseTest {
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
         sqLiteDatabase.execSQL(query);
+        sqLiteDatabase.close();
     }
 }

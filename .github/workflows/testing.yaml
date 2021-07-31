@@ -39,18 +39,28 @@ jobs:
       - name: Upload Linter results
         uses: actions/upload-artifact@v1
         with:
-          name: unit-tests-results
+          name: linter-results
           path: app/build/reports/lint-results-release.html
 
-      # Step 4: Yun your unit tests
-      - name: Run Debug Unit Tests
+      # Step 4: Run all checks
+      - name: Run all checks
+        run: ./gradlew check
+
+      # Step 5: Run unit tests for all variants
+      - name: Run Unit Tests
         run: ./gradlew test
+
+      # Step 5: Assemble Debug Android Test
+      - name: Run Unit Tests for Debug build
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 21
+          arch: x86
+          disable-animations: true
+          script: ./gradlew connectedAndroidTest --stacktrace
 
       - name: Upload Unit tests results
         uses: actions/upload-artifact@v1
         with:
           name: unit-tests-results
           path: app/build/reports/lint-results-release.html
-
-      - name: Assemble Android Tests
-        run: ./gradlew assembleAndroidTest
