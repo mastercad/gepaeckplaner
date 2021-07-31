@@ -16,7 +16,7 @@ echo "unzip files"
 unzip -o android-sdk.zip -d $ANDROID_HOME/cmdline-tools
 # rename folder to latest to match Android Studio/sdkmanager behavior
 echo "move folder"
-mv $ANDROID_HOME/cmdline-tools/tools $ANDROID_HOME/cmdline-tools/latest
+mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
 
 echo "Installing required Android tools"
 echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
