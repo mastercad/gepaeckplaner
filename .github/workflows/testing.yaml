@@ -79,26 +79,26 @@ jobs:
 #          disable-animations: false
 #          script: echo "Generated AVD snapshot for caching."
 
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-#          force-avd-creation: false
-#          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: ./gradlew connectedAndroidTest --stacktrace
-
-#      - name: Run android tests for min version 21
+#      - name: run tests
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:
 #          api-level: ${{ matrix.api-level }}
-#          target: ${{ matrix.target }}
-#          arch: x86_64
-#          profile: Nexus 6
+#          force-avd-creation: false
+#          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
 #          disable-animations: true
 #          script: ./gradlew connectedAndroidTest --stacktrace
 
-#      - name: Run android tests for recommendet version 29
+      - name: Run android tests for min version 21
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          script: ./gradlew connectedAndroidTest --stacktrace
+
+#     - name: Run android tests for recommendet version 29
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:
 #          api-level: 29
