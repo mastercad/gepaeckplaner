@@ -1,9 +1,5 @@
 name: Testing Workflow
 
-env:
-  ANDROID_HOME: "/Users/runner/Library/android-sdk"
-  ANDROID_SDK_TOOLS: "6609375_latest"
-
 # Step 1: Choose the branch or branches you want to run this workflow
 on:
   pull_request:
@@ -11,11 +7,15 @@ on:
       - develop
       - master
 
+env:
+  ANDROID_HOME: "/Users/runner/Library/android-sdk"
+  ANDROID_SDK_TOOLS: "6609375_latest"
+
 jobs:
   testing:
     name: Lint Check and Testing
 
-    runs-on: macos-latest
+    runs-on: macOS-latest
     timeout-minutes: 25
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g -XX:+UseParallelGC
@@ -28,10 +28,10 @@ jobs:
 #        target: [default, google_apis]
 
     steps:
-      - name: Clone Repo
+      - name: Checkout
         uses: actions/checkout@v1
 
-      - uses: gradle/wrapper-validation-action@v1
+#      - uses: gradle/wrapper-validation-action@v1
 
       - name: Install JDK 1.8
         uses: actions/setup-java@v1
