@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [21, 23, 29]
+        api-level: [21, 23, 30]
         target: [default, google_apis]
 
     steps:
@@ -85,7 +85,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew connectedAndroidTest --stacktrace
 
 #      - name: Run android tests for min version 21
 #        uses: reactivecircus/android-emulator-runner@v2

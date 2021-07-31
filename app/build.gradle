@@ -10,11 +10,11 @@ android {
         abortOnError false
     }
 //    ndkVersion 21
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         applicationId "de.byte_artist.luggage_planner"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 20
         versionName "1.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -70,6 +70,9 @@ android {
             assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/']
             res.srcDirs = ['src/main/res', 'src/androidTest/res']
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
