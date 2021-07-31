@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+//apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
+
 android {
     lintOptions {
         checkReleaseBuilds false

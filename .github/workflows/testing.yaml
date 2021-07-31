@@ -50,11 +50,20 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
 
-      # Step 5: Assemble Debug Android Test
-      - name: Run Unit Tests for Debug build
+      # Step 5: Run android tests
+      - name: Run android tests for min version 21
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 21
+          arch: x86
+          disable-animations: true
+          script: ./gradlew connectedAndroidTest --stacktrace
+
+      # Step 5: Run android tests
+      - name: Run android tests for recommendet version 28
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 28
           arch: x86
           disable-animations: true
           script: ./gradlew connectedAndroidTest --stacktrace

@@ -7,6 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.util.Log;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -58,7 +59,9 @@ public class DatabaseTest {
         SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("no such column: luggage_active (code 1 SQLITE_ERROR): , while compiling: SELECT luggage_active FROM luggage");
+        thrown.expectMessage(CoreMatchers.containsString("no such column: luggage_active"));
+        thrown.expectMessage(CoreMatchers.containsString("while compiling: SELECT luggage_active FROM luggage"));
+//        thrown.expectMessage("no such column: luggage_active (code 1 SQLITE_ERROR): , while compiling: SELECT luggage_active FROM luggage");
 
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
@@ -117,7 +120,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
+        thrown.expectMessage(CoreMatchers.containsString("FOREIGN KEY constraint failed"));
+//        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -191,7 +195,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage_category.luggage_category_name"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -228,7 +233,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -271,7 +277,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
@@ -317,7 +324,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
@@ -355,7 +363,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
+        thrown.expectMessage(CoreMatchers.containsString("FOREIGN KEY constraint failed"));
+//        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -430,7 +439,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage_category.luggage_category_name"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -467,7 +477,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -510,7 +521,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
@@ -556,7 +568,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
@@ -628,7 +641,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage_category.luggage_category_name"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -667,8 +681,9 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk"));
 //        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067)");
-        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+//        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -711,7 +726,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
@@ -757,7 +773,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
@@ -791,7 +808,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage_category.luggage_category_name"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage_category.luggage_category_name (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
@@ -828,7 +846,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
         query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
@@ -871,7 +890,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list.packing_list_name, packing_list.packing_list_date (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list` (`packing_list_name`, `packing_list_date`) "+
                 "VALUES('test packing list', '2018-10-06');";
@@ -917,7 +937,8 @@ public class DatabaseTest {
         sqLiteDatabase.execSQL(query);
 
         thrown.expect(SQLiteException.class);
-        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
+        thrown.expectMessage(CoreMatchers.containsString("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk"));
+//        thrown.expectMessage("UNIQUE constraint failed: packing_list_entry.packing_list_fk, packing_list_entry.luggage_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         query = "INSERT INTO `packing_list_entry` (`luggage_fk`, `packing_list_fk`, `packing_list_entry_count`) "+
             "VALUES(1, 1, 5);";
