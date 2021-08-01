@@ -67,8 +67,9 @@ jobs:
         id: deploy
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: service_account.json
+          serviceAccountJson: service-account.json
           packageName: de.byte_artist.luggage_planner
-          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles:
+            - app/build/outputs/bundle/release/app-release.aab
           track: beta
           whatsNewDirectory: whatsNew/
