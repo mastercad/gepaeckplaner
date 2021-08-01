@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import de.byte_artist.luggage_planner.service.Database;
-// import de.byte_artist.luggage_planner.test.R;
 
 import static org.junit.Assert.assertTrue;
 
@@ -33,7 +32,6 @@ import static org.junit.Assert.assertTrue;
 public class DatabaseTest {
 
     static private final String DB_NAME = "test_luggage.db";
-//    static private final String DB_NAME = R.;
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
@@ -115,7 +113,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -124,7 +122,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage 2', 2, 5, 2);";
 
         sqLiteDatabase.execSQL(query);
@@ -228,7 +226,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -237,7 +235,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
@@ -268,7 +266,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -311,7 +309,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -358,7 +356,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -367,7 +365,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("FOREIGN KEY constraint failed (code 787 SQLITE_CONSTRAINT_FOREIGNKEY)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage 2', 2, 5, 2);";
 
         sqLiteDatabase.execSQL(query);
@@ -472,7 +470,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -481,7 +479,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
@@ -512,7 +510,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -555,7 +553,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -676,7 +674,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -686,7 +684,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
@@ -717,7 +715,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -760,7 +758,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -841,7 +839,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -850,7 +848,7 @@ public class DatabaseTest {
 //        thrown.expectMessage("UNIQUE constraint failed: luggage.luggage_name, luggage.luggage_category_fk (code 2067 SQLITE_CONSTRAINT_UNIQUE)");
 
         // it is not possible anymore to insert luggage without matching luggage category
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 5, 2);";
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.close();
@@ -881,7 +879,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
                 "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 
@@ -924,7 +922,7 @@ public class DatabaseTest {
         String query = "INSERT INTO `luggage_category` (`luggage_category_name`) VALUES('test category');";
         sqLiteDatabase.execSQL(query);
 
-        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weight`, `luggage_count`) "+
+        query = "INSERT INTO `luggage` (`luggage_name`, `luggage_category_fk`, `luggage_weigh`, `luggage_count`) "+
             "VALUES('test luggage', 1, 20, 1);";
         sqLiteDatabase.execSQL(query);
 

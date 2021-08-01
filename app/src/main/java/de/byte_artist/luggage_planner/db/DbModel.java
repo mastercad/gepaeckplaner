@@ -14,7 +14,7 @@ import de.byte_artist.luggage_planner.service.Preferences;
 
 public class DbModel extends SQLiteOpenHelper {
 
-    protected static Integer DATABASE_VERSION = 5;
+    protected static Integer DATABASE_VERSION = 6;
     static final String DATABASE_NAME = "luggage.db";
 
     static final String TABLE_LUGGAGE = "luggage";
@@ -26,7 +26,7 @@ public class DbModel extends SQLiteOpenHelper {
     static final String COLUMN_LUGGAGE_ID = "luggage_id";
     static final String COLUMN_LUGGAGE_NAME = "luggage_name";
     static final String COLUMN_LUGGAGE_COUNT = "luggage_count";
-    static final String COLUMN_LUGGAGE_WEIGHT = "luggage_weight";
+    static final String COLUMN_LUGGAGE_WEIGHT = "luggage_weigh";
     static final String COLUMN_LUGGAGE_ACTIVE = "luggage_active";
     static final String COLUMN_LUGGAGE_CATEGORY_FK = "luggage_category_fk";
 
@@ -149,7 +149,6 @@ public class DbModel extends SQLiteOpenHelper {
         float currentFontSize = context.getResources().getDimension(R.dimen.normal_text_size);
 
         String query = "INSERT INTO "+TABLE_PREFERENCES+" ("+COLUMN_PREFERENCES_NAME+", "+COLUMN_PREFERENCES_VALUE+") VALUES ('"+ Preferences.FONT_SIZE+"', '"+currentFontSize+"');";
-
         db.execSQL(query);
 
         return this;
@@ -157,7 +156,7 @@ public class DbModel extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String createTable;
+        String statement;
         /*
         String query = "SELECT name FROM sqlite_master WHERE type='table'";
         Cursor cursor = db.rawQuery(query, null);
@@ -178,31 +177,26 @@ public class DbModel extends SQLiteOpenHelper {
         if (2 > oldVersion
             && 2 <= newVersion
         ) {
-            createTable = "ALTER TABLE "+TABLE_LUGGAGE+" ADD "+COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1;";
-
-            db.execSQL(createTable);
+            statement = "ALTER TABLE "+TABLE_LUGGAGE+" ADD "+COLUMN_LUGGAGE_ACTIVE+" INTEGER NOT NULL DEFAULT 1;";
+            db.execSQL(statement);
         }
 
         if (3 > oldVersion
             && 3 <= newVersion
         ) {
-            createTable = "CREATE TABLE luggage_temp AS SELECT * FROM "+TABLE_LUGGAGE+";";
+            statement = "CREATE TABLE luggage_temp AS SELECT * FROM "+TABLE_LUGGAGE+";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_LUGGAGE;
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_LUGGAGE;
+            db.execSQL(statement);
 
             this.createLuggageTable(db);
 
-            createTable = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
+            statement = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE luggage_temp";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE luggage_temp";
+            db.execSQL(statement);
         }
 
         if (4 > oldVersion
@@ -214,95 +208,75 @@ public class DbModel extends SQLiteOpenHelper {
         if (5 > oldVersion
             && 5 <= newVersion
         ) {
-            createTable = "CREATE TABLE luggage_category_temp AS SELECT * FROM "+TABLE_LUGGAGE_CATEGORY+";";
+            statement = "CREATE TABLE luggage_category_temp AS SELECT * FROM "+TABLE_LUGGAGE_CATEGORY+";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_LUGGAGE_CATEGORY+";";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_LUGGAGE_CATEGORY+";";
+            db.execSQL(statement);
 
             this.createLuggageCategoryTable(db);
 
-            createTable = "INSERT INTO "+TABLE_LUGGAGE_CATEGORY+" SELECT * FROM luggage_category_temp;";
+            statement = "INSERT INTO "+TABLE_LUGGAGE_CATEGORY+" SELECT * FROM luggage_category_temp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
+            statement = "DROP TABLE luggage_category_temp;";
+            db.execSQL(statement);
 
-            createTable = "DROP TABLE luggage_category_temp;";
+            statement = "CREATE TABLE packing_list_entry_tmp AS SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "CREATE TABLE packing_list_entry_tmp AS SELECT * FROM "+TABLE_PACKING_LIST_ENTRY+";";
-
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_PACKING_LIST_ENTRY+";";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_PACKING_LIST_ENTRY+";";
+            db.execSQL(statement);
 
             this.createPackingListEntriesTable(db);
 
-            createTable = "INSERT INTO "+TABLE_PACKING_LIST_ENTRY+" SELECT * FROM packing_list_entry_tmp;";
+            statement = "INSERT INTO "+TABLE_PACKING_LIST_ENTRY+" SELECT * FROM packing_list_entry_tmp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
+            statement = "DROP TABLE packing_list_entry_tmp;";
+            db.execSQL(statement);
 
-            createTable = "DROP TABLE packing_list_entry_tmp;";
+            statement = "CREATE TABLE luggage_temp AS SELECT * FROM " + TABLE_LUGGAGE + ";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "CREATE TABLE luggage_temp AS SELECT * FROM " + TABLE_LUGGAGE + ";";
-
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_LUGGAGE+";";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_LUGGAGE+";";
+            db.execSQL(statement);
 
             this.createLuggageTable(db);
 
-            createTable = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
+            statement = "INSERT INTO "+TABLE_LUGGAGE+" SELECT * FROM luggage_temp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
+            statement = "DROP TABLE luggage_temp;";
+            db.execSQL(statement);
 
-            createTable = "DROP TABLE luggage_temp;";
+            statement = "CREATE TABLE packing_list_tmp AS SELECT * FROM "+TABLE_PACKING_LIST + ";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "CREATE TABLE packing_list_tmp AS SELECT * FROM "+TABLE_PACKING_LIST + ";";
-
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_PACKING_LIST+";";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_PACKING_LIST+";";
+            db.execSQL(statement);
 
             this.createPackingListTable(db);
 
-            createTable = "INSERT INTO "+TABLE_PACKING_LIST+" SELECT * FROM packing_list_tmp;";
+            statement = "INSERT INTO "+TABLE_PACKING_LIST+" SELECT * FROM packing_list_tmp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
+            statement = "DROP TABLE packing_list_tmp;";
+            db.execSQL(statement);
 
-            createTable = "DROP TABLE packing_list_tmp;";
+            statement = "CREATE TABLE preferences_tmp AS SELECT * FROM "+TABLE_PREFERENCES + ";";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "CREATE TABLE preferences_tmp AS SELECT * FROM "+TABLE_PREFERENCES + ";";
-
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE "+TABLE_PREFERENCES+";";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE "+TABLE_PREFERENCES+";";
+            db.execSQL(statement);
 
             this.createPreferencesTable(db);
 
-            createTable = "INSERT INTO "+TABLE_PREFERENCES+" SELECT * FROM preferences_tmp;";
+            statement = "INSERT INTO "+TABLE_PREFERENCES+" SELECT * FROM preferences_tmp;";
+            db.execSQL(statement);
 
-            db.execSQL(createTable);
-
-            createTable = "DROP TABLE preferences_tmp;";
-
-            db.execSQL(createTable);
+            statement = "DROP TABLE preferences_tmp;";
+            db.execSQL(statement);
         }
     }
 
