@@ -4,7 +4,7 @@ CREATE TABLE luggage_category (luggage_category_id INTEGER PRIMARY KEY AUTOINCRE
 CREATE TABLE luggage (luggage_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     luggage_name TEXT NOT NULL,
     luggage_category_fk INTEGER NOT NULL,
-    luggage_weight INTEGER NOT NULL,
+    luggage_weigh INTEGER NOT NULL,
     luggage_count INTEGER NOT NULL,
     luggage_active INTEGER NOT NULL DEFAULT 1);
 

@@ -1,30 +1,40 @@
 apply plugin: 'com.android.application'
 
+//apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
+
 android {
-    compileSdkVersion 29
+    lintOptions {
+        checkReleaseBuilds false
+        //If you want to continue even if errors found use following line
+        abortOnError false
+    }
+//    ndkVersion 21
+    compileSdkVersion 31
     defaultConfig {
         applicationId "de.byte_artist.luggage_planner"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 20
         versionName "1.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags ""
+//                version "22.1.7171670"
             }
         }
-        testFunctionalTest = false
+        testFunctionalTest = true
     }
-    signingConfigs {
-        release {
-            storeFile file('/home/mastercad/android-upload-keystore.jks')
-            storePassword "XQW16asZ"
-            keyAlias "upload"
-            keyPassword "XQW16asZ"
-            v2SigningEnabled false
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('/home/mastercad/android-upload-keystore.jks')
+//            storePassword "XQW16asZ"
+//            keyAlias "upload"
+//            keyPassword "XQW16asZ"
+//            v2SigningEnabled false
+//        }
+//    }
     buildTypes {
         release {// Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
@@ -52,7 +62,6 @@ android {
     }
     productFlavors {
     }
-
     testOptions {
         unitTests.returnDefaultValues = true
     }

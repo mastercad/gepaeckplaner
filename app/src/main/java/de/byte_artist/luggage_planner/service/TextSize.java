@@ -19,7 +19,6 @@ public class TextSize {
     public static final String TEXT_TYPE_TITLE = "title_text_size";
 
     public static TextView convert(Context context, TextView textView, String type) {
-
         Locale locale = LocaleHelper.investigateLocale(context);
 
         // font size of needed type
@@ -30,6 +29,7 @@ public class TextSize {
                 context.getPackageName()
             )
         );
+
 
         // font size of default type
         int defaultTextSize = context.getResources().getDimensionPixelSize(
@@ -56,7 +56,6 @@ public class TextSize {
     }
 
     public static Spinner convert(Context context, Spinner spinner, String type) {
-
         Locale locale = LocaleHelper.investigateLocale(context);
 
         // font size of needed type
