@@ -70,5 +70,5 @@ jobs:
           serviceAccountJson: service-account.json
           packageName: de.byte_artist.luggage_planner
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-#          track: beta
+          track: production
           whatsNewDirectory: whatsNew/
