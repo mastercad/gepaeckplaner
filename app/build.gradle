@@ -26,16 +26,16 @@ android {
         }
         testFunctionalTest = true
     }
-    signingConfigs {
-        release {
+//    signingConfigs {
+//        release {
 //            if (project.hasProperty('GEPAECKPLANER_RELEASE_STORE_FILE')) {
 //                storeFile file(GEPAECKPLANER_RELEASE_STORE_FILE)
 //                storePassword GEPAECKPLANER_RELEASE_STORE_PASSWORD
 //                keyAlias GEPAECKPLANER_RELEASE_KEY_ALIAS
 //                keyPassword GEPAECKPLANER_RELEASE_KEY_PASSWORD
 //            }
-        }
-    }
+//        }
+//    }
     buildTypes {
         release {// Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
@@ -45,7 +45,7 @@ android {
             // Android Gradle plugin.
             shrinkResources true
 
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
 
             // Includes the default ProGuard rules files that are packaged with
             // the Android Gradle plugin. To learn more, go to the section about
