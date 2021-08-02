@@ -15,8 +15,8 @@ android {
         applicationId "de.byte_artist.luggage_planner"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 20
-        versionName "1.19"
+        versionCode 21
+        versionName "1.21"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -26,15 +26,16 @@ android {
         }
         testFunctionalTest = true
     }
-//    signingConfigs {
-//        release {
-//            storeFile file('/home/mastercad/android-upload-keystore.jks')
-//            storePassword "XQW16asZ"
-//            keyAlias "upload"
-//            keyPassword "XQW16asZ"
-//            v2SigningEnabled false
-//        }
-//    }
+    signingConfigs {
+        release {
+//            if (project.hasProperty('GEPAECKPLANER_RELEASE_STORE_FILE')) {
+//                storeFile file(GEPAECKPLANER_RELEASE_STORE_FILE)
+//                storePassword GEPAECKPLANER_RELEASE_STORE_PASSWORD
+//                keyAlias GEPAECKPLANER_RELEASE_KEY_ALIAS
+//                keyPassword GEPAECKPLANER_RELEASE_KEY_PASSWORD
+//            }
+        }
+    }
     buildTypes {
         release {// Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
@@ -43,6 +44,8 @@ android {
             // Enables resource shrinking, which is performed by the
             // Android Gradle plugin.
             shrinkResources true
+
+            signingConfig signingConfigs.release
 
             // Includes the default ProGuard rules files that are packaged with
             // the Android Gradle plugin. To learn more, go to the section about
