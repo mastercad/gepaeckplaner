@@ -11,8 +11,8 @@ android {
         applicationId "de.byte_artist.luggage_planner"
         minSdk 24
         targetSdk 34
-        versionCode 21
-        versionName "1.20"
+        versionCode 24
+        versionName "1.50"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -91,7 +91,12 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'com.google.android.material:material:1.11.0'
-    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation ('com.google.firebase:firebase-core:21.1.1') {
+        exclude module: "play-services-ads-identifier"
+        exclude module: "play-services-measurement"
+        exclude module: "play-services-measurement-sdk"
+        exclude module: "play-services-measurement-api"
+    }
     implementation 'androidx.mediarouter:mediarouter:1.6.0'
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     testImplementation 'junit:junit:4.12'
