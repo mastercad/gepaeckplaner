@@ -95,3 +95,4 @@ lint/tmp/
 # Android Profiling
 *.hprof
 /android-upload-keystore.jks
+keystore.jks
